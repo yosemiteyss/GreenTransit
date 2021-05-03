@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="ShapeAppearanceOverlay.GreenTransit.Circle" parent="">
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="ShapeAppearance.GreenTransit.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent"/>
+
+    <style name="ShapeAppearance.GreenTransit.MediumComponent" parent="ShapeAppearance.MaterialComponents.MediumComponent"/>
+
+    <style name="ShapeAppearance.GreenTransit.LargeComponent" parent="ShapeAppearance.MaterialComponents.LargeComponent"/>
+
+</resources>

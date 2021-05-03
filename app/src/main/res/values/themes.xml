@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+    <style name="Theme.GreenTransit.Splash.DayNight" parent="Theme.GreenTransit.Splash"/>
+    <style name="Theme.GreenTransit.Splash" parent="Theme.GreenTransit">
+        <item name="android:windowBackground">@drawable/splash_background</item>
+    </style>
+    -->
+
+    <style name="Theme.GreenTransit.DayNight" parent="Theme.GreenTransit"/>
+    <style name="Theme.GreenTransit" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/green_500</item>
+        <item name="colorPrimaryVariant">@color/green_700</item>
+        <item name="colorSecondary">@color/green_500</item>
+        <item name="colorSecondaryVariant">@color/green_700</item>
+        <item name="colorError">@color/purple_500</item>
+        
+        <item name="android:colorBackground">@color/white</item>
+        <item name="colorSurface">@color/white</item>
+
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="colorOnError">@color/white</item>
+        <item name="colorOnBackground">@color/black</item>
+        <item name="colorOnSurface">@color/black</item>
+
+        <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.GreenTransit.SmallComponent</item>
+        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.GreenTransit.MediumComponent</item>
+        <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.GreenTransit.LargeComponent</item>
+
+        <item name="textAppearanceHeadline1">@style/TextAppearance.GreenTransit.Headline1</item>
+        <item name="textAppearanceHeadline2">@style/TextAppearance.GreenTransit.Headline2</item>
+        <item name="textAppearanceHeadline3">@style/TextAppearance.GreenTransit.Headline3</item>
+        <item name="textAppearanceHeadline4">@style/TextAppearance.GreenTransit.Headline4</item>
+        <item name="textAppearanceHeadline5">@style/TextAppearance.GreenTransit.Headline5</item>
+        <item name="textAppearanceHeadline6">@style/TextAppearance.GreenTransit.Headline6</item>
+        <item name="textAppearanceSubtitle1">@style/TextAppearance.GreenTransit.Subtitle1</item>
+        <item name="textAppearanceSubtitle2">@style/TextAppearance.GreenTransit.Subtitle2</item>
+        <item name="textAppearanceBody1">@style/TextAppearance.GreenTransit.Body1</item>
+        <item name="textAppearanceBody2">@style/TextAppearance.GreenTransit.Body2</item>
+        <item name="textAppearanceButton">@style/TextAppearance.GreenTransit.Button</item>
+        <item name="textAppearanceCaption">@style/TextAppearance.GreenTransit.Caption</item>
+        <item name="textAppearanceOverline">@style/TextAppearance.GreenTransit.Overline</item>
+
+        <!-- Styles -->
+
+        <!-- System -->
+        <item name="android:statusBarColor">@color/black</item>
+        <item name="android:windowBackground">?android:colorBackground</item>
+
+        <!-- Others -->
+
+    </style>
+
+</resources>

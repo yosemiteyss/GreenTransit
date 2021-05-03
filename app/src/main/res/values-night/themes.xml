@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+    <style name="Theme.GreenTransit.Splash.DayNight" parent="Theme.GreenTransit.Splash.Dark"/>
+    <style name="Theme.GreenTransit.Splash.Dark" parent="Theme.GreenTransit.Dark">
+        <item name="android:windowBackground">@drawable/splash_background</item>
+    </style>
+    -->
+
+    <style name="Theme.GreenTransit.DayNight" parent="Theme.GreenTransit.Dark"/>
+    <style name="Theme.GreenTransit.Dark" parent="Theme.GreenTransit">
+        <item name="colorPrimary">@color/green_300</item>
+        <item name="colorPrimaryVariant">@color/green_500</item>
+        <item name="colorSecondary">@color/green_300</item>
+        <item name="colorSecondaryVariant">@color/green_500</item>
+        <item name="colorError">@color/purple_300</item>
+        
+        <item name="android:colorBackground">@color/dark</item>
+        <item name="colorSurface">@color/dark</item>
+
+        <item name="colorOnPrimary">@color/black</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorOnError">@color/black</item>
+        <item name="colorOnBackground">@color/white</item>
+        <item name="colorOnSurface">@color/white</item>
+    </style>
+    
+</resources>
