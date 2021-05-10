@@ -42,7 +42,7 @@ object Versions {
     const val PLAY_SERVICES_AUTH = "19.0.0"
     const val PLAY_SERVICES_MAP = "17.0.0"
     const val PREFERENCES = "1.1.1"
-    const val RETROFIT = "2.9.0"
+    const val RETROFIT = "2.8.2"
     const val ROOM = "2.3.0-beta01"
     const val SERIALIZATION = "1.4.20"
     const val SPINKIT = "1.4.0"

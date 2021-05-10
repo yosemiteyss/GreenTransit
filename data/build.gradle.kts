@@ -20,13 +20,11 @@ android {
     }
 
     buildTypes {
-        // Release build
         getByName("release") {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
 
-        // Debug build
         getByName("debug") {
 
         }
@@ -73,4 +71,6 @@ dependencies {
     // Annotation Processors
     kapt(Annotation.ROOM_COMPILER)
     kapt(Annotation.HILT_ANDROID_COMPILER)
+
+    testImplementation(Dependencies.JUNIT)
 }
