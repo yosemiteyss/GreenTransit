@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!--
     <style name="Theme.GreenTransit.Splash.DayNight" parent="Theme.GreenTransit.Splash"/>
     <style name="Theme.GreenTransit.Splash" parent="Theme.GreenTransit">
         <item name="android:windowBackground">@drawable/splash_background</item>
     </style>
-    -->
 
     <style name="Theme.GreenTransit.DayNight" parent="Theme.GreenTransit"/>
     <style name="Theme.GreenTransit" parent="Theme.MaterialComponents.DayNight.NoActionBar">

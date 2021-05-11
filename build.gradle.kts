@@ -10,6 +10,8 @@ buildscript {
         classpath(Dependencies.KOTLIN_PLUGIN)
         classpath(Dependencies.NAVIGATION_SAFE_ARGS_PLUGIN)
         classpath(Dependencies.HILT_PLUGIN)
+        classpath(Dependencies.GOOGLE_SERVICES)
+        classpath(Dependencies.FIREBASE_CRASHLYTICS_PLUGIN)
     }
 }
 

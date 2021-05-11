@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!--
     <style name="Theme.GreenTransit.Splash.DayNight" parent="Theme.GreenTransit.Splash.Dark.v27"/>
     <style name="Theme.GreenTransit.Splash.Dark.v27" parent="Theme.GreenTransit.Splash.Dark.v23">
         <item name="android:navigationBarColor">?attr/colorSurface</item>
         <item name="android:windowLightNavigationBar">false</item>
     </style>
-    -->
 
     <style name="Theme.GreenTransit.DayNight" parent="Theme.GreenTransit.Dark.v27"/>
     <style name="Theme.GreenTransit.Dark.v27" parent="Theme.GreenTransit.Dark.v23">

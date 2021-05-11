@@ -3,6 +3,7 @@ plugins {
     id(Plugins.KOTLIN_ANDROID)
     id(Plugins.KOTLIN_KAPT)
     id(Plugins.HILT_ANDROID)
+    id(Plugins.GOOGLE_SERVICES)
     id(Plugins.CHECK_DEPENDENCY_UPDATES) version Versions.CHECK_DEPENDENCY_UPDATES
 }
 
@@ -64,6 +65,8 @@ dependencies {
     implementation(Dependencies.OKHTTP_LOGGING_INTERCEPTOR)
     implementation(Dependencies.PLAY_SERVICES_MAP)
     implementation(Dependencies.MAPS_UTILS)
+
+    implementation(Dependencies.FIREBASE_FIRESTORE)
 
     api(Dependencies.ROOM_RUNTIME)
     api(Dependencies.ROOM_KTX)

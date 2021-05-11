@@ -20,7 +20,7 @@ object Versions {
     const val FRAGMENT = "1.3.2"
     const val GLIDE = "4.12.0"
     const val GRADLE = "4.1.3"
-    const val GOOGLE_SERVICES = "4.3.3"
+    const val GOOGLE_SERVICES = "4.3.5"
     const val GSON = "2.8.6"
     const val HILT = "2.35"
     const val HILT_ANDROIDX_EXT_COMPILER = "1.0.0-beta01"

@@ -1,5 +1,5 @@
 object Application {
-    const val MAIN_APPLICATION_ID = "com.yosemiteyss.greentransit"
+    const val MAIN_APPLICATION_ID = "com.yosemiteyss.greentransit.app"
     const val MAIN_VERSION_NAME = "1.0.0"   // X.Y.Z; X = Major, Y = Minor, Z = Patch level
     const val MAIN_VERSION_CODE = 1
 

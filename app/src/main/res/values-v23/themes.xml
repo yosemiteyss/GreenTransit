@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!--
     <style name="Theme.GreenTransit.Splash.DayNight" parent="Theme.GreenTransit.Splash.v23"/>
     <style name="Theme.GreenTransit.Splash.v23" parent="Theme.GreenTransit.Splash">
         <item name="android:statusBarColor">?attr/colorPrimarySurface</item>
         <item name="android:windowLightStatusBar">false</item>
     </style>
-    -->
 
     <style name="Theme.GreenTransit.DayNight" parent="Theme.GreenTransit.v23"/>
     <style name="Theme.GreenTransit.v23" parent="Theme.GreenTransit">

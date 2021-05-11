@@ -7,6 +7,7 @@ plugins {
     id(Plugins.KOTLIN_PARCELIZE)
     id(Plugins.HILT_ANDROID)
     id(Plugins.NAVIGATION_SAFEARGS)
+    id(Plugins.FIREBASE_CRASHLYTICS)
     id(Plugins.CHECK_DEPENDENCY_UPDATES) version Versions.CHECK_DEPENDENCY_UPDATES
 }
 
@@ -89,6 +90,8 @@ dependencies {
     implementation(Dependencies.GLIDE)
     implementation(Dependencies.MAPS_KTX)
     implementation(Dependencies.WORK)
+
+    implementation(Dependencies.FIREBASE_CRASHLYTICS)
 
     // Annotation Processors
     kapt(Annotation.HILT_ANDROID_COMPILER)
