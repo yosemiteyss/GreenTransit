@@ -64,6 +64,7 @@ object Dependencies {
     const val MAPS_UTILS = "com.google.maps.android:android-maps-utils:${Versions.MAPS_UTILS}"
     const val RETROFIT = "com.squareup.retrofit2:retrofit:${Versions.RETROFIT}"
     const val RETROFIT_CONVERTER_GSON = "com.squareup.retrofit2:converter-gson:${Versions.RETROFIT}"
+    const val RETROFIT_CONVERTER_XML = "com.squareup.retrofit2:converter-simplexml:${Versions.RETROFIT}"
     const val OKHTTP_LOGGING_INTERCEPTOR = "com.squareup.okhttp3:logging-interceptor:${Versions.OKHTTP_LOGGING_INTERCEPTOR}"
     const val ZXING_CORE = "com.google.zxing:core:${Versions.ZXING_CORE}"
     const val ZXING_EMBEDDED = "com.journeyapps:zxing-android-embedded:${Versions.ZXING_EMBEDDED}"
