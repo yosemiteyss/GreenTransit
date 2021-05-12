@@ -7,6 +7,7 @@ plugins {
 
 dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
+    testImplementation(project(":test-shared"))
 
     implementation(Dependencies.KOTLIN_STDLIB)
     implementation(Dependencies.COROUTINE_CORE)
@@ -16,6 +17,7 @@ dependencies {
     kapt(Annotation.DAGGER_COMPILER)
 
     testImplementation(Dependencies.JUNIT)
+    testImplementation(Dependencies.TURBINE)
 }
 
 java {
@@ -29,7 +31,8 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
         freeCompilerArgs = listOf(
             "-Xuse-experimental=kotlinx.coroutines.ExperimentalCoroutinesApi",
             "-Xuse-experimental=kotlinx.coroutines.FlowPreview",
-            "-Xuse-experimental=kotlin.ExperimentalStdlibApi"
+            "-Xuse-experimental=kotlin.ExperimentalStdlibApi",
+            "-Xopt-in=kotlin.time.ExperimentalTime"
         )
     }
 }

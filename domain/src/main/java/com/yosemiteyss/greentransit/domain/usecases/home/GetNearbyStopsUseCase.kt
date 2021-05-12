@@ -7,15 +7,12 @@ import com.yosemiteyss.greentransit.domain.repositories.TransitRepository
 import com.yosemiteyss.greentransit.domain.states.Resource
 import com.yosemiteyss.greentransit.domain.usecases.FlowUseCase
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
-
-/**
- * Created by kevin on 12/5/2021
- */
-
-private const val UPDATE_METER = 150
 
 class GetNearbyStopsUseCase @Inject constructor(
     private val transitRepository: TransitRepository,
@@ -32,18 +29,26 @@ class GetNearbyStopsUseCase @Inject constructor(
             lastCoordinate!!.distance(currentCoordinate) > UPDATE_METER ||
             lastCoordinate == null
         ) {
+            // Save new coordinate
             lastCoordinate = currentCoordinate
 
-            val distinctStopsList = parameters.bounds
-                .map { transitRepository.getNearbyStops(it.startHash, it.endHash) }
-                .flatten()
-                .distinctBy { it.stopId }
-                .map { it.location }
+            coroutineScope {
+                val deferred = parameters.bounds.map {
+                    async { transitRepository.getNearbyStops(it.startHash, it.endHash) }
+                }
 
-            println("GetNearbyStopsUseCase")
+                val distinctStops = deferred.awaitAll()
+                    .flatten()
+                    .distinctBy { it.stopId }
+                    .map { it.location }
 
-            emit(Resource.Success(distinctStopsList))
+                emit(Resource.Success(distinctStops))
+            }
         }
+    }
+
+    companion object {
+        const val UPDATE_METER = 150
     }
 }
 

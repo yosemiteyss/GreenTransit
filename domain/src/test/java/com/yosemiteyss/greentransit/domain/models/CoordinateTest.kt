@@ -1,4 +1,4 @@
-package com.yosemiteyss.greentransit.data.dtos
+package com.yosemiteyss.greentransit.domain.models
 
 import org.junit.Assert.assertEquals
 import org.junit.Test
