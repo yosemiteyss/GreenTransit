@@ -3,7 +3,6 @@ package com.yosemiteyss.greentransit.app.home
 import android.annotation.SuppressLint
 import android.content.res.ColorStateList
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -113,7 +112,6 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationSource {
         // Nearby stops marker
         viewLifecycleOwner.lifecycleScope.launch {
             mainViewModel.nearbyStops.collect { stops ->
-                Log.d("HomeFragment", "$stops")
                 getMapInstance().run {
                     nearbyStopMarkers.clear()
                     nearbyStopMarkers.addAll(stops.map {
@@ -155,6 +153,9 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationSource {
                 HomeFragmentDirections.actionHomeFragmentToSearchFragment()
             )
         }
+
+        // Bottom sheet top margin
+        binding.bottomSheetCoordinatorLayout.applySystemWindowInsetsMargin(applyTop = true)
     }
 
     private suspend fun zoomToCurrentLocation() {
