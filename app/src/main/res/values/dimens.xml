@@ -2,4 +2,7 @@
 <resources>
     <dimen name="min_icon_touch_padding">8dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="search_bar_corner_radius">8dp</dimen>
+    <dimen name="home_bottom_sheet_peek_height">260dp</dimen>
+    <dimen name="home_fab_bottom_margin">280dp</dimen>
 </resources>

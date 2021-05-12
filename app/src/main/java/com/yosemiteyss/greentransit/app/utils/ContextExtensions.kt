@@ -12,7 +12,6 @@ import android.view.animation.AnimationUtils
 import android.view.animation.Interpolator
 import androidx.annotation.*
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.use
 
@@ -20,8 +19,8 @@ import androidx.core.content.res.use
  * Check if a permission is approved.
  * @param permission Manifest.permission.*
  */
-fun Context.isPermissionApproved(permission: String): Boolean {
-    return ActivityCompat.checkSelfPermission(
+fun Context.isPermissionGranted(permission: String): Boolean {
+    return ContextCompat.checkSelfPermission(
         this,
         permission
     ) == PackageManager.PERMISSION_GRANTED

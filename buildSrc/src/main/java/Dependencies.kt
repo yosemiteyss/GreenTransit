@@ -50,10 +50,12 @@ object Dependencies {
     const val FIREBASE_FIRESTORE = "com.google.firebase:firebase-firestore-ktx:${Versions.FIREBASE_FIRESTORE}"
     const val FIREBASE_MESSAGING = "com.google.firebase:firebase-messaging:${Versions.FIREBASE_MESSAGING}"
     const val FIREBASE_STORAGE = "com.google.firebase:firebase-storage-ktx:${Versions.FIREBASE_STORAGE}"
+    const val FIREBASE_GEOFIRE = "com.firebase:geofire-android-common:${Versions.FIREBASE_GEOFIRE}"
 
     // Play Services
     const val PLAY_SERVICES_AUTH = "com.google.android.gms:play-services-auth:${Versions.PLAY_SERVICES_AUTH}"
     const val PLAY_SERVICES_MAP = "com.google.android.gms:play-services-maps:${Versions.PLAY_SERVICES_MAP}"
+    const val PLAY_SERVICES_LOCATION = "com.google.android.gms:play-services-location:${Versions.PLAY_SERVICES_LOCATION}"
 
     // Others
     const val BANNER_VIEW_PAGER = "com.github.zhpanvip:BannerViewPager:${Versions.BANNER_VIEW_PAGER}"

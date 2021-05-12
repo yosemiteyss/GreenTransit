@@ -15,6 +15,7 @@ data class Coordinate(
 
 /**
  * Calculate the distance of two points using Haversine formula.
+ * @return distance between two points in meters.
  */
 fun Coordinate.distance(from: Coordinate): Double {
     val fromLat = Math.toRadians(from.latitude)
@@ -31,5 +32,5 @@ fun Coordinate.distance(from: Coordinate): Double {
 
     val c = 2 * asin(sqrt(a))
 
-    return c * R
+    return c * R * 1000
 }

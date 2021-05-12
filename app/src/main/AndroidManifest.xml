@@ -14,13 +14,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GreenTransit.DayNight">
         <activity
-            android:name=".app.MainActivity"
+            android:name=".app.main.MainActivity"
             android:theme="@style/Theme.GreenTransit.Splash.DayNight">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="${mapsApiKey}" />
+
     </application>
 
 </manifest>

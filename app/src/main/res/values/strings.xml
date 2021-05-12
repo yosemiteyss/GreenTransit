@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">GreenTransit</string>
+
+    <string name="nav_home_title">Home</string>
+    <string name="nav_home_news">Traffic</string>
+
+    <!-- Permission -->
+    <string name="request_location_permission_message">Require location permission for tracking.</string>
+    <string name="request_permission_action_settings">Settings</string>
+
+    <string name="search_title">Search Route</string>
+    <string name="search_clear_text">Clear Text</string>
+
+
 </resources>

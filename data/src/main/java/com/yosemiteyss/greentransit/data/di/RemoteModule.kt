@@ -1,5 +1,9 @@
 package com.yosemiteyss.greentransit.data.di
 
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.firestoreSettings
+import com.google.firebase.ktx.Firebase
 import com.yosemiteyss.greentransit.data.api.GMBService
 import com.yosemiteyss.greentransit.data.constants.Constants.GMB_URL
 import com.yosemiteyss.greentransit.data.retrofit.ResourceCallAdapterFactory
@@ -19,6 +23,16 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 class RemoteModule {
+
+    @Singleton
+    @Provides
+    fun provideFirestore(): FirebaseFirestore {
+        return Firebase.firestore.apply {
+            firestoreSettings = firestoreSettings {
+                isPersistenceEnabled = false
+            }
+        }
+    }
 
     @Singleton
     @Provides

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/map_container_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/home_bottom_sheet_peek_height"
+        android:name="com.google.android.gms.maps.SupportMapFragment"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/location_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/fab_margin"
+        android:layout_marginTop="@dimen/fab_margin"
+        android:layout_marginBottom="@dimen/home_fab_bottom_margin"
+        android:layout_gravity="end|bottom"
+        android:elevation="@dimen/elevation_none"
+        app:elevation="@dimen/elevation_none"
+        app:srcCompat="@drawable/ic_near_me" />
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="56dp">
+
+        <LinearLayout
+            android:id="@+id/bottom_sheet_layout"
+            android:layout_width="match_parent"
+            android:layout_height="900dp"
+            android:orientation="vertical"
+            app:behavior_peekHeight="@dimen/home_bottom_sheet_peek_height"
+            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+            <include
+                layout="@layout/home_search_bar"
+                android:id="@+id/home_search_bar_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/spacing_mlarge"
+                android:layout_marginHorizontal="@dimen/spacing_large"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_large"
+                android:layout_marginStart="@dimen/spacing_large"
+                android:text="Nearby Routes (3)"
+                android:textAppearance="?attr/textAppearanceSubtitle2"/>
+
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/loading_progress_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_large"
+                android:indeterminate="true"/>
+
+        </LinearLayout>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

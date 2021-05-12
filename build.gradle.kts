@@ -1,5 +1,6 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
+    val kotlin_version by extra("1.4.32")
     repositories {
         google()
         mavenCentral()
@@ -12,6 +13,7 @@ buildscript {
         classpath(Dependencies.HILT_PLUGIN)
         classpath(Dependencies.GOOGLE_SERVICES)
         classpath(Dependencies.FIREBASE_CRASHLYTICS_PLUGIN)
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version")
     }
 }
 

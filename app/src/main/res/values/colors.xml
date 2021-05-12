@@ -15,7 +15,10 @@
     <color name="purple_500">#a03c80</color>
 
     <color name="black">#000000</color>
+    <color name="black_alpha_60">#99000000</color>
+
     <color name="white">#ffffff</color>
+    <color name="white_alpha_60">#99ffffff</color>
 
     <color name="dark">#181818</color>
 

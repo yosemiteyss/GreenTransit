@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <style name="ThemeOverlay.GreenTransit.Dialog.Fullscreen.DayNight.Search" parent="ThemeOverlay.GreenTransit.Dialog.Fullscreen.DayNight">
+        <item name="android:windowSoftInputMode">stateAlwaysVisible</item>
+        <item name="android:windowBackground">@color/white_alpha_60</item>
+    </style>
+    <style name="ThemeOverlay.GreenTransit.Dialog.Fullscreen.DayNight" parent="ThemeOverlay.GreenTransit.Dialog.Fullscreen"/>
+    <style name="ThemeOverlay.GreenTransit.Dialog.Fullscreen" parent="ThemeOverlay.MaterialComponents.Dialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:colorBackground">?android:attr/colorBackground</item>
+        <item name="android:windowBackground">?android:colorBackground</item>
+        <item name="materialButtonStyle">@style/Widget.MaterialComponents.Button</item>
+    </style>
+
     <style name="Theme.GreenTransit.Splash.DayNight" parent="Theme.GreenTransit.Splash"/>
     <style name="Theme.GreenTransit.Splash" parent="Theme.GreenTransit">
         <item name="android:windowBackground">@drawable/splash_background</item>

@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <style name="ThemeOverlay.GreenTransit.Dialog.Fullscreen.DayNight.Search" parent="ThemeOverlay.GreenTransit.Dialog.Fullscreen.DayNight">
+        <item name="android:windowBackground">@color/black_alpha_60</item>
+    </style>
+    <style name="ThemeOverlay.GreenTransit.Dialog.Fullscreen.DayNight" parent="ThemeOverlay.GreenTransit.Dialog.Fullscreen.Dark"/>
+    <style name="ThemeOverlay.GreenTransit.Dialog.Fullscreen.Dark" parent="@style/ThemeOverlay.GreenTransit.Dialog.Fullscreen">
+        <item name="android:colorBackground">@color/dark</item>
+    </style>
+
     <style name="Theme.GreenTransit.Splash.DayNight" parent="Theme.GreenTransit.Splash.Dark"/>
     <style name="Theme.GreenTransit.Splash.Dark" parent="Theme.GreenTransit.Dark">
         <item name="android:windowBackground">@drawable/splash_background</item>

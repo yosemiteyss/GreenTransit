@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import java.util.*
 
 plugins {
     id(Plugins.ANDROID_APPLICATION)
@@ -12,6 +13,9 @@ plugins {
 }
 
 android {
+    val localProperties = Properties()
+    localProperties.load(rootProject.file("local.properties").inputStream())
+
     compileSdkVersion(Application.COMPILE_SDK)
 
     defaultConfig {
@@ -32,13 +36,21 @@ android {
 
         // Debug build
         getByName("debug") {
-
+            addManifestPlaceholders(
+                mapOf("mapsApiKey" to localProperties.getProperty("GCLOUD_API", null))
+            )
         }
     }
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    testOptions {
+        unitTests.apply {
+            isReturnDefaultValues = true
+        }
     }
 
     buildFeatures {
@@ -63,6 +75,7 @@ dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
     implementation(project(":data"))
     implementation(project(":domain"))
+    testImplementation(project(":test-shared"))
 
     implementation(Dependencies.KOTLIN_STDLIB)
     implementation(Dependencies.COROUTINE_CORE)
@@ -86,12 +99,15 @@ dependencies {
     implementation(Dependencies.PAGING_RUNTIME)
     implementation(Dependencies.SWIPE_REFRESH_LAYOUT)
     implementation(Dependencies.PLAY_SERVICES_MAP)
+    implementation(Dependencies.PLAY_SERVICES_LOCATION)
     implementation(Dependencies.MATERIAL)
     implementation(Dependencies.GLIDE)
     implementation(Dependencies.MAPS_KTX)
+    implementation(Dependencies.MAPS_UTILS)
     implementation(Dependencies.WORK)
 
     implementation(Dependencies.FIREBASE_CRASHLYTICS)
+    implementation(Dependencies.FIREBASE_GEOFIRE)
 
     // Annotation Processors
     kapt(Annotation.HILT_ANDROID_COMPILER)

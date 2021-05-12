@@ -53,8 +53,8 @@ fun Snackbar.setActionPersist(@StringRes resId: Int, listener: View.OnClickListe
  * Hide progress indicator in a given condition.
  * @param hide the hide condition.
  */
-fun LinearProgressIndicator.hideIf(hide: Boolean) {
-    if (hide) hide() else show()
+fun LinearProgressIndicator.showIf(show: Boolean) {
+    if (show) show() else hide()
 }
 
 /**
