@@ -11,5 +11,7 @@
     <string name="search_title">Search Route</string>
     <string name="search_clear_text">Clear Text</string>
 
+    <string name="search_bar_content_desc">Search Route</string>
+    <string name="my_location_content_desc">My Location</string>
 
 </resources>

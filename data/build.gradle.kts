@@ -60,11 +60,9 @@ dependencies {
     implementation(Dependencies.APPCOMPAT)
     implementation(Dependencies.HILT)
     implementation(Dependencies.PAGING_RUNTIME)
-
     implementation(Dependencies.RETROFIT)
     implementation(Dependencies.RETROFIT_CONVERTER_GSON)
     implementation(Dependencies.RETROFIT_CONVERTER_XML)
-
     implementation(Dependencies.OKHTTP_LOGGING_INTERCEPTOR)
     implementation(Dependencies.PLAY_SERVICES_MAP)
     implementation(Dependencies.MAPS_UTILS)

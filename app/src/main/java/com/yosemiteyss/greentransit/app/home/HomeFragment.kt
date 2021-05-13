@@ -126,7 +126,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationSource {
         }
 
         // My location button
-        binding.locationFab.setOnClickListener {
+        binding.homeSearchBarLayout.myLocationButton.setOnClickListener {
             viewLifecycleOwner.lifecycleScope.launch {
                 zoomToCurrentLocation()
             }

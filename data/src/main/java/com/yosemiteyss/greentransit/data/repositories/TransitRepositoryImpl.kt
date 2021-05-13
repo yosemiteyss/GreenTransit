@@ -2,10 +2,13 @@ package com.yosemiteyss.greentransit.data.repositories
 
 import com.google.firebase.firestore.FirebaseFirestore
 import com.yosemiteyss.greentransit.data.api.GMBService
+import com.yosemiteyss.greentransit.data.constants.Constants.ROUTE_INFO_COLLECTION
+import com.yosemiteyss.greentransit.data.constants.Constants.ROUTE_INFO_DTO_ID
 import com.yosemiteyss.greentransit.data.constants.Constants.STOP_LOCATION_COLLECTION
 import com.yosemiteyss.greentransit.data.constants.Constants.STOP_LOCATION_GEO_HASH
 import com.yosemiteyss.greentransit.data.mappers.TransitMapper
 import com.yosemiteyss.greentransit.data.utils.getAwaitResult
+import com.yosemiteyss.greentransit.domain.models.RouteInfo
 import com.yosemiteyss.greentransit.domain.models.StopLocation
 import com.yosemiteyss.greentransit.domain.repositories.TransitRepository
 import javax.inject.Inject
@@ -26,5 +29,13 @@ class TransitRepositoryImpl @Inject constructor(
             .startAt(startHash)
             .endAt(endHash)
             .getAwaitResult(transitMapper::toStopLocation)
+    }
+
+    override suspend fun getRouteInfo(routeId: Long): RouteInfo {
+        return firestore.collectionGroup(ROUTE_INFO_COLLECTION)
+            .whereEqualTo(ROUTE_INFO_DTO_ID, routeId)
+            .limit(1)
+            .getAwaitResult(transitMapper::toRouteInfo)
+            .first()
     }
 }

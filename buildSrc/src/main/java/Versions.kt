@@ -54,6 +54,7 @@ object Versions {
     const val TEST_EXT_JUNIT = "1.1.2"
     const val TEST_ESPRESSO_CORE = "3.3.0"
     const val TEST_RULES = "1.1.0"
+    const val THREETENABP = "1.3.1"
     const val TURBINE = "0.4.1"
     const val WORK = "2.5.0"
     const val ZXING_CORE = "3.3.0"

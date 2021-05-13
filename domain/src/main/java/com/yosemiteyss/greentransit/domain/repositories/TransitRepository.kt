@@ -1,5 +1,6 @@
 package com.yosemiteyss.greentransit.domain.repositories
 
+import com.yosemiteyss.greentransit.domain.models.RouteInfo
 import com.yosemiteyss.greentransit.domain.models.StopLocation
 
 /**
@@ -9,4 +10,6 @@ import com.yosemiteyss.greentransit.domain.models.StopLocation
 interface TransitRepository {
 
     suspend fun getNearbyStops(startHash: String, endHash: String): List<StopLocation>
+
+    suspend fun getRouteInfo(routeId: Long): RouteInfo
 }

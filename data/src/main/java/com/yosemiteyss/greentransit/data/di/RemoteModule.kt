@@ -5,9 +5,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.firestoreSettings
 import com.google.firebase.ktx.Firebase
 import com.yosemiteyss.greentransit.data.api.GMBService
-import com.yosemiteyss.greentransit.data.api.TrafficNewsService
 import com.yosemiteyss.greentransit.data.constants.Constants.GMB_URL
-import com.yosemiteyss.greentransit.data.constants.Constants.TRAFFIC_NEWS_URL
 import com.yosemiteyss.greentransit.data.retrofit.SuccessResponseConverterFactory
 import dagger.Module
 import dagger.Provides
@@ -15,7 +13,6 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.converter.simplexml.SimpleXmlConverterFactory
 import javax.inject.Singleton
 
 /**
@@ -47,26 +44,4 @@ class RemoteModule {
             .build()
             .create(GMBService::class.java)
     }
-    /*
-    @Singleton
-    @Provides
-    fun provideTrafficNewsService(): TrafficNewsService {
-        return Retrofit.Builder()
-            .baseUrl()
-    }*/
-
-
-    @Singleton
-    @Provides
-    fun provideTrafficNewsService(): TrafficNewsService {
-        return Retrofit.Builder()
-                .baseUrl(TRAFFIC_NEWS_URL)
-                //.addCallAdapterFactory(ResourceCallAdapterFactory())
-                //.addConverterFactory(SuccessResponseConverterFactory())
-                .addConverterFactory(SimpleXmlConverterFactory.createNonStrict())
-                .build()
-                .create(TrafficNewsService::class.java)
-    }
-
-
 }

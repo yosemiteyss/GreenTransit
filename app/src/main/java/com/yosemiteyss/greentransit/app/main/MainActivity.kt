@@ -1,6 +1,7 @@
 package com.yosemiteyss.greentransit.app.main
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.hardware.SensorManager
 import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
@@ -16,7 +17,7 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.material.snackbar.Snackbar
 import com.yosemiteyss.greentransit.R
 import com.yosemiteyss.greentransit.app.utils.*
-import com.yosemiteyss.greentransit.data.api.TrafficNewsService
+import com.yosemiteyss.greentransit.data.api.GMBService
 import com.yosemiteyss.greentransit.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -31,14 +32,12 @@ class MainActivity : AppCompatActivity() {
     private var currentNavController: LiveData<NavController>? = null
 
     @Inject
-    lateinit var trafficNewsService: TrafficNewsService
-
-    @Inject
     lateinit var fusedLocationProviderClient: FusedLocationProviderClient
 
     @Inject
     lateinit var sensorManager: SensorManager
 
+    @SuppressLint("MissingPermission")
     private val requestLocation = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { isGranted ->
@@ -57,6 +56,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    @Inject
+    lateinit var gmbService: GMBService
+
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.Theme_GreenTransit_DayNight)
         super.onCreate(savedInstanceState)
@@ -74,12 +76,6 @@ class MainActivity : AppCompatActivity() {
         } else {
             requestLocation.launch(Manifest.permission.ACCESS_FINE_LOCATION)
         }
-        /*
-        lifecycleScope.launchWhenStarted {
-            trafficNewsService.getTrafficNews().messageList.forEach {
-                Log.d("Tag", it.msgID.toString())
-            }
-        }*/
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
