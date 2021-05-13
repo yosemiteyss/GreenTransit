@@ -16,6 +16,7 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.material.snackbar.Snackbar
 import com.yosemiteyss.greentransit.R
 import com.yosemiteyss.greentransit.app.utils.*
+import com.yosemiteyss.greentransit.data.api.TrafficNewsService
 import com.yosemiteyss.greentransit.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -28,6 +29,9 @@ class MainActivity : AppCompatActivity() {
     private val binding: ActivityMainBinding by viewBinding(ActivityMainBinding::inflate)
     private val viewModel: MainViewModel by viewModels()
     private var currentNavController: LiveData<NavController>? = null
+
+    @Inject
+    lateinit var trafficNewsService: TrafficNewsService
 
     @Inject
     lateinit var fusedLocationProviderClient: FusedLocationProviderClient
@@ -70,6 +74,12 @@ class MainActivity : AppCompatActivity() {
         } else {
             requestLocation.launch(Manifest.permission.ACCESS_FINE_LOCATION)
         }
+        /*
+        lifecycleScope.launchWhenStarted {
+            trafficNewsService.getTrafficNews().messageList.forEach {
+                Log.d("Tag", it.msgID.toString())
+            }
+        }*/
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
