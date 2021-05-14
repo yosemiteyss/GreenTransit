@@ -12,36 +12,36 @@ import retrofit2.Retrofit
 import java.lang.reflect.Type
 
 /**
- * Created by kevin on 1/4/21
+ * Extract the 'data' object from the GMB api response.
  */
 
-internal class SuccessResponseConverter(
-    private val delegate: Converter<ResponseBody, SuccessResponse<Any>>
+internal class GMBResponseConverter(
+    private val delegate: Converter<ResponseBody, GMBResponse<Any>>
 ) : Converter<ResponseBody, Any> {
 
     override fun convert(value: ResponseBody): Any? = delegate.convert(value)?.data
 }
 
-class SuccessResponseConverterFactory : Converter.Factory() {
+internal class GMBResponseConverterFactory : Converter.Factory() {
 
     override fun responseBodyConverter(
         type: Type,
         annotations: Array<Annotation>,
         retrofit: Retrofit
     ): Converter<ResponseBody, *> {
-        val dataType = TypeToken.getParameterized(SuccessResponse::class.java, type).type
-        val converter: Converter<ResponseBody, SuccessResponse<Any>> = retrofit
+        val dataType = TypeToken.getParameterized(GMBResponse::class.java, type).type
+        val converter: Converter<ResponseBody, GMBResponse<Any>> = retrofit
             .nextResponseBodyConverter(
                 this,
                 dataType,
                 annotations
             )
 
-        return SuccessResponseConverter(converter)
+        return GMBResponseConverter(converter)
     }
 }
 
-internal data class SuccessResponse<T>(
+internal data class GMBResponse<T>(
     @SerializedName(GMB_RESPONSE_TYPE)
     val type: String,
 

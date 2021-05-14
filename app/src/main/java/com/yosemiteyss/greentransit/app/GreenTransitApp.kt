@@ -8,4 +8,4 @@ import dagger.hilt.android.HiltAndroidApp
  */
 
 @HiltAndroidApp
-class GreenTransitApplication : Application()
+class GreenTransitApp : Application()

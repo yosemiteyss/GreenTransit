@@ -55,10 +55,8 @@ class TransitMapper @Inject constructor() {
     }
 
     private fun parseTimestamp(timestamp: String): Date {
-        val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.US).apply {
-            timeZone = TimeZone.getTimeZone("Asia/Hong_Kong")
-        }
-
+        val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.US)
+        sdf.timeZone = TimeZone.getTimeZone("Asia/Hong_Kong")
         return sdf.parse(timestamp)!!
     }
 }

@@ -23,7 +23,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import javax.inject.Inject
 
-
+@SuppressLint("MissingPermission")
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
@@ -37,7 +37,6 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var sensorManager: SensorManager
 
-    @SuppressLint("MissingPermission")
     private val requestLocation = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { isGranted ->
@@ -62,7 +61,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.Theme_GreenTransit_DayNight)
         super.onCreate(savedInstanceState)
-        setLayoutFullscreen(true)
+        setLayoutFullscreen()
         setContentView(binding.root)
 
         // Setup bottom nav

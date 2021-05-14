@@ -11,5 +11,4 @@ interface TrafficNewsService {
 
     @GET("/td/en/specialtrafficnews.xml")
     suspend fun getTrafficNews(): TrafficNewsMessagesDto
-
 }

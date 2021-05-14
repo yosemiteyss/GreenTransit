@@ -2,7 +2,7 @@ package com.yosemiteyss.greentransit.data
 
 import com.yosemiteyss.greentransit.data.api.GMBService
 import com.yosemiteyss.greentransit.data.constants.Constants
-import com.yosemiteyss.greentransit.data.retrofit.SuccessResponseConverterFactory
+import com.yosemiteyss.greentransit.data.retrofit.GMBResponseConverterFactory
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
@@ -21,7 +21,7 @@ class GMBServiceTest {
     fun init() {
         gmbService = Retrofit.Builder()
             .baseUrl(Constants.GMB_URL)
-            .addConverterFactory(SuccessResponseConverterFactory())
+            .addConverterFactory(GMBResponseConverterFactory())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(GMBService::class.java)

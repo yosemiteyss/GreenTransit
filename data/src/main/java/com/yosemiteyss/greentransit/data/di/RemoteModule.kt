@@ -8,7 +8,7 @@ import com.yosemiteyss.greentransit.data.api.GMBService
 import com.yosemiteyss.greentransit.data.api.TrafficNewsService
 import com.yosemiteyss.greentransit.data.constants.Constants.GMB_URL
 import com.yosemiteyss.greentransit.data.constants.Constants.TRAFFIC_NEWS_URL
-import com.yosemiteyss.greentransit.data.retrofit.SuccessResponseConverterFactory
+import com.yosemiteyss.greentransit.data.retrofit.GMBResponseConverterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -41,7 +41,7 @@ class RemoteModule {
     fun provideGMBService(): GMBService {
         return Retrofit.Builder()
             .baseUrl(GMB_URL)
-            .addConverterFactory(SuccessResponseConverterFactory())
+            .addConverterFactory(GMBResponseConverterFactory())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(GMBService::class.java)

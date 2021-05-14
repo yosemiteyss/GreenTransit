@@ -21,5 +21,13 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // TODO: Create a news adapter
+        // TODO: Register the adapter to recyclerview
+        // TODO: submit list to adapter
+
+        viewModel.trafficNews.observe(viewLifecycleOwner) {
+            newsAdapter.submitList(it)
+        }
     }
 }
