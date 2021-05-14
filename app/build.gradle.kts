@@ -106,6 +106,7 @@ dependencies {
     implementation(Dependencies.MAPS_UTILS)
     implementation(Dependencies.WORK)
 
+    implementation(Dependencies.FIREBASE_ANALYTICS)
     implementation(Dependencies.FIREBASE_CRASHLYTICS)
     implementation(Dependencies.FIREBASE_GEOFIRE)
 

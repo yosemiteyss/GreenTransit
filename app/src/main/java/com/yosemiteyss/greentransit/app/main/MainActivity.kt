@@ -17,7 +17,7 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.material.snackbar.Snackbar
 import com.yosemiteyss.greentransit.R
 import com.yosemiteyss.greentransit.app.utils.*
-import com.yosemiteyss.greentransit.data.api.GMBService
+import com.yosemiteyss.greentransit.data.api.TrafficNewsService
 import com.yosemiteyss.greentransit.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     @Inject
-    lateinit var gmbService: GMBService
+    lateinit var trafficNewsService: TrafficNewsService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.Theme_GreenTransit_DayNight)

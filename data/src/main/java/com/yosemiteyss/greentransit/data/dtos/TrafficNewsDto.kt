@@ -8,32 +8,41 @@ import com.yosemiteyss.greentransit.data.constants.Constants.TRAFFIC_NEWS_DTO_EN
 import com.yosemiteyss.greentransit.data.constants.Constants.TRAFFIC_NEWS_DTO_ENG_TEXT
 import com.yosemiteyss.greentransit.data.constants.Constants.TRAFFIC_NEWS_DTO_MSG_ID
 import com.yosemiteyss.greentransit.data.constants.Constants.TRAFFIC_NEWS_DTO_REF_DATE
+import com.yosemiteyss.greentransit.data.constants.Constants.TRAFFIC_NEWS_DTO_ROOT
+import com.yosemiteyss.greentransit.data.constants.Constants.TRAFFIC_NEWS_MESSAGES_DTO_ROOT
 import org.simpleframework.xml.Element
+import org.simpleframework.xml.ElementList
 import org.simpleframework.xml.Root
 
-@Root(name = "message", strict = false)
+@Root(name = TRAFFIC_NEWS_MESSAGES_DTO_ROOT, strict = false)
+data class TrafficNewsMessagesDto @JvmOverloads constructor(
+    @field:ElementList(inline = true)
+    var messageList: List<TrafficNewsDto> = arrayListOf()
+)
+
+@Root(name = TRAFFIC_NEWS_DTO_ROOT, strict = false)
 data class TrafficNewsDto(
     @field:Element(name = TRAFFIC_NEWS_DTO_MSG_ID)
     var msgID: String? = null,
 
     @field:Element(name = TRAFFIC_NEWS_DTO_CURRENT_STATUS)
-    var currentStatus: Int ? = null,
+    var currentStatus: Int? = null,
 
     @field:Element(name = TRAFFIC_NEWS_DTO_CHIN_TEXT)
-    var chinText: String ? = null,
+    var chinText: String? = null,
 
     @field:Element(name = TRAFFIC_NEWS_DTO_CHIN_SHORT)
-    var chinShort: String ? = null,
+    var chinShort: String? = null,
 
     @field:Element(name = TRAFFIC_NEWS_DTO_ENG_TEXT)
-    var engText: String ? = null,
+    var engText: String? = null,
 
     @field:Element(name = TRAFFIC_NEWS_DTO_ENG_SHORT)
-    var engShort: String ? = null,
+    var engShort: String? = null,
 
     @field:Element(name = TRAFFIC_NEWS_DTO_REF_DATE)
     var referenceDate: String? = null,
 
     @field:Element(name = TRAFFIC_NEWS_DTO_COUNT_DIST)
-    var CountofDistrict: Int? = null,
+    var countofDistricts: Int? = null,
 )

@@ -6,6 +6,7 @@ package com.yosemiteyss.greentransit.data.constants
 
 object Constants {
     const val GMB_URL = "https://data.etagmb.gov.hk"
+    const val TRAFFIC_NEWS_URL = "https://resource.data.one.gov.hk/"
 
     const val GMB_RESPONSE_TYPE = "type"
     const val GMB_RESPONSE_VERSION = "version"
@@ -41,4 +42,15 @@ object Constants {
     const val STOP_ETA_ITEM_DTO_REMARKS_TC = "remarks_tc"
     const val STOP_ETA_ITEM_DTO_REMARKS_SC = "remarks_sc"
     const val STOP_ETA_ITEM_DTO_REMARKS_EN = "remarks_en"
+
+    const val TRAFFIC_NEWS_MESSAGES_DTO_ROOT = "body"
+    const val TRAFFIC_NEWS_DTO_ROOT = "message"
+    const val TRAFFIC_NEWS_DTO_MSG_ID = "msgID"
+    const val TRAFFIC_NEWS_DTO_CURRENT_STATUS = "CurrentStatus"
+    const val TRAFFIC_NEWS_DTO_CHIN_TEXT = "ChinText"
+    const val TRAFFIC_NEWS_DTO_CHIN_SHORT = "ChinShort"
+    const val TRAFFIC_NEWS_DTO_ENG_TEXT = "EngText"
+    const val TRAFFIC_NEWS_DTO_ENG_SHORT = "EngShort"
+    const val TRAFFIC_NEWS_DTO_REF_DATE = "ReferenceDate"
+    const val TRAFFIC_NEWS_DTO_COUNT_DIST = "CountofDistricts"
 }
