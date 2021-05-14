@@ -8,13 +8,14 @@
     android:background="?attr/scrimBackground">
 
     <View
+        android:id="@+id/view"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="?attr/colorSurface"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/loading_progress_bar"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/loading_progress_bar"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/search_edit_text"
@@ -71,25 +72,28 @@
         android:id="@+id/button"
         android:layout_width="132dp"
         android:layout_height="80dp"
+        android:layout_marginStart="12dp"
         android:text="New Territories"
-        tools:layout_editor_absoluteX="144dp"
-        tools:layout_editor_absoluteY="62dp" />
+        app:layout_constraintStart_toEndOf="@+id/button2"
+        app:layout_constraintTop_toBottomOf="@+id/view" />
 
     <Button
         android:id="@+id/button2"
         android:layout_width="132dp"
         android:layout_height="80dp"
         android:text="Kowloon"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="62dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:clickable="true"
-        app:srcCompat="@drawable/ic_near_me"
-        tools:layout_editor_absoluteX="339dp"
-        tools:layout_editor_absoluteY="72dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view"
+        app:srcCompat="@drawable/ic_near_me" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
