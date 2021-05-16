@@ -2,6 +2,7 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -34,12 +35,13 @@
                 android:layout_marginHorizontal="@dimen/spacing_large"/>
 
             <TextView
+                android:id="@+id/nearby_routes_count_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_large"
                 android:layout_marginStart="@dimen/spacing_large"
-                android:text="Nearby Routes (3)"
-                android:textAppearance="?attr/textAppearanceSubtitle2"/>
+                android:textAppearance="?attr/textAppearanceSubtitle2"
+                tools:text="Nearby Routes (3)" />
 
             <com.google.android.material.progressindicator.LinearProgressIndicator
                 android:id="@+id/loading_progress_bar"
@@ -47,6 +49,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_large"
                 android:indeterminate="true"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/nearby_routes_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingVertical="@dimen/spacing_xmedium"
+                android:clipToPadding="false"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/nearby_routes_list_item"/>
 
         </LinearLayout>
 

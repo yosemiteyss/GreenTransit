@@ -1,4 +1,4 @@
-package com.yosemiteyss.greentransit.domain.usecases.home
+package com.yosemiteyss.greentransit.domain.usecases.nearby
 
 import app.cash.turbine.test
 import com.yosemiteyss.greentransit.domain.models.Coordinate

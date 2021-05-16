@@ -1,12 +1,10 @@
 package com.yosemiteyss.greentransit.domain.models
 
 /**
- * Created by kevin on 13/5/2021
+ * Created by kevin on 16/5/2021
  */
-
-data class RouteInfo(
-    val id: Long,
-    val seq: Int,
+ 
+data class RouteCode(
     val code: String,
     val region: RouteRegion
 )

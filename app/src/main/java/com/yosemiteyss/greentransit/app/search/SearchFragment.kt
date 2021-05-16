@@ -2,6 +2,8 @@ package com.yosemiteyss.greentransit.app.search
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -41,6 +43,28 @@ class SearchFragment : DialogFragment(R.layout.fragment_search) {
             searchEditText.requestFocus()
         }
 
+        // Set recycler view
+        val searchAdapter = SearchAdapter {
+            // TODO: navigate to RouteDetail
+        }
+
+        with(binding.searchRecyclerView) {
+            adapter = searchAdapter
+            setHasFixedSize(true)
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.searchUiState.collect { uiState ->
+                binding.loadingProgressBar.showIf(uiState is SearchUiState.Loading)
+
+                if (uiState is SearchUiState.Success) {
+                    searchAdapter.submitList(uiState.data)
+                } else if (uiState is SearchUiState.Error) {
+                    showShortToast(uiState.message)
+                }
+            }
+        }
+
         // Clear text
         binding.clearTextButton.setOnClickListener {
             if (binding.searchEditText.text.isEmpty()) {
@@ -48,6 +72,13 @@ class SearchFragment : DialogFragment(R.layout.fragment_search) {
             } else {
                 binding.searchEditText.text.clear()
             }
+        }
+
+        // Observer search input
+        binding.searchEditText.doOnTextChanged { text, _, _, _ ->
+            // Hide chip group when the user is inputting
+            binding.regionsScrollView.isVisible = text.toString().isBlank()
+            viewModel.onUpdateQuery(text.toString())
         }
 
         // Dismiss when clicking scrim region

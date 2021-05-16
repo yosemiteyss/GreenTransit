@@ -12,8 +12,7 @@ sealed class Resource<out T> {
     data class Error(val message: String?) : Resource<Nothing>()
 
     data class Loading(
-        @FloatRange(from = 0.0, to = 100.0)
-        val progress: Double? = null
+        @FloatRange(from = 0.0, to = 100.0) val progress: Double? = null
     ) : Resource<Nothing>()
 }
 

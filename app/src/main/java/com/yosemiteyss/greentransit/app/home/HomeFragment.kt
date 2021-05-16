@@ -3,6 +3,7 @@ package com.yosemiteyss.greentransit.app.home
 import android.annotation.SuppressLint
 import android.content.res.ColorStateList
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -112,12 +113,15 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationSource {
         // Nearby stops marker
         viewLifecycleOwner.lifecycleScope.launch {
             mainViewModel.nearbyStops.collect { stops ->
+                Log.d("Home", "${stops.map { it.routeId }}")
                 getMapInstance().run {
                     nearbyStopMarkers.clear()
-                    nearbyStopMarkers.addAll(stops.map {
+                    nearbyStopMarkers.addAll(stops.map { stop ->
                         addMarker(
                             context = requireContext(),
-                            position = LatLng(it.latitude, it.longitude),
+                            position = LatLng(
+                                stop.location.latitude, stop.location.longitude
+                            ),
                             drawableRes = R.drawable.ic_stop
                         )
                     })
@@ -156,6 +160,34 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationSource {
 
         // Bottom sheet top margin
         binding.bottomSheetCoordinatorLayout.applySystemWindowInsetsMargin(applyTop = true)
+
+        // Get nearby routes
+        val nearbyRoutesAdapter = NearbyRoutesAdapter {
+            // on click
+        }
+
+        with(binding.nearbyRoutesRecyclerView) {
+            adapter = nearbyRoutesAdapter
+            setHasFixedSize(true)
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            homeViewModel.getNearbyRouteEtas(nearbyStops = mainViewModel.nearbyStops).collect { uiState ->
+                binding.loadingProgressBar.showIf(uiState is HomeUiState.Loading)
+
+                if (uiState is HomeUiState.Success) {
+                    nearbyRoutesAdapter.submitList(uiState.data)
+                } else if (uiState is HomeUiState.Error) {
+                    showShortToast(uiState.message)
+                }
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            homeViewModel.nearbyRoutesCount.collect {
+                binding.nearbyRoutesCountTextView.text = getString(R.string.nearby_routes_count, it)
+            }
+        }
     }
 
     private suspend fun zoomToCurrentLocation() {

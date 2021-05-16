@@ -1,7 +1,8 @@
-package com.yosemiteyss.greentransit.domain.usecases.home
+package com.yosemiteyss.greentransit.domain.usecases.nearby
 
 import com.yosemiteyss.greentransit.domain.di.IoDispatcher
 import com.yosemiteyss.greentransit.domain.models.Coordinate
+import com.yosemiteyss.greentransit.domain.models.NearbyStop
 import com.yosemiteyss.greentransit.domain.models.distance
 import com.yosemiteyss.greentransit.domain.repositories.TransitRepository
 import com.yosemiteyss.greentransit.domain.states.Resource
@@ -17,11 +18,11 @@ import javax.inject.Inject
 class GetNearbyStopsUseCase @Inject constructor(
     private val transitRepository: TransitRepository,
     @IoDispatcher coroutineDispatcher: CoroutineDispatcher
-) : FlowUseCase<GetNearbyStopsParams, List<Coordinate>>(coroutineDispatcher) {
+) : FlowUseCase<GetNearbyStopsParams, List<NearbyStop>>(coroutineDispatcher) {
 
     private var lastCoordinate: Coordinate? = null
 
-    override fun execute(parameters: GetNearbyStopsParams): Flow<Resource<List<Coordinate>>> = flow {
+    override fun execute(parameters: GetNearbyStopsParams): Flow<Resource<List<NearbyStop>>> = flow {
         // Check if reached request distance
         val currentCoordinate = parameters.currentCoord
 
@@ -39,8 +40,7 @@ class GetNearbyStopsUseCase @Inject constructor(
 
                 val distinctStops = deferred.awaitAll()
                     .flatten()
-                    .distinctBy { it.stopId }
-                    .map { it.location }
+                    .distinctBy { it.id }
 
                 emit(Resource.Success(distinctStops))
             }

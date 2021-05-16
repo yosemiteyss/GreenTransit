@@ -1,7 +1,9 @@
 package com.yosemiteyss.greentransit.domain.repositories
 
-import com.yosemiteyss.greentransit.domain.models.RouteInfo
-import com.yosemiteyss.greentransit.domain.models.StopLocation
+import com.yosemiteyss.greentransit.domain.models.NearbyRoute
+import com.yosemiteyss.greentransit.domain.models.NearbyStop
+import com.yosemiteyss.greentransit.domain.models.RouteCode
+import com.yosemiteyss.greentransit.domain.models.StopEtaShift
 
 /**
  * Created by kevin on 12/5/2021
@@ -9,7 +11,11 @@ import com.yosemiteyss.greentransit.domain.models.StopLocation
 
 interface TransitRepository {
 
-    suspend fun getNearbyStops(startHash: String, endHash: String): List<StopLocation>
+    suspend fun getNearbyStops(startHash: String, endHash: String): List<NearbyStop>
 
-    suspend fun getRouteInfo(routeId: Long): RouteInfo
+    suspend fun getNearbyRoutes(routeIds: List<Long>): List<NearbyRoute>
+
+    suspend fun getStopEtaShiftList(stopId: Long): List<StopEtaShift>
+
+    suspend fun searchRoute(query: String, numOfRoutes: Int): List<RouteCode>
 }

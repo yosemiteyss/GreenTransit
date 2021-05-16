@@ -2,14 +2,18 @@ package com.yosemiteyss.greentransit.data.repositories
 
 import com.google.firebase.firestore.FirebaseFirestore
 import com.yosemiteyss.greentransit.data.api.GMBService
-import com.yosemiteyss.greentransit.data.constants.Constants.ROUTE_INFO_COLLECTION
-import com.yosemiteyss.greentransit.data.constants.Constants.ROUTE_INFO_DTO_ID
-import com.yosemiteyss.greentransit.data.constants.Constants.STOP_LOCATION_COLLECTION
-import com.yosemiteyss.greentransit.data.constants.Constants.STOP_LOCATION_GEO_HASH
+import com.yosemiteyss.greentransit.data.constants.Constants.NEARBY_ROUTE_COLLECTION
+import com.yosemiteyss.greentransit.data.constants.Constants.NEARBY_ROUTE_DTO_ID
+import com.yosemiteyss.greentransit.data.constants.Constants.NEARBY_STOP_COLLECTION
+import com.yosemiteyss.greentransit.data.constants.Constants.NEARBY_STOP_DTO_GEO_HASH
+import com.yosemiteyss.greentransit.data.constants.Constants.ROUTE_CODES_COLLECTION
+import com.yosemiteyss.greentransit.data.constants.Constants.ROUTE_CODE_DTO_CODE
 import com.yosemiteyss.greentransit.data.mappers.TransitMapper
 import com.yosemiteyss.greentransit.data.utils.getAwaitResult
-import com.yosemiteyss.greentransit.domain.models.RouteInfo
-import com.yosemiteyss.greentransit.domain.models.StopLocation
+import com.yosemiteyss.greentransit.domain.models.NearbyRoute
+import com.yosemiteyss.greentransit.domain.models.NearbyStop
+import com.yosemiteyss.greentransit.domain.models.RouteCode
+import com.yosemiteyss.greentransit.domain.models.StopEtaShift
 import com.yosemiteyss.greentransit.domain.repositories.TransitRepository
 import javax.inject.Inject
 
@@ -17,25 +21,40 @@ import javax.inject.Inject
  * Created by kevin on 12/5/2021
  */
 
+private const val ARRAY_CONTAINS_MAX = 10
+
 class TransitRepositoryImpl @Inject constructor(
     private val firestore: FirebaseFirestore,
     private val gmbService: GMBService,
     private val transitMapper: TransitMapper
 ) : TransitRepository {
 
-    override suspend fun getNearbyStops(startHash: String, endHash: String): List<StopLocation> {
-        return firestore.collectionGroup(STOP_LOCATION_COLLECTION)
-            .orderBy(STOP_LOCATION_GEO_HASH)
+    override suspend fun getNearbyStops(startHash: String, endHash: String): List<NearbyStop> {
+        return firestore.collectionGroup(NEARBY_STOP_COLLECTION)
+            .orderBy(NEARBY_STOP_DTO_GEO_HASH)
             .startAt(startHash)
             .endAt(endHash)
-            .getAwaitResult(transitMapper::toStopLocation)
+            .getAwaitResult(transitMapper::toNearbyStop)
     }
 
-    override suspend fun getRouteInfo(routeId: Long): RouteInfo {
-        return firestore.collectionGroup(ROUTE_INFO_COLLECTION)
-            .whereEqualTo(ROUTE_INFO_DTO_ID, routeId)
-            .limit(1)
-            .getAwaitResult(transitMapper::toRouteInfo)
-            .first()
+    override suspend fun getNearbyRoutes(routeIds: List<Long>): List<NearbyRoute> {
+        return firestore.collectionGroup(NEARBY_ROUTE_COLLECTION)
+            .whereIn(NEARBY_ROUTE_DTO_ID, routeIds.take(ARRAY_CONTAINS_MAX))
+            .getAwaitResult(transitMapper::toNearbyRoute)
+    }
+
+    override suspend fun getStopEtaShiftList(stopId: Long): List<StopEtaShift> {
+        return gmbService.getStopEtaRouteList(stopId)
+            .map { transitMapper.toStopEtaShift(it) }
+            .flatten()
+    }
+
+    @ExperimentalStdlibApi
+    override suspend fun searchRoute(query: String, numOfRoutes: Int): List<RouteCode> {
+        return firestore.collection(ROUTE_CODES_COLLECTION)
+            .whereGreaterThanOrEqualTo(ROUTE_CODE_DTO_CODE, query.uppercase())
+            .whereLessThanOrEqualTo(ROUTE_CODE_DTO_CODE, (query + '\uf8ff').uppercase())
+            .limit(numOfRoutes.toLong())
+            .getAwaitResult(transitMapper::toRouteCode)
     }
 }

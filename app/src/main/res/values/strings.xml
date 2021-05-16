@@ -8,8 +8,19 @@
     <string name="request_location_permission_message">Require location permission for tracking.</string>
     <string name="request_permission_action_settings">Settings</string>
 
+    <!-- Search -->
     <string name="search_title">Search Route</string>
     <string name="search_clear_text">Clear Text</string>
+
+    <!-- Nearby routes -->
+    <string name="nearby_routes_empty">No routes nearby</string>
+    <string name="nearby_routes_dest">to %s</string>
+    <string name="nearby_routes_count">Nearby Routes (%d)</string>
+
+    <!-- Region -->
+    <string name="region_kln">Kowloon</string>
+    <string name="region_hki">HK Island</string>
+    <string name="region_nt">New Territories</string>
 
     <string name="search_bar_content_desc">Search Route</string>
     <string name="my_location_content_desc">My Location</string>

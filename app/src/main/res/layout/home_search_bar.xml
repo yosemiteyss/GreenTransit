@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:clickable="true"
     android:focusable="true"
-    app:cardBackgroundColor="@color/green_50"
+    app:cardBackgroundColor="?attr/searchBarColor"
     app:cardCornerRadius="@dimen/search_bar_corner_radius"
     app:cardElevation="@dimen/elevation_none"
     app:rippleColor="?attr/colorOnPrimary">

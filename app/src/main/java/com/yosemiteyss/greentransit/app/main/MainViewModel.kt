@@ -7,10 +7,11 @@ import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.model.LatLng
 import com.yosemiteyss.greentransit.app.utils.geohashQueryBounds
 import com.yosemiteyss.greentransit.domain.models.Coordinate
+import com.yosemiteyss.greentransit.domain.models.NearbyStop
 import com.yosemiteyss.greentransit.domain.states.Resource
-import com.yosemiteyss.greentransit.domain.usecases.home.GetNearbyStopsParams
-import com.yosemiteyss.greentransit.domain.usecases.home.GetNearbyStopsUseCase
-import com.yosemiteyss.greentransit.domain.usecases.home.NearbyGeoBound
+import com.yosemiteyss.greentransit.domain.usecases.nearby.GetNearbyStopsParams
+import com.yosemiteyss.greentransit.domain.usecases.nearby.GetNearbyStopsUseCase
+import com.yosemiteyss.greentransit.domain.usecases.nearby.NearbyGeoBound
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -36,8 +37,8 @@ class MainViewModel @Inject constructor(
     private val _userLocation = MutableSharedFlow<Location>()
     val userLocation: SharedFlow<Location> = _userLocation.asSharedFlow()
 
-    private val _nearbyStops = MutableStateFlow<List<Coordinate>>(emptyList())
-    val nearbyStops: StateFlow<List<Coordinate>> = _nearbyStops.asStateFlow()
+    private val _nearbyStops = MutableStateFlow<List<NearbyStop>>(emptyList())
+    val nearbyStops: StateFlow<List<NearbyStop>> = _nearbyStops.asStateFlow()
 
     init {
         // Build user location

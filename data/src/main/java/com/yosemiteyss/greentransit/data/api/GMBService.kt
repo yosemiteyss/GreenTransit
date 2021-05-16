@@ -21,5 +21,5 @@ interface GMBService {
     suspend fun getRoutesKLN(): RoutesDto
 
     @GET("/eta/stop/{stopId}")
-    suspend fun getStopEta(@Path("stopId") stopId: Long): List<StopEtaRouteDto>
+    suspend fun getStopEtaRouteList(@Path("stopId") stopId: Long): List<StopEtaRouteDto>
 }

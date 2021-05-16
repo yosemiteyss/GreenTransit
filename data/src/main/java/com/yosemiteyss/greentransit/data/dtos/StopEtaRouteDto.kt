@@ -25,5 +25,5 @@ data class StopEtaRouteDto(
     val enabled: Boolean,
 
     @SerializedName(STOP_ETA_ROUTE_DTO_ETA)
-    val etaItems: List<StopEtaItemDto>
+    val shifts: List<StopEtaShiftDto>
 )
