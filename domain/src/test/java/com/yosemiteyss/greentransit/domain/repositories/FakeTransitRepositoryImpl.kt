@@ -23,6 +23,10 @@ class FakeTransitRepositoryImpl : TransitRepository {
         createFakeStopEtaShift()
     }
 
+    val fakeRouteCodes: List<RouteCode> = MutableList(20) {
+        createFakeRouteCode()
+    }
+
     override suspend fun getNearbyStops(startHash: String, endHash: String): List<NearbyStop> {
         if (throwNetworkError) throw Exception("Network error.")
         return fakeNearbyStops + fakeNearbyStops
@@ -36,6 +40,11 @@ class FakeTransitRepositoryImpl : TransitRepository {
     override suspend fun getStopEtaShiftList(stopId: Long): List<StopEtaShift> {
         if (throwNetworkError) throw Exception("Network error.")
         return fakeStopEtaShiftList
+    }
+
+    override suspend fun searchRoute(query: String, numOfRoutes: Int): List<RouteCode> {
+        if (throwNetworkError) throw Exception("Network error.")
+        return fakeRouteCodes
     }
 
     fun setNetworkError(throwError: Boolean) {
@@ -74,6 +83,13 @@ class FakeTransitRepositoryImpl : TransitRepository {
             etaSeq = random.nextInt(),
             etaMin = random.nextInt(),
             etaTimestamp = Date()
+        )
+    }
+
+    private fun createFakeRouteCode(): RouteCode {
+        return RouteCode(
+            code = UUID.randomUUID().toString(),
+            region = RouteRegion.values().random()
         )
     }
 }

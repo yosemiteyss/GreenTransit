@@ -42,6 +42,13 @@ android {
         }
     }
 
+    sourceSets {
+        // Provide fake repositories
+        getByName("test") {
+            java.srcDir(project(":domain").file("src/test/java"))
+        }
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8

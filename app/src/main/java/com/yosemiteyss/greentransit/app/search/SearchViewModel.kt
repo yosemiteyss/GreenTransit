@@ -15,9 +15,6 @@ import javax.inject.Inject
  * Created by kevin on 12/5/2021
  */
 
-private const val NUM_OF_RESULTS = 5
-private const val SEARCH_RATE_LIMIT = 1000L
-
 @HiltViewModel
 class SearchViewModel @Inject constructor(
     searchRoutesUseCase: SearchRoutesUseCase
@@ -57,6 +54,11 @@ class SearchViewModel @Inject constructor(
         return routeCodes.map {
             SearchListModel.SearchResultListModel(it)
         }
+    }
+
+    companion object {
+        const val NUM_OF_RESULTS = 5
+        private const val SEARCH_RATE_LIMIT = 1000L
     }
 }
 

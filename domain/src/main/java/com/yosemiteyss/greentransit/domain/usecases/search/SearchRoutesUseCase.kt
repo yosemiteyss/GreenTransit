@@ -26,7 +26,7 @@ class SearchRoutesUseCase @Inject constructor(
             val routeCodes = transitRepository.searchRoute(
                 query = parameters.query,
                 numOfRoutes = parameters.numOfRoutes
-            )
+            ).take(parameters.numOfRoutes)
 
             emit(Resource.Success(routeCodes))
         }
