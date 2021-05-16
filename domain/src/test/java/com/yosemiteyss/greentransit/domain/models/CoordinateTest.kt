@@ -13,7 +13,7 @@ class CoordinateTest {
     fun `test calculate distance`() {
         val current = Coordinate(53.32055555555556, -1.7297222222222221)
         val from = Coordinate(53.31861111111111, -1.6997222222222223)
-        val expected = 2.0043678382716137
+        val expected = 2004.3678382716137
 
         assertEquals(expected, current.distance(from), 0.0)
     }

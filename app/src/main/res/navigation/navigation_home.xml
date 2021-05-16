@@ -12,11 +12,27 @@
         <action
             android:id="@+id/action_homeFragment_to_searchFragment"
             app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_regionRoutesFragment"
+            app:destination="@id/regionRoutesFragment" />
     </fragment>
 
     <dialog
         android:id="@+id/searchFragment"
         android:name="com.yosemiteyss.greentransit.app.search.SearchFragment"
-        tools:layout="@layout/fragment_search"/>
+        tools:layout="@layout/fragment_search">
+        <action
+            android:id="@+id/action_searchFragment_to_regionRoutesFragment"
+            app:destination="@id/regionRoutesFragment" />
+    </dialog>
+
+    <dialog
+        android:id="@+id/regionRoutesFragment"
+        android:name="com.yosemiteyss.greentransit.app.search.RegionRoutesFragment"
+        tools:layout="@layout/fragment_region_routes">
+        <argument
+            android:name="region"
+            app:argType="com.yosemiteyss.greentransit.domain.models.RouteRegion"/>
+    </dialog>
 
 </navigation>

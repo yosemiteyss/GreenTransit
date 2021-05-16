@@ -1,5 +1,9 @@
 package com.yosemiteyss.greentransit.data.repositories
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.map
 import com.google.firebase.firestore.FirebaseFirestore
 import com.yosemiteyss.greentransit.data.api.GMBService
 import com.yosemiteyss.greentransit.data.constants.Constants.NEARBY_ROUTE_COLLECTION
@@ -9,12 +13,12 @@ import com.yosemiteyss.greentransit.data.constants.Constants.NEARBY_STOP_DTO_GEO
 import com.yosemiteyss.greentransit.data.constants.Constants.ROUTE_CODES_COLLECTION
 import com.yosemiteyss.greentransit.data.constants.Constants.ROUTE_CODE_DTO_CODE
 import com.yosemiteyss.greentransit.data.mappers.TransitMapper
+import com.yosemiteyss.greentransit.data.paging.RegionRoutesPagingSource
 import com.yosemiteyss.greentransit.data.utils.getAwaitResult
-import com.yosemiteyss.greentransit.domain.models.NearbyRoute
-import com.yosemiteyss.greentransit.domain.models.NearbyStop
-import com.yosemiteyss.greentransit.domain.models.RouteCode
-import com.yosemiteyss.greentransit.domain.models.StopEtaShift
+import com.yosemiteyss.greentransit.domain.models.*
 import com.yosemiteyss.greentransit.domain.repositories.TransitRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 /**
@@ -41,6 +45,25 @@ class TransitRepositoryImpl @Inject constructor(
         return firestore.collectionGroup(NEARBY_ROUTE_COLLECTION)
             .whereIn(NEARBY_ROUTE_DTO_ID, routeIds.take(ARRAY_CONTAINS_MAX))
             .getAwaitResult(transitMapper::toNearbyRoute)
+    }
+
+    override suspend fun getRegionRoutes(region: RouteRegion): Flow<PagingData<RouteCode>> {
+        return Pager(
+            config = PagingConfig(
+                initialLoadSize = 15,
+                pageSize = 10
+            ),
+            pagingSourceFactory = {
+                RegionRoutesPagingSource(
+                    firestore = firestore,
+                    region = transitMapper.toRouteRegion(region)
+                )
+            }
+        )
+            .flow
+            .map { pagingData ->
+                pagingData.map { transitMapper.toRouteCode(it) }
+            }
     }
 
     override suspend fun getStopEtaShiftList(stopId: Long): List<StopEtaShift> {

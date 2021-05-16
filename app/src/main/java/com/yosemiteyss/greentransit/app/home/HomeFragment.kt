@@ -3,7 +3,6 @@ package com.yosemiteyss.greentransit.app.home
 import android.annotation.SuppressLint
 import android.content.res.ColorStateList
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -18,6 +17,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.Marker
 import com.google.android.material.shape.MaterialShapeDrawable
+import com.google.android.material.shape.ShapeAppearanceModel
 import com.google.maps.android.ktx.awaitMap
 import com.yosemiteyss.greentransit.R
 import com.yosemiteyss.greentransit.app.main.MainViewModel
@@ -73,6 +73,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationSource {
                 with(uiSettings) {
                     isCompassEnabled = false
                     isMyLocationButtonEnabled = false
+                    isMapToolbarEnabled = false
                 }
 
                 // Switch map to night mode
@@ -113,7 +114,6 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationSource {
         // Nearby stops marker
         viewLifecycleOwner.lifecycleScope.launch {
             mainViewModel.nearbyStops.collect { stops ->
-                Log.d("Home", "${stops.map { it.routeId }}")
                 getMapInstance().run {
                     nearbyStopMarkers.clear()
                     nearbyStopMarkers.addAll(stops.map { stop ->
@@ -148,6 +148,13 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationSource {
                 requireContext().themeColor(R.attr.colorSurface)
             )
             elevation = resources.getDimension(R.dimen.elevation_xmedium)
+            shapeAppearanceModel = ShapeAppearanceModel.builder(
+                requireContext(),
+                null,
+                R.attr.shapeAppearanceLargeComponent,
+                0
+            ).build()
+
             initializeElevationOverlay(requireContext())
         }
 

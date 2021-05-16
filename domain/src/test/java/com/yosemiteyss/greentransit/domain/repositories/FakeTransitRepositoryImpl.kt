@@ -1,6 +1,9 @@
 package com.yosemiteyss.greentransit.domain.repositories
 
+import androidx.paging.PagingData
 import com.yosemiteyss.greentransit.domain.models.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 import java.util.*
 
 /**
@@ -35,6 +38,14 @@ class FakeTransitRepositoryImpl : TransitRepository {
     override suspend fun getNearbyRoutes(routeIds: List<Long>): List<NearbyRoute> {
         if (throwNetworkError) throw Exception("Network error.")
         return fakeNearbyRoute
+    }
+
+    override suspend fun getRegionRoutes(region: RouteRegion): Flow<PagingData<RouteCode>> {
+        return flowOf(
+            PagingData.from(
+                fakeRouteCodes.filter { it.region == region }
+            )
+        )
     }
 
     override suspend fun getStopEtaShiftList(stopId: Long): List<StopEtaShift> {

@@ -56,13 +56,20 @@ class TransitMapper @Inject constructor() {
         }
     }
 
-
-    private fun toRouteRegion(region: String): RouteRegion {
+    fun toRouteRegion(region: String): RouteRegion {
         return when (region) {
             ROUTE_REGION_KLN -> RouteRegion.KLN
             ROUTE_REGION_HKI -> RouteRegion.HKI
             ROUTE_REGION_NT -> RouteRegion.NT
             else -> throw Exception("Invalid region: $region")
+        }
+    }
+
+    fun toRouteRegion(region: RouteRegion): String {
+        return when (region) {
+            RouteRegion.KLN -> ROUTE_REGION_KLN
+            RouteRegion.HKI -> ROUTE_REGION_HKI
+            RouteRegion.NT -> ROUTE_REGION_NT
         }
     }
 

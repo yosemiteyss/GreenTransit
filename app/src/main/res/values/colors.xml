@@ -20,6 +20,9 @@
     <color name="white">#ffffff</color>
     <color name="white_alpha_60">#99ffffff</color>
 
-    <color name="dark">#181818</color>
+    <color name="background_light">#fafafa</color>
+    <color name="background_dark">#181818</color>
+
+    <color name="grey">#202124</color>
 
 </resources>

@@ -4,6 +4,9 @@
     <string name="nav_home_title">Home</string>
     <string name="nav_home_news">Traffic</string>
 
+    <!-- Paging -->
+    <string name="load_state_retry">Retry</string>
+
     <!-- Permission -->
     <string name="request_location_permission_message">Require location permission for tracking.</string>
     <string name="request_permission_action_settings">Settings</string>

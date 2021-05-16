@@ -11,15 +11,15 @@ import com.yosemiteyss.greentransit.app.home.NearbyRoutesListModel.NearbyRoutesE
 import com.yosemiteyss.greentransit.app.home.NearbyRoutesListModel.NearbyRoutesItemModel
 import com.yosemiteyss.greentransit.app.home.NearbyRoutesViewHolder.NearbyRoutesEmptyViewHolder
 import com.yosemiteyss.greentransit.app.home.NearbyRoutesViewHolder.NearbyRoutesItemViewHolder
-import com.yosemiteyss.greentransit.databinding.NearbyRoutesEmptyItemBinding
 import com.yosemiteyss.greentransit.databinding.NearbyRoutesListItemBinding
+import com.yosemiteyss.greentransit.databinding.RoutesEmptyItemBinding
 
 /**
  * Created by kevin on 13/5/2021
  */
 
 class NearbyRoutesAdapter(
-    private val itemClicked: () -> Unit
+    private val onRouteClicked: () -> Unit
 ) : ListAdapter<NearbyRoutesListModel, NearbyRoutesViewHolder>(
     NearbyRoutesListModel.Diff
 ) {
@@ -29,8 +29,8 @@ class NearbyRoutesAdapter(
             R.layout.nearby_routes_list_item -> NearbyRoutesItemViewHolder(
                 NearbyRoutesListItemBinding.inflate(inflater, parent, false)
             )
-            R.layout.nearby_routes_empty_item -> NearbyRoutesEmptyViewHolder(
-                NearbyRoutesEmptyItemBinding.inflate(inflater, parent, false)
+            R.layout.routes_empty_item -> NearbyRoutesEmptyViewHolder(
+                RoutesEmptyItemBinding.inflate(inflater, parent, false)
             )
             else -> throw IllegalStateException("Unknown view type $viewType")
         }
@@ -49,7 +49,7 @@ class NearbyRoutesAdapter(
     override fun getItemViewType(position: Int): Int {
         return when (getItem(position)) {
             is NearbyRoutesItemModel -> R.layout.nearby_routes_list_item
-            is NearbyRoutesEmptyModel -> R.layout.nearby_routes_empty_item
+            is NearbyRoutesEmptyModel -> R.layout.routes_empty_item
         }
     }
 
@@ -63,7 +63,7 @@ class NearbyRoutesAdapter(
             itemModel.routeDest
         )
 
-        root.setOnClickListener { itemClicked() }
+        root.setOnClickListener { onRouteClicked }
     }
 }
 
@@ -73,7 +73,7 @@ sealed class NearbyRoutesViewHolder(itemView: View) : RecyclerView.ViewHolder(it
     ) : NearbyRoutesViewHolder(binding.root)
 
     class NearbyRoutesEmptyViewHolder(
-        binding: NearbyRoutesEmptyItemBinding
+        binding: RoutesEmptyItemBinding
     ) : NearbyRoutesViewHolder(binding.root)
 }
 

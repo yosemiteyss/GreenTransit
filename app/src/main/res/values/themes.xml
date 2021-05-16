@@ -7,7 +7,7 @@
     <style name="ThemeOverlay.GreenTransit.Dialog.Fullscreen.DayNight" parent="ThemeOverlay.GreenTransit.Dialog.Fullscreen"/>
     <style name="ThemeOverlay.GreenTransit.Dialog.Fullscreen" parent="ThemeOverlay.MaterialComponents.Dialog">
         <item name="android:windowIsFloating">false</item>
-        <item name="android:colorBackground">?android:attr/colorBackground</item>
+        <item name="android:colorBackground">@color/background_light</item>
         <item name="android:windowBackground">?android:colorBackground</item>
         <item name="materialButtonStyle">@style/Widget.MaterialComponents.Button</item>
     </style>
@@ -25,7 +25,7 @@
         <item name="colorSecondaryVariant">@color/green_700</item>
         <item name="colorError">@color/purple_500</item>
         
-        <item name="android:colorBackground">@color/white</item>
+        <item name="android:colorBackground">@color/background_light</item>
         <item name="colorSurface">@color/white</item>
 
         <item name="colorOnPrimary">@color/white</item>

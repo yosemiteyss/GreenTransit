@@ -82,19 +82,25 @@
                 android:id="@+id/region_kln_chip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/region_kln" />
+                android:text="@string/region_kln"
+                android:textColor="?attr/colorPrimary"
+                app:chipBackgroundColor="?attr/searchBarColor"/>
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/region_hki_chip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/region_hki" />
+                android:text="@string/region_hki"
+                android:textColor="?attr/colorPrimary"
+                app:chipBackgroundColor="?attr/searchBarColor"/>
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/region_nt_chip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/region_nt" />
+                android:text="@string/region_nt"
+                android:textColor="?attr/colorPrimary"
+                app:chipBackgroundColor="?attr/searchBarColor"/>
 
         </com.google.android.material.chip.ChipGroup>
 

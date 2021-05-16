@@ -20,7 +20,7 @@ open class FullScreenDialogFragment : DialogFragment {
         super.onCreate(savedInstanceState)
 
         if (savedInstanceState == null) {
-            setStyle(STYLE_NORMAL, R.style.ThemeOverlay_GreenTransit_Dialog_Fullscreen_DayNight_Search)
+            setStyle(STYLE_NORMAL, R.style.ThemeOverlay_GreenTransit_Dialog_Fullscreen_DayNight)
         }
     }
 
