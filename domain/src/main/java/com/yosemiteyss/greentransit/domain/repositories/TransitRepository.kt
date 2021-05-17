@@ -18,7 +18,11 @@ interface TransitRepository {
 
     suspend fun getStopInfo(stopId: Long): StopInfo
 
-    suspend fun getStopEtaShiftList(stopId: Long): List<StopEtaShift>
+    suspend fun getStopRoutes(stopId: Long): List<StopRoute>
+
+    suspend fun getStopEtaShifts(stopId: Long): List<StopEtaShift>
+
+    suspend fun getRouteCode(routeId: Long): RouteCode
 
     suspend fun searchRoute(query: String, numOfRoutes: Int): List<RouteCode>
 }

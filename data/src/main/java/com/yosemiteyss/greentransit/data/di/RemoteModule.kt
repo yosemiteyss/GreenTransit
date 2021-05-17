@@ -4,9 +4,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.firestoreSettings
 import com.google.firebase.ktx.Firebase
-import com.google.gson.GsonBuilder
 import com.yosemiteyss.greentransit.data.api.GMBService
-import com.yosemiteyss.greentransit.data.api.GMBStopService
 import com.yosemiteyss.greentransit.data.api.TrafficNewsService
 import com.yosemiteyss.greentransit.data.constants.Constants.GMB_URL
 import com.yosemiteyss.greentransit.data.constants.Constants.TRAFFIC_NEWS_URL
@@ -47,18 +45,6 @@ class RemoteModule {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(GMBService::class.java)
-    }
-
-    @Singleton
-    @Provides
-    fun provideGMBStopService(): GMBStopService {
-        return Retrofit.Builder()
-            .baseUrl(GMB_URL)
-            .addConverterFactory(GsonConverterFactory.create(
-                GsonBuilder().excludeFieldsWithoutExposeAnnotation().create()
-            ))
-            .build()
-            .create(GMBStopService::class.java)
     }
 
     @Singleton

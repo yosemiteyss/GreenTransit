@@ -26,6 +26,7 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.elevation.ElevationOverlayProvider
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.snackbar.Snackbar
 import com.yosemiteyss.greentransit.R
@@ -47,6 +48,14 @@ fun Snackbar.setActionPersist(@StringRes resId: Int, listener: View.OnClickListe
             sb?.view?.findViewById<View>(R.id.snackbar_action)?.setOnClickListener(listener)
         }
     })
+}
+
+/**
+ * Hide progress indicator in a given condition.
+ * @param hide the hide condition.
+ */
+fun CircularProgressIndicator.showIf(show: Boolean) {
+    if (show) show() else hide()
 }
 
 /**

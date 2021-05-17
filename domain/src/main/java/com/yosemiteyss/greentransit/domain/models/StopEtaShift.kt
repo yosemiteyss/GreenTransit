@@ -9,7 +9,7 @@ import java.util.*
 data class StopEtaShift(
     val routeId: Long,
     val routeSeq: Int,
-    val etaSeq: Int,    // Order of the eta entry (the smaller, the sooner)
+    val etaSeq: Int,    // Order of the eta entry (the smaller the number, the sooner the shift)
     val etaMin: Int,
     val etaTimestamp: Date
 )

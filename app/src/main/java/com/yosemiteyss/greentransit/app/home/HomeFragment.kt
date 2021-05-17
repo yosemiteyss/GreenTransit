@@ -36,7 +36,9 @@ import kotlinx.coroutines.launch
 private const val MAP_DEFAULT_ZOOM = 16f
 
 @AndroidEntryPoint
-class HomeFragment : Fragment(R.layout.fragment_home), LocationSource {
+class HomeFragment : Fragment(R.layout.fragment_home),
+    LocationSource,
+    GoogleMap.OnMarkerClickListener {
 
     private val binding: FragmentHomeBinding by viewBinding(FragmentHomeBinding::bind)
     private val mainViewModel: MainViewModel by activityViewModels()
@@ -64,7 +66,20 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationSource {
         onLocationChangedListener = null
     }
 
-    @SuppressLint("MissingPermission")
+    override fun onMarkerClick(marker: Marker?): Boolean {
+        if (marker == null) return false
+
+        // Check if it is a stop marker
+        if (marker in nearbyStopMarkers) {
+            marker.tag?.let {
+                navigateToStop(stopId = it.toString().toLong())
+            }
+        }
+
+        return true
+    }
+
+    @SuppressLint("MissingPermission", "PotentialBehaviorOverride")
     private fun setupMapFragment() {
         // Map initialization
         viewLifecycleOwner.lifecycleScope.launch {
@@ -84,6 +99,8 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationSource {
 
                     setMapStyle(nightStyle)
                 }
+
+                setOnMarkerClickListener(this@HomeFragment)
             }
         }
 
@@ -115,14 +132,19 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationSource {
         viewLifecycleOwner.lifecycleScope.launch {
             mainViewModel.nearbyStops.collect { stops ->
                 getMapInstance().run {
+                    // Clear existing markers
                     nearbyStopMarkers.clear()
+                    clear()
+
+                    // Add new group of markers
                     nearbyStopMarkers.addAll(stops.map { stop ->
                         addMarker(
                             context = requireContext(),
                             position = LatLng(
                                 stop.location.latitude, stop.location.longitude
                             ),
-                            drawableRes = R.drawable.ic_stop
+                            drawableRes = R.drawable.ic_stop,
+                            tag = stop.id.toString()
                         )
                     })
                 }
@@ -204,6 +226,12 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationSource {
                 LatLng(location.latitude, location.longitude),
                 MAP_DEFAULT_ZOOM
             )
+        )
+    }
+
+    private fun navigateToStop(stopId: Long) {
+        findNavController(R.id.homeFragment)?.navigate(
+            HomeFragmentDirections.actionHomeFragmentToStopFragment(stopId)
         )
     }
 

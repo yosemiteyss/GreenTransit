@@ -6,13 +6,13 @@ import androidx.paging.PagingData
 import androidx.paging.map
 import com.google.firebase.firestore.FirebaseFirestore
 import com.yosemiteyss.greentransit.data.api.GMBService
-import com.yosemiteyss.greentransit.data.api.GMBStopService
 import com.yosemiteyss.greentransit.data.constants.Constants.NEARBY_ROUTE_COLLECTION
 import com.yosemiteyss.greentransit.data.constants.Constants.NEARBY_ROUTE_DTO_ID
 import com.yosemiteyss.greentransit.data.constants.Constants.NEARBY_STOP_COLLECTION
 import com.yosemiteyss.greentransit.data.constants.Constants.NEARBY_STOP_DTO_GEO_HASH
 import com.yosemiteyss.greentransit.data.constants.Constants.ROUTE_CODES_COLLECTION
 import com.yosemiteyss.greentransit.data.constants.Constants.ROUTE_CODE_DTO_CODE
+import com.yosemiteyss.greentransit.data.constants.Constants.ROUTE_CODE_DTO_ROUTE_IDS
 import com.yosemiteyss.greentransit.data.mappers.TransitMapper
 import com.yosemiteyss.greentransit.data.paging.RegionRoutesPagingSource
 import com.yosemiteyss.greentransit.data.utils.getAwaitResult
@@ -31,7 +31,6 @@ private const val ARRAY_CONTAINS_MAX = 10
 class TransitRepositoryImpl @Inject constructor(
     private val firestore: FirebaseFirestore,
     private val gmbService: GMBService,
-    private val gmbStopService: GMBStopService,
     private val transitMapper: TransitMapper
 ) : TransitRepository {
 
@@ -69,14 +68,27 @@ class TransitRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getStopInfo(stopId: Long): StopInfo {
-        return gmbStopService.getStopInfo(stopId)
+        return gmbService.getStopInfo(stopId)
             .let { transitMapper.toStopInfo(it) }
     }
 
-    override suspend fun getStopEtaShiftList(stopId: Long): List<StopEtaShift> {
+    override suspend fun getStopRoutes(stopId: Long): List<StopRoute> {
+        return gmbService.getStopRouteList(stopId)
+            .map { transitMapper.toStopRoute(it) }
+    }
+
+    override suspend fun getStopEtaShifts(stopId: Long): List<StopEtaShift> {
         return gmbService.getStopEtaRouteList(stopId)
             .map { transitMapper.toStopEtaShift(it) }
             .flatten()
+    }
+
+    override suspend fun getRouteCode(routeId: Long): RouteCode {
+        return firestore.collection(ROUTE_CODES_COLLECTION)
+            .whereArrayContains(ROUTE_CODE_DTO_ROUTE_IDS, routeId)
+            .limit(1)
+            .getAwaitResult(transitMapper::toRouteCode)
+            .first()
     }
 
     @ExperimentalStdlibApi

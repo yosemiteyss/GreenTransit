@@ -34,6 +34,7 @@ fun GoogleMap.addMarker(
     context: Context,
     position: LatLng,
     @DrawableRes drawableRes: Int,
+    tag: String? = null,
     hasBorder: Boolean = false
 ): Marker {
     val drawable = context.getDrawableOrNull(drawableRes) ?:
@@ -53,6 +54,7 @@ fun GoogleMap.addMarker(
         position(position)
     }.apply {
         setIcon(BitmapDescriptorFactory.fromBitmap(bitmap))
+        tag?.let { setTag(it) }
     }
 }
 

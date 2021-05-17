@@ -2,13 +2,17 @@ package com.yosemiteyss.greentransit.app.stop
 
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.tabs.TabLayoutMediator
+import com.google.maps.android.ktx.awaitMap
 import com.yosemiteyss.greentransit.R
-import com.yosemiteyss.greentransit.app.utils.viewBinding
+import com.yosemiteyss.greentransit.app.utils.*
 import com.yosemiteyss.greentransit.databinding.FragmentStopBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -19,8 +23,10 @@ import javax.inject.Inject
  * Created by kevin on 17/5/2021
  */
 
+private const val MAP_DEFAULT_ZOOM = 18f
+
 @AndroidEntryPoint
-class StopFragment : Fragment(R.layout.fragment_stop) {
+class StopFragment : FullScreenDialogFragment(R.layout.fragment_stop) {
 
     private val binding: FragmentStopBinding by viewBinding(FragmentStopBinding::bind)
     private val navArgs: StopFragmentArgs by navArgs()
@@ -34,6 +40,14 @@ class StopFragment : Fragment(R.layout.fragment_stop) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setLayoutFullscreen(aboveNavBar = true)
+
+        with(binding.navBackButton) {
+            applySystemWindowInsetsMargin(applyTop = true)
+            setOnClickListener {
+                findNavController(R.id.stopFragment)?.navigateUp()
+            }
+        }
 
         // Setup view pager
         viewLifecycleOwner.lifecycleScope.launch {
@@ -55,5 +69,66 @@ class StopFragment : Fragment(R.layout.fragment_stop) {
                 }.attach()
             }
         }
+
+        // Setup stop info
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.stopUiState.collect { uiState ->
+                if (uiState == null) return@collect
+
+                when (uiState) {
+                    is StopUiState.Success -> setupUI(uiState)
+                    is StopUiState.Error -> showShortToast(uiState.message)
+                    StopUiState.Loading -> Unit
+                }
+            }
+        }
+
+        // Setup map
+        viewLifecycleOwner.lifecycleScope.launch {
+            getMapInstance().run {
+                with(uiSettings) {
+                    isCompassEnabled = false
+                    isMyLocationButtonEnabled = false
+                    isMapToolbarEnabled = false
+                    isScrollGesturesEnabled = false
+                }
+            }
+        }
+    }
+
+    private fun setupUI(uiState: StopUiState.Success) = with(binding) {
+        stopCoordinateTextView.text = getString(
+            R.string.stop_location_coordinates,
+            uiState.data.location.latitude,
+            uiState.data.location.longitude
+        )
+
+        stopRemarkTextView.text = uiState.data.remarks ?: getString(R.string.stop_default_remark)
+
+        // Move camera to stop location
+        viewLifecycleOwner.lifecycleScope.launch {
+            getMapInstance().run {
+                val stopLocation = LatLng(
+                    uiState.data.location.latitude,
+                    uiState.data.location.longitude
+                )
+
+                moveCamera(
+                    CameraUpdateFactory.newLatLngZoom(stopLocation, MAP_DEFAULT_ZOOM)
+                )
+
+                addMarker(
+                    context = requireContext(),
+                    position = stopLocation,
+                    drawableRes = R.drawable.ic_stop
+                )
+            }
+        }
+    }
+
+    private suspend fun getMapInstance(): GoogleMap {
+        val mapFragment = childFragmentManager.findFragmentById(R.id.map_container_view)
+            as SupportMapFragment
+        return mapFragment.awaitMap()
     }
 }

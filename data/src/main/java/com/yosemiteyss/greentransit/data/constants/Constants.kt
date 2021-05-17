@@ -21,6 +21,7 @@ object Constants {
     const val ROUTE_CODES_COLLECTION = "route_codes"
     const val ROUTE_CODE_DTO_CODE = "code"
     const val ROUTE_CODE_DTO_REGION = "region"
+    const val ROUTE_CODE_DTO_ROUTE_IDS = "route_ids"
 
     const val NEARBY_STOP_COLLECTION = "stop_id"
     const val NEARBY_STOP_DTO_ID = "stop_id"
@@ -58,6 +59,18 @@ object Constants {
     const val STOP_INFO_DTO_REMARKS_TC = "remarks_tc"
     const val STOP_INFO_DTO_REMARKS_SC = "remarks_sc"
     const val STOP_INFO_DTO_REMARKS_EN = "remarks_en"
+    const val STOP_INFO_DTO_COORDINATES = "coordinates"
+    const val STOP_COORDINATES_LIST_DTO_WGS84 = "wgs84"
+    const val STOP_COORDINATES_LIST_DTO_HK80 = "hk80"
+    const val STOP_COORDINATES_DTO_LATITUDE = "latitude"
+    const val STOP_COORDINATES_DTO_LONGITUDE = "longitude"
+
+    const val STOP_ROUTE_DTO_ROUTE_ID = "route_id"
+    const val STOP_ROUTE_DTO_ROUTE_SEQ = "route_seq"
+    const val STOP_ROUTE_DTO_STOP_SEQ = "stop_seq"
+    const val STOP_ROUTE_DTO_NAME_TC = "name_tc"
+    const val STOP_ROUTE_DTO_NAME_SC = "name_sc"
+    const val STOP_ROUTE_DTO_NAME_EN = "name_en"
 
     const val TRAFFIC_NEWS_MESSAGES_DTO_ROOT = "body"
     const val TRAFFIC_NEWS_DTO_ROOT = "message"

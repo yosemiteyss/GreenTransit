@@ -48,7 +48,7 @@ class FakeTransitRepositoryImpl : TransitRepository {
         )
     }
 
-    override suspend fun getStopEtaShiftList(stopId: Long): List<StopEtaShift> {
+    override suspend fun getStopEtaShifts(stopId: Long): List<StopEtaShift> {
         if (throwNetworkError) throw Exception("Network error.")
         return fakeStopEtaShiftList
     }

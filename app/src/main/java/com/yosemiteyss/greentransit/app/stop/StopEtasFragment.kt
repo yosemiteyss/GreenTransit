@@ -13,7 +13,7 @@ import dagger.hilt.android.AndroidEntryPoint
  */
 
 @AndroidEntryPoint
-class StopEtaFragment : Fragment(R.layout.fragment_stop_eta) {
+class StopEtasFragment : Fragment(R.layout.fragment_stop_eta) {
 
     private val binding: FragmentStopEtaBinding by viewBinding(FragmentStopEtaBinding::bind)
 

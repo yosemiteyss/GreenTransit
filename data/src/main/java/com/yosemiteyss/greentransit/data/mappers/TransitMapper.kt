@@ -43,8 +43,18 @@ class TransitMapper @Inject constructor() {
 
     fun toStopInfo(dto: StopInfoDto): StopInfo {
         return StopInfo(
+            location = toCoordinates(dto.coordinates.wgs84),
             enabled = dto.enabled,
             remarks = dto.remarksEN
+        )
+    }
+
+    fun toStopRoute(dto: StopRouteDto): StopRoute {
+        return StopRoute(
+            routeId = dto.routeId,
+            routeSeq = dto.routeSeq,
+            stopSeq = dto.stopSeq,
+            name = dto.nameEN
         )
     }
 
@@ -75,6 +85,13 @@ class TransitMapper @Inject constructor() {
             RouteRegion.HKI -> ROUTE_REGION_HKI
             RouteRegion.NT -> ROUTE_REGION_NT
         }
+    }
+
+    fun toCoordinates(dto: StopCoordinatesDto): Coordinate {
+        return Coordinate(
+            latitude = dto.latitude,
+            longitude = dto.longitude
+        )
     }
 
     private fun parseTimestamp(timestamp: String): Date {

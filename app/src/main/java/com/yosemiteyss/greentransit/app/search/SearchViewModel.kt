@@ -36,13 +36,16 @@ class SearchViewModel @Inject constructor(
 
                     searchRoutesUseCase(params)
                 }
-                .collect {
-                    _searchUiState.value = when (it) {
-                        is Resource.Success -> SearchUiState.Success(buildSearchListModels(it.data))
-                        is Resource.Error -> SearchUiState.Error(it.message)
+                .map { res ->
+                    when (res) {
+                        is Resource.Success -> SearchUiState.Success(buildSearchListModels(res.data))
+                        is Resource.Error -> SearchUiState.Error(res.message)
                         is Resource.Loading -> SearchUiState.Loading
                     }
                 }
+               .collect {
+                   _searchUiState.value = it
+               }
         }
     }
 
