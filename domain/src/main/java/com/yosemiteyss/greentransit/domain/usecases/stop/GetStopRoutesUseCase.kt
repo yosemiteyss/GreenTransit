@@ -29,7 +29,9 @@ class GetStopRoutesUseCase @Inject constructor(
         coroutineScope {
             // Fire distinct get route code requests (to reduce the total number of requests)
             val routeCodes = routeIds.distinct().map { routeId ->
-                async { Pair(routeId, transitRepository.getRouteCode(routeId)) }
+                async {
+                    Pair(routeId, transitRepository.getRouteCode(routeId))
+                }
             }.awaitAll()
 
             // Map the result back to StopRouteWithCode

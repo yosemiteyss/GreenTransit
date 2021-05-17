@@ -9,12 +9,12 @@
     android:background="?attr/selectableItemBackground">
 
     <ImageView
-        android:id="@+id/mini_bus_icon_image_view"
+        android:id="@+id/loading_icon_image_view"
         android:layout_width="10dp"
         android:layout_height="10dp"
         android:layout_marginStart="@dimen/spacing_xmedium"
         android:src="@drawable/shape_circle"
-        app:tint="@color/green_300"
+        app:tint="?attr/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spacing_mxlarge"
         android:textAppearance="?attr/textAppearanceSubtitle1"
-        app:layout_constraintStart_toEndOf="@+id/mini_bus_icon_image_view"
+        app:layout_constraintStart_toEndOf="@+id/loading_icon_image_view"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="110S" />
 
@@ -40,7 +40,7 @@
         android:maxLines="2"
         android:ellipsize="end"
         app:layout_constraintTop_toBottomOf="@id/route_code_text_view"
-        app:layout_constraintStart_toEndOf="@id/mini_bus_icon_image_view"
+        app:layout_constraintStart_toEndOf="@id/loading_icon_image_view"
         app:layout_constraintEnd_toStartOf="@id/shift_eta_min_text_view"
         tools:text="Victoria Road, near Department Of Health Institute Of Immunology" />
 

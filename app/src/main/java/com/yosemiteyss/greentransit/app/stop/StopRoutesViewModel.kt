@@ -30,7 +30,7 @@ class StopRoutesViewModel @AssistedInject constructor(
             getStopRoutesUseCase(stopId).map { res ->
                 when (res) {
                     is Resource.Success -> StopRoutesUiState.Success(
-                        buildStopRouteListModel(res.data)
+                        buildStopRouteListModels(res.data)
                     )
                     is Resource.Error -> StopRoutesUiState.Error(
                         listOf(StopRouteEmptyModel), res.message
@@ -43,7 +43,7 @@ class StopRoutesViewModel @AssistedInject constructor(
         }
     }
 
-    private fun buildStopRouteListModel(
+    private fun buildStopRouteListModels(
         stopRouteWithCodes: List<StopRouteWithCode>
     ): List<StopRoutesListModel> {
         if (stopRouteWithCodes.isEmpty())
