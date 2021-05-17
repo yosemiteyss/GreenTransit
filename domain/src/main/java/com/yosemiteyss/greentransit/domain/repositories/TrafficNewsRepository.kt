@@ -8,6 +8,5 @@ import com.yosemiteyss.greentransit.domain.models.TrafficNews
 
 interface TrafficNewsRepository {
     // TODO: getTrafficNews()
-
     suspend fun getTrafficNews(): List<TrafficNews>
 }

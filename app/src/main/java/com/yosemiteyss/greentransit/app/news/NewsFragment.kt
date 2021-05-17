@@ -19,11 +19,22 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
     private val binding: FragmentNewsBinding by viewBinding(FragmentNewsBinding::bind)
     private val viewModel: NewsViewModel by viewModels()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View,
+                               savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        //binding.root.applySystemWindowInsetsPadding(applyTop = true)
+        val newsAdapter = NewsAdapter()
 
-        // TODO: Create a news adapter
-        // TODO: Register the adapter to recyclerview
-        // TODO: submit list to adapter
+        binding.newsRecyclerView.run {
+            adapter = newsAdapter
+            setHasFixedSize(true)
+        }
+        viewModel.trafficNews.observe(viewLifecycleOwner) {
+            //Log.d("tag", it.toString())
+            newsAdapter.submitList(it)
+        }
+        // TODO: Create a news adapter (done)
+        // TODO: Register the adapter to recyclerview (done)
+        // TODO: submit list to adapter (done)
     }
 }
