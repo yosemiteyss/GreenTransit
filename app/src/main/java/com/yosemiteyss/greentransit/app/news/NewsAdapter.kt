@@ -17,6 +17,9 @@ import com.yosemiteyss.greentransit.domain.models.TrafficNews
  * Created by kevin on 14/5/2021
  */
 
+private const val NEWS_COLLAPSED_LINES = 3
+private const val NEWS_MAX_LINES = Int.MAX_VALUE
+
 class NewsAdapter : ListAdapter<TrafficNewsListModel, TrafficNewsViewHolder>(TrafficNewsListModelDiff) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrafficNewsViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -55,10 +58,18 @@ class NewsAdapter : ListAdapter<TrafficNewsListModel, TrafficNewsViewHolder>(Tra
         binding: NewsListItemBinding,
         trafficNewsListModel: TrafficNewsItem
     ) = binding.run {
-        // TODO: Waiting for Billy's completion
         msgID.text = trafficNewsListModel.trafficNews.msgId
         currentStatus.text = trafficNewsListModel.trafficNews.currentStatus.toString()
-        engShort.text = trafficNewsListModel.trafficNews.engShort
+
+        with(engShort) {
+            text = trafficNewsListModel.trafficNews.engShort
+            maxLines = NEWS_COLLAPSED_LINES
+        }
+
+        root.setOnClickListener {
+            engShort.maxLines = if (engShort.maxLines == NEWS_COLLAPSED_LINES)
+                NEWS_MAX_LINES else NEWS_COLLAPSED_LINES
+        }
     }
 }
 

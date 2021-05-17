@@ -30,7 +30,6 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
 
         binding.newsRecyclerView.run {
             adapter = newsAdapter
-            setHasFixedSize(true)
         }
 
         viewModel.trafficNews.observe(viewLifecycleOwner) {
