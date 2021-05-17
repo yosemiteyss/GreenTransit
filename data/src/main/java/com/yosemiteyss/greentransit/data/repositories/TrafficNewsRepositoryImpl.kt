@@ -1,5 +1,7 @@
 package com.yosemiteyss.greentransit.data.repositories
 
+import com.yosemiteyss.greentransit.data.api.TrafficNewsService
+import com.yosemiteyss.greentransit.data.mappers.TrafficNewsMapper
 import com.yosemiteyss.greentransit.domain.models.TrafficNews
 import com.yosemiteyss.greentransit.domain.repositories.TrafficNewsRepository
 import javax.inject.Inject
@@ -9,10 +11,11 @@ import javax.inject.Inject
  */
 
 class TrafficNewsRepositoryImpl @Inject constructor(
-
+    private val trafficNewsService: TrafficNewsService,
+    private val trafficNewsMapper: TrafficNewsMapper
 ) : TrafficNewsRepository {
 
     override suspend fun getTrafficNews(): List<TrafficNews> {
-        return emptyList()
+        return trafficNewsMapper.toTrafficNews(trafficNewsService.getTrafficNews())
     }
 }

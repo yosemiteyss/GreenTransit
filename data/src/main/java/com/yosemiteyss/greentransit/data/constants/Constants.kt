@@ -64,4 +64,7 @@ object Constants {
     const val TRAFFIC_NEWS_DTO_ENG_SHORT = "EngShort"
     const val TRAFFIC_NEWS_DTO_REF_DATE = "ReferenceDate"
     const val TRAFFIC_NEWS_DTO_COUNT_DIST = "CountofDistricts"
+
+    const val TRAFFIC_NEWS_STATUS_NEW = 2
+    const val TRAFFIC_NEWS_STATUS_UPDATED = 3
 }
