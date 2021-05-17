@@ -51,7 +51,7 @@ class RemoteModule {
 
     @Singleton
     @Provides
-    fun provideGMBStopServer(): GMBStopService {
+    fun provideGMBStopService(): GMBStopService {
         return Retrofit.Builder()
             .baseUrl(GMB_URL)
             .addConverterFactory(GsonConverterFactory.create(

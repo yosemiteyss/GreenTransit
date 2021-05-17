@@ -8,8 +8,12 @@ import java.util.*
 
 data class TrafficNews(
     val msgId: String,
-    // TODO: Added required fields
     val currentStatus: TrafficNewsStatus,
     val engShort: String,
     val referenceDate: Date
 )
+
+enum class TrafficNewsStatus(val status: Int) {
+    NEW(2),
+    UPDATED(3)
+}

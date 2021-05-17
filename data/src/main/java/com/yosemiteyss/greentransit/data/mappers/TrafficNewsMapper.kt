@@ -14,7 +14,6 @@ import javax.inject.Inject
  */
 
 class TrafficNewsMapper @Inject constructor() {
-    // TODO
 
     fun toTrafficNews(dto: TrafficNewsMessagesDto): List<TrafficNews> {
         return dto.messageList.map {
@@ -22,22 +21,22 @@ class TrafficNewsMapper @Inject constructor() {
                 msgId = it.msgID!!,
                 currentStatus = toTrafficNewsStatus(it.currentStatus),
                 engShort = it.engShort!!,
-                referenceDate = parseTimestamp(it.referenceDate)
+                referenceDate = parseTimestamp(it.referenceDate!!)
             )
         }
     }
 
     fun toTrafficNewsStatus(currentStatus: Int?) : TrafficNewsStatus {
         return when (currentStatus) {
-            TRAFFIC_NEWS_STATUS_NEW -> TrafficNewsStatus.New
-            TRAFFIC_NEWS_STATUS_UPDATED -> TrafficNewsStatus.Updated
+            TRAFFIC_NEWS_STATUS_NEW -> TrafficNewsStatus.NEW
+            TRAFFIC_NEWS_STATUS_UPDATED -> TrafficNewsStatus.UPDATED
             else -> throw Exception("Invalid status: $currentStatus")
         }
     }
 
-    private fun parseTimestamp(timestamp: String?) : Date {
+    private fun parseTimestamp(timestamp: String): Date {
         val sdf = SimpleDateFormat("yyyy/MM/dd a hh:mm:ss", Locale.CHINA)
         sdf.timeZone = TimeZone.getTimeZone("Asia/Hong_Kong")
-        return sdf.parse(timestamp)!!
+        return sdf.parse(timestamp) ?: throw Exception("Unable to parse date.")
     }
 }

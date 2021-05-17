@@ -1,6 +1,5 @@
 package com.yosemiteyss.greentransit.app.news
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -18,23 +17,25 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NewsViewModel @Inject constructor(
+    private val newsRepository: TrafficNewsRepository,
     @IoDispatcher private val coroutineDispatcher: CoroutineDispatcher,
-    private val newsRepository: TrafficNewsRepository
 ) : ViewModel() {
 
     private val _trafficNewsMutableList = MutableLiveData<List<TrafficNewsListModel>>(emptyList())
     val trafficNews: LiveData<List<TrafficNewsListModel>> = _trafficNewsMutableList
+
     init {
         viewModelScope.launch(coroutineDispatcher) {
             val newsListModel = mutableListOf<TrafficNewsListModel>()
-            newsListModel.add(TrafficNewsListModel.TrafficNewsHeader)
+
             try {
                 val fetchedTrafficNewsList = newsRepository.getTrafficNews()
+                newsListModel.add(TrafficNewsListModel.TrafficNewsHeader)
+
                 if (fetchedTrafficNewsList.isNotEmpty()) {
                     newsListModel.addAll(fetchedTrafficNewsList.map {
                         TrafficNewsListModel.TrafficNewsItem(it)
                     })
-                    Log.d("tag", newsListModel.toString())
                 }
             } catch (e: Exception) {
                 newsListModel.add(TrafficNewsListModel.TrafficNewsEmptyItem)
