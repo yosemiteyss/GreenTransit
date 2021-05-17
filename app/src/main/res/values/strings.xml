@@ -25,6 +25,11 @@
     <string name="region_hki">HK Island</string>
     <string name="region_nt">New Territories</string>
 
+    <!-- Stop -->
+    <string name="stop_eta_mins">mins</string>
+    <string name="stop_tab_eta">Upcoming</string>
+    <string name="stop_tab_routes">Routes</string>
+
     <string name="search_bar_content_desc">Search Route</string>
     <string name="my_location_content_desc">My Location</string>
 

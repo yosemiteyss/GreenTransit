@@ -54,6 +54,11 @@ object Constants {
     const val STOP_ETA_SHIFT_DTO_REMARKS_SC = "remarks_sc"
     const val STOP_ETA_SHIFT_DTO_REMARKS_EN = "remarks_en"
 
+    const val STOP_INFO_DTO_ENABLED = "enabled"
+    const val STOP_INFO_DTO_REMARKS_TC = "remarks_tc"
+    const val STOP_INFO_DTO_REMARKS_SC = "remarks_sc"
+    const val STOP_INFO_DTO_REMARKS_EN = "remarks_en"
+
     const val TRAFFIC_NEWS_MESSAGES_DTO_ROOT = "body"
     const val TRAFFIC_NEWS_DTO_ROOT = "message"
     const val TRAFFIC_NEWS_DTO_MSG_ID = "msgID"

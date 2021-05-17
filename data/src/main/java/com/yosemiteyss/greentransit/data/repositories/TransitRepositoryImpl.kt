@@ -6,6 +6,7 @@ import androidx.paging.PagingData
 import androidx.paging.map
 import com.google.firebase.firestore.FirebaseFirestore
 import com.yosemiteyss.greentransit.data.api.GMBService
+import com.yosemiteyss.greentransit.data.api.GMBStopService
 import com.yosemiteyss.greentransit.data.constants.Constants.NEARBY_ROUTE_COLLECTION
 import com.yosemiteyss.greentransit.data.constants.Constants.NEARBY_ROUTE_DTO_ID
 import com.yosemiteyss.greentransit.data.constants.Constants.NEARBY_STOP_COLLECTION
@@ -30,6 +31,7 @@ private const val ARRAY_CONTAINS_MAX = 10
 class TransitRepositoryImpl @Inject constructor(
     private val firestore: FirebaseFirestore,
     private val gmbService: GMBService,
+    private val gmbStopService: GMBStopService,
     private val transitMapper: TransitMapper
 ) : TransitRepository {
 
@@ -64,6 +66,11 @@ class TransitRepositoryImpl @Inject constructor(
             .map { pagingData ->
                 pagingData.map { transitMapper.toRouteCode(it) }
             }
+    }
+
+    override suspend fun getStopInfo(stopId: Long): StopInfo {
+        return gmbStopService.getStopInfo(stopId)
+            .let { transitMapper.toStopInfo(it) }
     }
 
     override suspend fun getStopEtaShiftList(stopId: Long): List<StopEtaShift> {

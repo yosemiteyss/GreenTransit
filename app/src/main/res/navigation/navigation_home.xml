@@ -15,6 +15,9 @@
         <action
             android:id="@+id/action_homeFragment_to_regionRoutesFragment"
             app:destination="@id/regionRoutesFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_stopFragment"
+            app:destination="@id/stopFragment" />
     </fragment>
 
     <dialog
@@ -33,6 +36,15 @@
         <argument
             android:name="region"
             app:argType="com.yosemiteyss.greentransit.domain.models.RouteRegion"/>
+    </dialog>
+
+    <dialog
+        android:id="@+id/stopFragment"
+        android:name="com.yosemiteyss.greentransit.app.stop.StopFragment"
+        tools:layout="@layout/fragment_stop">
+        <argument
+            android:name="stopId"
+            app:argType="long"/>
     </dialog>
 
 </navigation>

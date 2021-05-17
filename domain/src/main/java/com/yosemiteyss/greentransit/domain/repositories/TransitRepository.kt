@@ -16,6 +16,8 @@ interface TransitRepository {
 
     suspend fun getRegionRoutes(region: RouteRegion): Flow<PagingData<RouteCode>>
 
+    suspend fun getStopInfo(stopId: Long): StopInfo
+
     suspend fun getStopEtaShiftList(stopId: Long): List<StopEtaShift>
 
     suspend fun searchRoute(query: String, numOfRoutes: Int): List<RouteCode>

@@ -3,10 +3,7 @@ package com.yosemiteyss.greentransit.data.mappers
 import com.yosemiteyss.greentransit.data.constants.Constants.ROUTE_REGION_HKI
 import com.yosemiteyss.greentransit.data.constants.Constants.ROUTE_REGION_KLN
 import com.yosemiteyss.greentransit.data.constants.Constants.ROUTE_REGION_NT
-import com.yosemiteyss.greentransit.data.dtos.NearbyRouteDto
-import com.yosemiteyss.greentransit.data.dtos.NearbyStopDto
-import com.yosemiteyss.greentransit.data.dtos.RouteCodeDto
-import com.yosemiteyss.greentransit.data.dtos.StopEtaRouteDto
+import com.yosemiteyss.greentransit.data.dtos.*
 import com.yosemiteyss.greentransit.domain.models.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -41,6 +38,13 @@ class TransitMapper @Inject constructor() {
         return RouteCode(
             code = dto.code!!,
             region = toRouteRegion(dto.region!!)
+        )
+    }
+
+    fun toStopInfo(dto: StopInfoDto): StopInfo {
+        return StopInfo(
+            enabled = dto.enabled,
+            remarks = dto.remarksEN
         )
     }
 
