@@ -50,13 +50,16 @@ class MainViewModel @Inject constructor(
 
         // Build nearby stops
         viewModelScope.launch {
-            _locationInput.mapLatest { location ->
-                val latLng = LatLng(location.latitude, location.longitude)
-                val queryBounds = latLng.geohashQueryBounds(NEARBY_BOUND_METER.toDouble())
-                val nearbyBounds = queryBounds.map { NearbyGeoBound(it.startHash, it.endHash) }
+            _locationInput.mapLatest { center ->
+                val queryBounds = LatLng(center.latitude, center.longitude)
+                    .geohashQueryBounds(NEARBY_BOUND_METER.toDouble())
+
+                val nearbyBounds = queryBounds.map {
+                    NearbyGeoBound(it.startHash, it.endHash)
+                }
 
                 GetNearbyStopsParams(
-                    currentCoord = Coordinate(location.latitude, location.longitude),
+                    currentCoord = Coordinate(center.latitude, center.longitude),
                     bounds = nearbyBounds
                 )
             }.flatMapLatest {

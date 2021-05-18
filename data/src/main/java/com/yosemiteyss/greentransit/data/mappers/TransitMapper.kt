@@ -59,15 +59,16 @@ class TransitMapper @Inject constructor() {
     }
 
     fun toStopEtaShift(routeDto: StopEtaRouteDto): List<StopEtaShift> {
-        return routeDto.shifts.map {
+        return routeDto.shifts?.map { shiftDto ->
             StopEtaShift(
                 routeId = routeDto.routeId,
                 routeSeq = routeDto.routeSeq,
-                etaSeq = it.seq,
-                etaMin = it.diff,
-                etaTimestamp = parseTimestamp(it.timestamp)
+                etaSeq = shiftDto.seq,
+                etaMin = shiftDto.diff,
+                etaDate = parseTimestamp(shiftDto.timestamp),
+                remarks = shiftDto.remarksEN
             )
-        }
+        } ?: emptyList()
     }
 
     fun toRouteRegion(region: String): RouteRegion {
@@ -85,6 +86,23 @@ class TransitMapper @Inject constructor() {
             RouteRegion.HKI -> ROUTE_REGION_HKI
             RouteRegion.NT -> ROUTE_REGION_NT
         }
+    }
+
+    fun toRouteInfo(dto: RouteInfoDto): RouteInfo {
+        return RouteInfo(
+            routeId = dto.routeId,
+            description = dto.descriptionEN,
+            direction = dto.directions.map { toRouteDirection(it) }
+        )
+    }
+
+    fun toRouteDirection(dto: RouteDirectionDto): RouteDirection {
+        return RouteDirection(
+            routeSeq = dto.routeSeq,
+            origin = dto.originEN,
+            dest = dto.destEN,
+            remarks = dto.remarksEN
+        )
     }
 
     fun toCoordinates(dto: StopCoordinatesDto): Coordinate {

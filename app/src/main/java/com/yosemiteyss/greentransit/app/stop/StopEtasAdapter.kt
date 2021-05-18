@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -14,12 +15,14 @@ import com.yosemiteyss.greentransit.app.stop.StopEtasViewHolder.StopEtasEmptyVie
 import com.yosemiteyss.greentransit.app.stop.StopEtasViewHolder.StopEtasShiftViewHolder
 import com.yosemiteyss.greentransit.databinding.RoutesEmptyItemBinding
 import com.yosemiteyss.greentransit.databinding.StopEtaListItemBinding
-import com.yosemiteyss.greentransit.domain.models.StopEtaShiftWithCode
-
+import com.yosemiteyss.greentransit.domain.models.StopEtaResult
+import com.yosemiteyss.greentransit.domain.models.getEtaTimeString
 
 /**
- * Created by kevin on 17/5/2021asasz
+ * Created by kevin on 17/5/2021
  */
+
+private const val MAX_DISPLAY_MINUTES = 59
 
 class StopEtasAdapter : ListAdapter<StopEtasListModel, StopEtasViewHolder>(StopEtasListModel.Diff) {
 
@@ -59,9 +62,27 @@ class StopEtasAdapter : ListAdapter<StopEtasListModel, StopEtasViewHolder>(StopE
         val blinkAnim = AnimationUtils.loadAnimation(root.context, R.anim.blinking)
         loadingIconImageView.startAnimation(blinkAnim)
 
-        routeCodeTextView.text = etasShiftModel.stopEtaShiftWithCode.routeCode.code
-        // TODO: dest/stop name
-        shiftEtaMinTextView.text = etasShiftModel.stopEtaShiftWithCode.etaShift.etaMin.toString()
+        routeCodeTextView.text = etasShiftModel.stopEtaResult.remarks?.let {
+            root.context.getString(
+                R.string.stop_eta_shift_code,
+                etasShiftModel.stopEtaResult.routeCode.code,
+                it
+            )
+        } ?: etasShiftModel.stopEtaResult.routeCode.code
+
+        routeDestTextView.text = root.context.getString(
+            R.string.stop_eta_shift_dest,
+            etasShiftModel.stopEtaResult.dest
+        )
+
+        if (etasShiftModel.stopEtaResult.etaMin <= MAX_DISPLAY_MINUTES) {
+            shiftEtaMinTextView.text = etasShiftModel.stopEtaResult.etaMin.toString()
+            shiftEtaMinSuffixTextView.isVisible = true
+
+        } else {
+            shiftEtaMinTextView.text = etasShiftModel.stopEtaResult.getEtaTimeString()
+            shiftEtaMinSuffixTextView.isVisible = false
+        }
     }
 }
 
@@ -77,7 +98,7 @@ sealed class StopEtasViewHolder(itemView: View) : RecyclerView.ViewHolder(itemVi
 
 sealed class StopEtasListModel {
     data class StopEtasShiftModel(
-        val stopEtaShiftWithCode: StopEtaShiftWithCode
+        val stopEtaResult: StopEtaResult
     ) : StopEtasListModel()
 
     object StopEtasEmptyModel : StopEtasListModel()
@@ -89,10 +110,8 @@ sealed class StopEtasListModel {
                 newItem: StopEtasListModel
             ): Boolean = when {
                 oldItem is StopEtasShiftModel && newItem is StopEtasShiftModel ->
-                    oldItem.stopEtaShiftWithCode.etaShift.routeId ==
-                        newItem.stopEtaShiftWithCode.etaShift.routeId &&
-                    oldItem.stopEtaShiftWithCode.etaShift.etaSeq ==
-                        newItem.stopEtaShiftWithCode.etaShift.etaSeq
+                    oldItem.stopEtaResult.routeId == newItem.stopEtaResult.routeId &&
+                    oldItem.stopEtaResult.routeSeq == newItem.stopEtaResult.routeSeq
                 oldItem is StopEtasEmptyModel && newItem is StopEtasEmptyModel -> true
                 else -> false
             }
@@ -102,7 +121,8 @@ sealed class StopEtasListModel {
                 newItem: StopEtasListModel
             ): Boolean = when {
                 oldItem is StopEtasShiftModel && newItem is StopEtasShiftModel ->
-                    oldItem.stopEtaShiftWithCode == newItem.stopEtaShiftWithCode
+                    oldItem.stopEtaResult == newItem.stopEtaResult &&
+                        oldItem.stopEtaResult == newItem.stopEtaResult
                 oldItem is StopEtasEmptyModel && newItem is StopEtasEmptyModel -> true
                 else -> false
             }

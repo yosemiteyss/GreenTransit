@@ -91,6 +91,11 @@ class TransitRepositoryImpl @Inject constructor(
             .first()
     }
 
+    override suspend fun getRouteInfo(routeId: Long): List<RouteInfo> {
+        return gmbService.getRouteInfo(routeId)
+            .map { transitMapper.toRouteInfo(it) }
+    }
+
     @ExperimentalStdlibApi
     override suspend fun searchRoute(query: String, numOfRoutes: Int): List<RouteCode> {
         return firestore.collection(ROUTE_CODES_COLLECTION)

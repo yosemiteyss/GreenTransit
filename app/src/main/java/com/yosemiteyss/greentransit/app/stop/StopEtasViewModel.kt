@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.yosemiteyss.greentransit.app.stop.StopEtasListModel.StopEtasEmptyModel
 import com.yosemiteyss.greentransit.app.stop.StopEtasListModel.StopEtasShiftModel
-import com.yosemiteyss.greentransit.domain.models.StopEtaShiftWithCode
+import com.yosemiteyss.greentransit.domain.models.StopEtaResult
 import com.yosemiteyss.greentransit.domain.states.Resource
 import com.yosemiteyss.greentransit.domain.usecases.stop.GetStopEtaShiftsParameters
 import com.yosemiteyss.greentransit.domain.usecases.stop.GetStopEtaShiftsUseCase
@@ -52,7 +52,7 @@ class StopEtasViewModel @AssistedInject constructor(
     }
 
     private fun buildStopEtasListModels(
-        stopEtaShiftWithCodes: List<StopEtaShiftWithCode>
+        stopEtaShiftWithCodes: List<StopEtaResult>
     ): List<StopEtasListModel> {
         if (stopEtaShiftWithCodes.isEmpty())
             return listOf(StopEtasEmptyModel)

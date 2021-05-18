@@ -24,5 +24,7 @@ interface TransitRepository {
 
     suspend fun getRouteCode(routeId: Long): RouteCode
 
+    suspend fun getRouteInfo(routeId: Long): List<RouteInfo>
+
     suspend fun searchRoute(query: String, numOfRoutes: Int): List<RouteCode>
 }

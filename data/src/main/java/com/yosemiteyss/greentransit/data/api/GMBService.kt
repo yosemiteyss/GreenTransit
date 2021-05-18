@@ -1,9 +1,6 @@
 package com.yosemiteyss.greentransit.data.api
 
-import com.yosemiteyss.greentransit.data.dtos.RoutesDto
-import com.yosemiteyss.greentransit.data.dtos.StopEtaRouteDto
-import com.yosemiteyss.greentransit.data.dtos.StopInfoDto
-import com.yosemiteyss.greentransit.data.dtos.StopRouteDto
+import com.yosemiteyss.greentransit.data.dtos.*
 import retrofit2.http.GET
 import retrofit2.http.Path
 
@@ -30,4 +27,7 @@ interface GMBService {
 
     @GET("/eta/stop/{stopId}")
     suspend fun getStopEtaRouteList(@Path("stopId") stopId: Long): List<StopEtaRouteDto>
+
+    @GET("/route/{routeId}")
+    suspend fun getRouteInfo(@Path("routeId") routeId: Long): List<RouteInfoDto>
 }

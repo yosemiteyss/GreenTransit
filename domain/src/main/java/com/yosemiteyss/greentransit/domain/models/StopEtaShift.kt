@@ -11,5 +11,6 @@ data class StopEtaShift(
     val routeSeq: Int,
     val etaSeq: Int,    // Order of the eta entry (the smaller the number, the sooner the shift)
     val etaMin: Int,
-    val etaTimestamp: Date
+    val etaDate: Date,
+    val remarks: String?
 )
