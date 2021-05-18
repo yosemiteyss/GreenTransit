@@ -32,6 +32,8 @@
     <string name="stop_routes_stop_name">Stop #%d: %s</string>
     <string name="stop_location_coordinates">Stop %.3f, %.3f</string>
     <string name="stop_default_remark">GMB Stop</string>
+    <string name="stop_eta_shift_code">%s (%s)</string>
+    <string name="stop_eta_shift_dest">to %s</string>
 
     <string name="search_bar_content_desc">Search Route</string>
     <string name="my_location_content_desc">My Location</string>

@@ -72,6 +72,23 @@ object Constants {
     const val STOP_ROUTE_DTO_NAME_SC = "name_sc"
     const val STOP_ROUTE_DTO_NAME_EN = "name_en"
 
+    const val ROUTE_INFO_DTO_ROUTE_ID = "route_id"
+    const val ROUTE_INFO_DTO_DESCRIPTION_TC = "description_tc"
+    const val ROUTE_INFO_DTO_DESCRIPTION_SC = "description_sc"
+    const val ROUTE_INFO_DTO_DESCRIPTION_EN = "description_en"
+    const val ROUTE_INFO_DTO_DIRECTIONS = "directions"
+
+    const val ROUTE_DIRECTION_DTO_ROUTE_SEQ = "route_seq"
+    const val ROUTE_DIRECTION_DTO_ORIG_TC = "orig_tc"
+    const val ROUTE_DIRECTION_DTO_ORIG_SC = "orig_sc"
+    const val ROUTE_DIRECTION_DTO_ORIG_EN = "orig_en"
+    const val ROUTE_DIRECTION_DTO_DEST_TC = "dest_tc"
+    const val ROUTE_DIRECTION_DTO_DEST_SC = "dest_sc"
+    const val ROUTE_DIRECTION_DTO_DEST_EN = "dest_en"
+    const val ROUTE_DIRECTION_DTO_REMARKS_TC = "remarks_tc"
+    const val ROUTE_DIRECTION_DTO_REMARKS_SC = "remarks_sc"
+    const val ROUTE_DIRECTION_DTO_REMARKS_EN = "remarks_en"
+
     const val TRAFFIC_NEWS_MESSAGES_DTO_ROOT = "body"
     const val TRAFFIC_NEWS_DTO_ROOT = "message"
     const val TRAFFIC_NEWS_DTO_MSG_ID = "msgID"
