@@ -25,4 +25,7 @@
 
     <color name="grey">#202124</color>
 
+    <color name="new_red">#c30000</color>
+    <color name="new_green">#1d9a6c</color>
+
 </resources>

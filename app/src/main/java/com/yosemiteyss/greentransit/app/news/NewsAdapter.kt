@@ -1,5 +1,7 @@
 package com.yosemiteyss.greentransit.app.news
 
+import android.content.res.ColorStateList
+import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,10 +10,13 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.yosemiteyss.greentransit.R
 import com.yosemiteyss.greentransit.app.news.TrafficNewsListModel.*
+import com.yosemiteyss.greentransit.app.utils.getColorCompat
 import com.yosemiteyss.greentransit.databinding.NewsEmptyItemBinding
 import com.yosemiteyss.greentransit.databinding.NewsHeaderItemBinding
 import com.yosemiteyss.greentransit.databinding.NewsListItemBinding
 import com.yosemiteyss.greentransit.domain.models.TrafficNews
+import com.yosemiteyss.greentransit.domain.models.TrafficNewsStatus
+import java.util.*
 
 /**
  * Created by kevin on 14/5/2021
@@ -58,9 +63,16 @@ class NewsAdapter : ListAdapter<TrafficNewsListModel, TrafficNewsViewHolder>(Tra
         binding: NewsListItemBinding,
         trafficNewsListModel: TrafficNewsItem
     ) = binding.run {
-        msgID.text = trafficNewsListModel.trafficNews.msgId
-        currentStatus.text = trafficNewsListModel.trafficNews.currentStatus.toString()
+        val relativeTime = DateUtils.getRelativeTimeSpanString(trafficNewsListModel.trafficNews.referenceDate.time,
+        Date().time, DateUtils.MINUTE_IN_MILLIS, DateUtils.FORMAT_ABBREV_RELATIVE).toString()
 
+        currentStatus.text = trafficNewsListModel.trafficNews.currentStatus.toString()
+        val color = when (trafficNewsListModel.trafficNews.currentStatus) {
+            TrafficNewsStatus.NEW -> root.context.getColorCompat(R.color.new_red)
+            TrafficNewsStatus.UPDATED -> root.context.getColorCompat(R.color.new_green)
+        }
+        currentStatus.backgroundTintList = ColorStateList.valueOf(color)
+        textView5.text = root.context.getString(R.string.news_last_updated, relativeTime)
         with(engShort) {
             text = trafficNewsListModel.trafficNews.engShort
             maxLines = NEWS_COLLAPSED_LINES

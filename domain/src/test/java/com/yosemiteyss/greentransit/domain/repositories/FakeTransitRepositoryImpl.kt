@@ -48,9 +48,21 @@ class FakeTransitRepositoryImpl : TransitRepository {
         )
     }
 
+    override suspend fun getStopInfo(stopId: Long): StopInfo {
+        throw Exception("Not implemented error.")
+    }
+
+    override suspend fun getStopRoutes(stopId: Long): List<StopRoute> {
+        throw Exception("Not implemented error.")
+    }
+
     override suspend fun getStopEtaShifts(stopId: Long): List<StopEtaShift> {
         if (throwNetworkError) throw Exception("Network error.")
         return fakeStopEtaShiftList
+    }
+
+    override suspend fun getRouteCode(routeId: Long): RouteCode {
+        throw Exception("Not implemented error.")
     }
 
     override suspend fun searchRoute(query: String, numOfRoutes: Int): List<RouteCode> {

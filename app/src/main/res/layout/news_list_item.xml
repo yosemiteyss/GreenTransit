@@ -24,17 +24,12 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            android:textColor="#009688"
+            android:background="@drawable/round_corner_box"
+            android:padding="@dimen/spacing_medium"
+            android:textColor="@color/white"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="⚠ UPDATED" />
-
-        <TextView
-            android:id="@+id/msgID"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            tools:text="UPDATED" />
 
         <TextView
             android:id="@+id/engShort"
@@ -52,17 +47,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/currentStatus"
             tools:text="Due to watermain emergency works , the fast lane of Wan Po Road (Tseung Kwan O Tunnel bound) near Pung Loi Avenue is closed to all traffic. Only remaining lane is still available to motorists." />
-
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="8dp"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toStartOf="@+id/textView5"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Last Updated :" />
 
         <TextView
             android:id="@+id/textView5"
