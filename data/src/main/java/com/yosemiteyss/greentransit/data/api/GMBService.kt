@@ -10,15 +10,6 @@ import retrofit2.http.Path
 
 interface GMBService {
 
-    @GET("/route/HKI")
-    suspend fun getRoutesHKI(): RoutesDto
-
-    @GET("/route/NT")
-    suspend fun getRoutesNT(): RoutesDto
-
-    @GET("/route/KLN")
-    suspend fun getRoutesKLN(): RoutesDto
-
     @GET("/stop/{stopId}")
     suspend fun getStopInfo(@Path("stopId") stopId: Long): StopInfoDto
 
@@ -26,8 +17,26 @@ interface GMBService {
     suspend fun getStopRouteList(@Path("stopId") stopId: Long): List<StopRouteDto>
 
     @GET("/eta/stop/{stopId}")
-    suspend fun getStopEtaRouteList(@Path("stopId") stopId: Long): List<StopEtaRouteDto>
+    suspend fun getStopEtaRouteList(@Path("stopId") stopId: Long): List<StopRouteEtaDto>
 
     @GET("/route/{routeId}")
     suspend fun getRouteInfo(@Path("routeId") routeId: Long): List<RouteInfoDto>
+
+    @GET("/route/{region}/{routeCode}")
+    suspend fun getRouteInfo(
+        @Path("region") region: String,
+        @Path("routeCode") routeCode: String
+    ): List<RouteInfoDto>
+
+    @GET("/route-stop/{routeId}/{routeSeq}")
+    suspend fun getRouteStops(
+        @Path("routeId") routeId: Long,
+        @Path("routeSeq") routeSeq: Int
+    ): RouteStopListDto
+
+    @GET("/eta/route-stop/{routeId}/{stopId}")
+    suspend fun getRouteStopEtaList(
+        @Path("routeId") routeId: Long,
+        @Path("stopId") stopId: Long
+    ): List<RouteStopEtaDto>
 }

@@ -9,7 +9,7 @@ import com.yosemiteyss.greentransit.data.constants.Constants.STOP_ROUTE_DTO_ROUT
 import com.yosemiteyss.greentransit.data.constants.Constants.STOP_ROUTE_DTO_STOP_SEQ
 
 /**
- * Created by kevin on 17/5/2021
+ * Represent a route in a specific stop.
  */
 
 data class StopRouteDto(

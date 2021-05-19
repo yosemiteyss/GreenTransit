@@ -40,7 +40,9 @@ class StopEtasFragment : Fragment(R.layout.fragment_stop_etas) {
             loadingProgressBar.setVisibilityAfterHide(View.GONE)
         }
 
-        val etasAdapter = StopEtasAdapter()
+        val etasAdapter = StopEtasAdapter { routeId, routeCode ->
+            stopViewModel.onNavigateToRoute(routeId, routeCode)
+        }
 
         with(binding.etasRecyclerView) {
             adapter = etasAdapter

@@ -1,6 +1,5 @@
 package com.yosemiteyss.greentransit.app.home
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yosemiteyss.greentransit.domain.models.NearbyRoute
@@ -8,7 +7,6 @@ import com.yosemiteyss.greentransit.domain.models.NearbyStop
 import com.yosemiteyss.greentransit.domain.states.Resource
 import com.yosemiteyss.greentransit.domain.usecases.nearby.GetNearbyRoutesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
@@ -18,7 +16,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    @ApplicationContext private val context: Context,
     private val getNearbyRoutesUseCase: GetNearbyRoutesUseCase
 ) : ViewModel() {
 
@@ -33,9 +30,7 @@ class HomeViewModel @Inject constructor(
                         _nearbyRoutesCount.value = res.data.size
                         HomeUiState.Success(buildNearbyRoutesListModels(res.data))
                     }
-                    is Resource.Error -> {
-                        HomeUiState.Error(res.message)
-                    }
+                    is Resource.Error -> HomeUiState.Error(res.message)
                     is Resource.Loading -> HomeUiState.Loading
                 }
             }

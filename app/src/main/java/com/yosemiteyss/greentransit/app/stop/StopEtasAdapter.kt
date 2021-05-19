@@ -13,10 +13,10 @@ import com.yosemiteyss.greentransit.app.stop.StopEtasListModel.StopEtasEmptyMode
 import com.yosemiteyss.greentransit.app.stop.StopEtasListModel.StopEtasShiftModel
 import com.yosemiteyss.greentransit.app.stop.StopEtasViewHolder.StopEtasEmptyViewHolder
 import com.yosemiteyss.greentransit.app.stop.StopEtasViewHolder.StopEtasShiftViewHolder
+import com.yosemiteyss.greentransit.app.utils.format
 import com.yosemiteyss.greentransit.databinding.RoutesEmptyItemBinding
 import com.yosemiteyss.greentransit.databinding.StopEtaListItemBinding
-import com.yosemiteyss.greentransit.domain.models.StopEtaResult
-import com.yosemiteyss.greentransit.domain.models.getEtaTimeString
+import com.yosemiteyss.greentransit.domain.models.StopRouteShiftEtaResult
 
 /**
  * Created by kevin on 17/5/2021
@@ -24,7 +24,9 @@ import com.yosemiteyss.greentransit.domain.models.getEtaTimeString
 
 private const val MAX_DISPLAY_MINUTES = 59
 
-class StopEtasAdapter : ListAdapter<StopEtasListModel, StopEtasViewHolder>(StopEtasListModel.Diff) {
+class StopEtasAdapter(
+    private val onRouteClicked: (routeId: Long, routeCode: String) -> Unit
+) : ListAdapter<StopEtasListModel, StopEtasViewHolder>(StopEtasListModel.Diff) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StopEtasViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -62,26 +64,34 @@ class StopEtasAdapter : ListAdapter<StopEtasListModel, StopEtasViewHolder>(StopE
         val blinkAnim = AnimationUtils.loadAnimation(root.context, R.anim.blinking)
         loadingIconImageView.startAnimation(blinkAnim)
 
-        routeCodeTextView.text = etasShiftModel.stopEtaResult.remarks?.let {
+        routeCodeTextView.text = etasShiftModel.routeShiftEtaResult.remarks?.let {
             root.context.getString(
                 R.string.stop_eta_shift_code,
-                etasShiftModel.stopEtaResult.routeCode.code,
+                etasShiftModel.routeShiftEtaResult.routeRegionCode.code,
                 it
             )
-        } ?: etasShiftModel.stopEtaResult.routeCode.code
+        } ?: etasShiftModel.routeShiftEtaResult.routeRegionCode.code
 
         routeDestTextView.text = root.context.getString(
             R.string.stop_eta_shift_dest,
-            etasShiftModel.stopEtaResult.dest
+            etasShiftModel.routeShiftEtaResult.dest
         )
 
-        if (etasShiftModel.stopEtaResult.etaMin <= MAX_DISPLAY_MINUTES) {
-            shiftEtaMinTextView.text = etasShiftModel.stopEtaResult.etaMin.toString()
+        if (etasShiftModel.routeShiftEtaResult.etaMin <= MAX_DISPLAY_MINUTES) {
+            shiftEtaMinTextView.text = etasShiftModel.routeShiftEtaResult.etaMin.toString()
             shiftEtaMinSuffixTextView.isVisible = true
 
         } else {
-            shiftEtaMinTextView.text = etasShiftModel.stopEtaResult.getEtaTimeString()
+            shiftEtaMinTextView.text = etasShiftModel.routeShiftEtaResult.etaDate
+                .format("HH:mm")
             shiftEtaMinSuffixTextView.isVisible = false
+        }
+
+        root.setOnClickListener {
+            onRouteClicked(
+                etasShiftModel.routeShiftEtaResult.routeId,
+                etasShiftModel.routeShiftEtaResult.routeRegionCode.code
+            )
         }
     }
 }
@@ -98,7 +108,7 @@ sealed class StopEtasViewHolder(itemView: View) : RecyclerView.ViewHolder(itemVi
 
 sealed class StopEtasListModel {
     data class StopEtasShiftModel(
-        val stopEtaResult: StopEtaResult
+        val routeShiftEtaResult: StopRouteShiftEtaResult
     ) : StopEtasListModel()
 
     object StopEtasEmptyModel : StopEtasListModel()
@@ -110,8 +120,8 @@ sealed class StopEtasListModel {
                 newItem: StopEtasListModel
             ): Boolean = when {
                 oldItem is StopEtasShiftModel && newItem is StopEtasShiftModel ->
-                    oldItem.stopEtaResult.routeId == newItem.stopEtaResult.routeId &&
-                    oldItem.stopEtaResult.routeSeq == newItem.stopEtaResult.routeSeq
+                    oldItem.routeShiftEtaResult.routeId == newItem.routeShiftEtaResult.routeId &&
+                    oldItem.routeShiftEtaResult.routeSeq == newItem.routeShiftEtaResult.routeSeq
                 oldItem is StopEtasEmptyModel && newItem is StopEtasEmptyModel -> true
                 else -> false
             }
@@ -121,8 +131,8 @@ sealed class StopEtasListModel {
                 newItem: StopEtasListModel
             ): Boolean = when {
                 oldItem is StopEtasShiftModel && newItem is StopEtasShiftModel ->
-                    oldItem.stopEtaResult == newItem.stopEtaResult &&
-                        oldItem.stopEtaResult == newItem.stopEtaResult
+                    oldItem.routeShiftEtaResult == newItem.routeShiftEtaResult &&
+                        oldItem.routeShiftEtaResult == newItem.routeShiftEtaResult
                 oldItem is StopEtasEmptyModel && newItem is StopEtasEmptyModel -> true
                 else -> false
             }

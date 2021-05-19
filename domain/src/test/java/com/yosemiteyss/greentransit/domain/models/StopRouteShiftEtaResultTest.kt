@@ -12,14 +12,14 @@ import kotlin.random.Random
  * Created by kevin on 18/5/2021
  */
 
-class StopEtaResultTest {
+class StopRouteShiftEtaResultTest {
 
     @Test
     fun `test correct time string`() {
         val randomHour = Random.nextInt(0, 23)
         val randomMin = Random.nextInt(0, 59)
 
-        val result = mockk<StopEtaResult> {
+        val result = mockk<StopRouteShiftEtaResult> {
             every { etaDate } returns Calendar.getInstance().apply {
                 set(Calendar.HOUR_OF_DAY, randomHour)
                 set(Calendar.MINUTE, randomMin)

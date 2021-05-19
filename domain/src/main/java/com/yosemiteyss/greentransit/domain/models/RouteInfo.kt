@@ -7,7 +7,7 @@ package com.yosemiteyss.greentransit.domain.models
 data class RouteInfo(
     val routeId: Long,
     val description: String,
-    val direction: List<RouteDirection>
+    val directions: List<RouteDirection>
 )
 
 data class RouteDirection(

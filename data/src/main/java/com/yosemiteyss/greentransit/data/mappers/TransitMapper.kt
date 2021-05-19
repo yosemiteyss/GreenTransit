@@ -34,8 +34,8 @@ class TransitMapper @Inject constructor() {
         )
     }
 
-    fun toRouteCode(dto: RouteCodeDto): RouteCode {
-        return RouteCode(
+    fun toRouteCode(dto: RouteRegionCodeDto): RouteRegionCode {
+        return RouteRegionCode(
             code = dto.code!!,
             region = toRouteRegion(dto.region!!)
         )
@@ -58,13 +58,13 @@ class TransitMapper @Inject constructor() {
         )
     }
 
-    fun toStopEtaShift(routeDto: StopEtaRouteDto): List<StopEtaShift> {
-        return routeDto.shifts?.map { shiftDto ->
-            StopEtaShift(
-                routeId = routeDto.routeId,
-                routeSeq = routeDto.routeSeq,
-                etaSeq = shiftDto.seq,
-                etaMin = shiftDto.diff,
+    fun toStopEtaShift(routeEtaDto: StopRouteEtaDto): List<StopRouteShiftEta> {
+        return routeEtaDto.etaShifts?.map { shiftDto ->
+            StopRouteShiftEta(
+                routeId = routeEtaDto.routeId,
+                routeSeq = routeEtaDto.routeSeq,
+                etaSeq = shiftDto.etaSeq,
+                etaMin = shiftDto.etaDiff,
                 etaDate = parseTimestamp(shiftDto.timestamp),
                 remarks = shiftDto.remarksEN
             )
@@ -92,7 +92,7 @@ class TransitMapper @Inject constructor() {
         return RouteInfo(
             routeId = dto.routeId,
             description = dto.descriptionEN,
-            direction = dto.directions.map { toRouteDirection(it) }
+            directions = dto.directions.map { toRouteDirection(it) }
         )
     }
 
@@ -103,6 +103,29 @@ class TransitMapper @Inject constructor() {
             dest = dto.destEN,
             remarks = dto.remarksEN
         )
+    }
+
+    fun toRouteStop(dto: RouteStopDto): RouteStop {
+        return RouteStop(
+            stopId = dto.stopId,
+            stopSeq = dto.stopSeq,
+            name = dto.nameEN
+        )
+    }
+
+    fun toRouteStopShiftEta(dto: RouteStopEtaDto): List<RouteStopShiftEta> {
+        return dto.eta?.map {
+            RouteStopShiftEta(
+                routeSeq = dto.routeSeq,
+                stopSeq = dto.stopSeq,
+                etaDescription = dto.descriptionEN,
+                etaEnabled = dto.enabled,
+                etaSeq = it.etaSeq,
+                etaMin = it.etaDiff,
+                etaDate = parseTimestamp(it.timestamp),
+                etaRemarks = it.remarksEN
+            )
+        } ?: emptyList()
     }
 
     fun toCoordinates(dto: StopCoordinatesDto): Coordinate {

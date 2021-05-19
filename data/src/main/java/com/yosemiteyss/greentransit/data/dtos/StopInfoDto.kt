@@ -12,7 +12,7 @@ import com.yosemiteyss.greentransit.data.constants.Constants.STOP_INFO_DTO_REMAR
 import com.yosemiteyss.greentransit.data.constants.Constants.STOP_INFO_DTO_REMARKS_TC
 
 /**
- * Created by kevin on 17/5/2021
+ * Represent the details of a specific stop.
  */
 
 data class StopInfoDto(

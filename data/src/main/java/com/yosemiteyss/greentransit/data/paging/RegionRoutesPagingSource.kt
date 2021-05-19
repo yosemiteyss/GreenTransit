@@ -4,10 +4,10 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import com.yosemiteyss.greentransit.data.constants.Constants.ROUTE_CODES_COLLECTION
-import com.yosemiteyss.greentransit.data.constants.Constants.ROUTE_CODE_DTO_CODE
-import com.yosemiteyss.greentransit.data.constants.Constants.ROUTE_CODE_DTO_REGION
-import com.yosemiteyss.greentransit.data.dtos.RouteCodeDto
+import com.yosemiteyss.greentransit.data.constants.Constants.ROUTE_REGION_CODES_COLLECTION
+import com.yosemiteyss.greentransit.data.constants.Constants.ROUTE_REGION_CODE_DTO_CODE
+import com.yosemiteyss.greentransit.data.constants.Constants.ROUTE_REGION_CODE_DTO_REGION
+import com.yosemiteyss.greentransit.data.dtos.RouteRegionCodeDto
 import kotlinx.coroutines.tasks.await
 
 /**
@@ -17,17 +17,17 @@ import kotlinx.coroutines.tasks.await
 class RegionRoutesPagingSource(
     private val firestore: FirebaseFirestore,
     private val region: String
-) : PagingSource<Query, RouteCodeDto>() {
+) : PagingSource<Query, RouteRegionCodeDto>() {
 
     private var initialPageQuery: Query? = null
 
-    override fun getRefreshKey(state: PagingState<Query, RouteCodeDto>): Query? = initialPageQuery
+    override fun getRefreshKey(state: PagingState<Query, RouteRegionCodeDto>): Query? = initialPageQuery
 
-    override suspend fun load(params: LoadParams<Query>): LoadResult<Query, RouteCodeDto> {
+    override suspend fun load(params: LoadParams<Query>): LoadResult<Query, RouteRegionCodeDto> {
         return try {
-            initialPageQuery = initialPageQuery ?: firestore.collection(ROUTE_CODES_COLLECTION)
-                .whereEqualTo(ROUTE_CODE_DTO_REGION, region)
-                .orderBy(ROUTE_CODE_DTO_CODE, Query.Direction.ASCENDING)
+            initialPageQuery = initialPageQuery ?: firestore.collection(ROUTE_REGION_CODES_COLLECTION)
+                .whereEqualTo(ROUTE_REGION_CODE_DTO_REGION, region)
+                .orderBy(ROUTE_REGION_CODE_DTO_CODE, Query.Direction.ASCENDING)
                 .limit(params.loadSize.toLong())
 
             val currentPageQuery = params.key ?: initialPageQuery
@@ -41,7 +41,7 @@ class RegionRoutesPagingSource(
             }
 
             LoadResult.Page(
-                data = currentPageData.toObjects(RouteCodeDto::class.java),
+                data = currentPageData.toObjects(RouteRegionCodeDto::class.java),
                 prevKey = null,
                 nextKey = nextPageQuery
             )

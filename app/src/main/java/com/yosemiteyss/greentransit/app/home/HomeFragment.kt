@@ -21,6 +21,7 @@ import com.google.android.material.shape.ShapeAppearanceModel
 import com.google.maps.android.ktx.awaitMap
 import com.yosemiteyss.greentransit.R
 import com.yosemiteyss.greentransit.app.main.MainViewModel
+import com.yosemiteyss.greentransit.app.route.RouteOption
 import com.yosemiteyss.greentransit.app.utils.*
 import com.yosemiteyss.greentransit.databinding.FragmentHomeBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -191,9 +192,15 @@ class HomeFragment : Fragment(R.layout.fragment_home),
         binding.bottomSheetCoordinatorLayout.applySystemWindowInsetsMargin(applyTop = true)
 
         // Get nearby routes
-        val nearbyRoutesAdapter = NearbyRoutesAdapter {
-            // on click
-        }
+        val nearbyRoutesAdapter = NearbyRoutesAdapter(
+            onRouteClicked = { routeId, routeCode ->
+                findNavController(R.id.homeFragment)?.navigate(
+                    HomeFragmentDirections.actionHomeFragmentToRouteFragment(
+                        RouteOption(routeId = routeId, routeCode = routeCode)
+                    )
+                )
+            }
+        )
 
         with(binding.nearbyRoutesRecyclerView) {
             adapter = nearbyRoutesAdapter
@@ -230,8 +237,14 @@ class HomeFragment : Fragment(R.layout.fragment_home),
     }
 
     private fun navigateToStop(stopId: Long) {
+        val selectedStop = mainViewModel.nearbyStops.value.first { it.id == stopId }
+
         findNavController(R.id.homeFragment)?.navigate(
-            HomeFragmentDirections.actionHomeFragmentToStopFragment(stopId)
+            HomeFragmentDirections.actionHomeFragmentToStopFragment(
+                stopId = stopId,
+                latitude = selectedStop.location.latitude.toFloat(),
+                longitude = selectedStop.location.longitude.toFloat()
+            )
         )
     }
 

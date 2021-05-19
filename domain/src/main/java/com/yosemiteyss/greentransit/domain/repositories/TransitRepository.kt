@@ -14,17 +14,23 @@ interface TransitRepository {
 
     suspend fun getNearbyRoutes(routeIds: List<Long>): List<NearbyRoute>
 
-    suspend fun getRegionRoutes(region: RouteRegion): Flow<PagingData<RouteCode>>
+    suspend fun getRegionRoutes(region: RouteRegion): Flow<PagingData<RouteRegionCode>>
 
     suspend fun getStopInfo(stopId: Long): StopInfo
 
     suspend fun getStopRoutes(stopId: Long): List<StopRoute>
 
-    suspend fun getStopEtaShifts(stopId: Long): List<StopEtaShift>
+    suspend fun getStopRouteShiftEtas(stopId: Long): List<StopRouteShiftEta>
 
-    suspend fun getRouteCode(routeId: Long): RouteCode
+    suspend fun getRouteCode(routeId: Long): RouteRegionCode
 
-    suspend fun getRouteInfo(routeId: Long): List<RouteInfo>
+    suspend fun getRouteInfos(routeId: Long): List<RouteInfo>
 
-    suspend fun searchRoute(query: String, numOfRoutes: Int): List<RouteCode>
+    suspend fun getRouteInfos(routeRegionCode: RouteRegionCode): List<RouteInfo>
+
+    suspend fun getRouteStops(routeId: Long, routeSeq: Int): List<RouteStop>
+
+    suspend fun getRouteStopShiftEtas(routeId: Long, stopId: Long): List<RouteStopShiftEta>
+
+    suspend fun searchRoute(query: String, numOfRoutes: Int): List<RouteRegionCode>
 }

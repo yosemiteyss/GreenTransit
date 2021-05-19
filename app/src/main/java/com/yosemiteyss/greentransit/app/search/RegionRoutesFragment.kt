@@ -7,6 +7,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import androidx.paging.LoadState
 import com.yosemiteyss.greentransit.R
+import com.yosemiteyss.greentransit.app.route.RouteOption
 import com.yosemiteyss.greentransit.app.search.RegionRoutesViewModel.RegionRoutesViewModelFactory
 import com.yosemiteyss.greentransit.app.utils.*
 import com.yosemiteyss.greentransit.databinding.FragmentRegionRoutesBinding
@@ -48,8 +49,12 @@ class RegionRoutesFragment : FullScreenDialogFragment(R.layout.fragment_region_r
         }
 
         // Setup recycler view
-        val regionRoutesAdapter = RegionRoutesAdapter {
-
+        val regionRoutesAdapter = RegionRoutesAdapter { routeRegionCode ->
+            findNavController(R.id.regionRoutesFragment)?.navigate(
+                RegionRoutesFragmentDirections.actionRegionRoutesFragmentToRouteFragment(
+                    RouteOption(routeRegionCode)
+                )
+            )
         }
 
         with(binding.routesRecyclerView) {

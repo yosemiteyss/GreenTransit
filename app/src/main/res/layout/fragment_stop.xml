@@ -10,22 +10,18 @@
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/map_container_view"
         android:layout_width="match_parent"
-        android:layout_height="280dp"
+        android:layout_height="@dimen/inner_map_height"
         android:layout_marginBottom="@dimen/home_bottom_sheet_peek_height"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         app:layout_constraintTop_toTopOf="parent"/>
 
     <com.google.android.material.button.MaterialButton
-        style="@style/Widget.GreenTransit.Button.Circle"
+        style="@style/Widget.GreenTransit.Button.Navigate"
         android:id="@+id/nav_back_button"
         android:layout_width="38dp"
         android:layout_height="38dp"
         android:layout_marginVertical="@dimen/spacing_large"
         android:layout_marginHorizontal="@dimen/spacing_mlarge"
-        app:backgroundTint="?attr/colorSurface"
-        app:icon="@drawable/ic_back"
-        app:iconSize="18dp"
-        app:iconTint="?attr/colorPrimary"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
 
@@ -35,7 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spacing_large"
         android:layout_marginStart="@dimen/spacing_large"
-        android:textAppearance="?attr/textAppearanceSubtitle1"
+        android:textAppearance="?attr/textAppearanceHeadline6"
         app:layout_constraintTop_toBottomOf="@id/map_container_view"
         app:layout_constraintStart_toStartOf="parent"
         tools:text="Stop 22.262, 114.130"/>

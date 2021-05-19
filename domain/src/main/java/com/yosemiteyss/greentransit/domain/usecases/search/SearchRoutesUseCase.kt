@@ -1,7 +1,7 @@
 package com.yosemiteyss.greentransit.domain.usecases.search
 
 import com.yosemiteyss.greentransit.domain.di.IoDispatcher
-import com.yosemiteyss.greentransit.domain.models.RouteCode
+import com.yosemiteyss.greentransit.domain.models.RouteRegionCode
 import com.yosemiteyss.greentransit.domain.repositories.TransitRepository
 import com.yosemiteyss.greentransit.domain.states.Resource
 import com.yosemiteyss.greentransit.domain.usecases.FlowUseCase
@@ -17,11 +17,11 @@ import javax.inject.Inject
 class SearchRoutesUseCase @Inject constructor(
     private val transitRepository: TransitRepository,
     @IoDispatcher coroutineDispatcher: CoroutineDispatcher
-) : FlowUseCase<SearchRoutesParameter, List<RouteCode>>(coroutineDispatcher) {
+) : FlowUseCase<SearchRoutesParameter, List<RouteRegionCode>>(coroutineDispatcher) {
 
-    override fun execute(parameters: SearchRoutesParameter): Flow<Resource<List<RouteCode>>> = flow {
+    override fun execute(parameters: SearchRoutesParameter): Flow<Resource<List<RouteRegionCode>>> = flow {
         if (parameters.query.isNullOrBlank()) {
-            emit(Resource.Success(emptyList<RouteCode>()))
+            emit(Resource.Success(emptyList<RouteRegionCode>()))
         } else {
             val routeCodes = transitRepository.searchRoute(
                 query = parameters.query,

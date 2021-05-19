@@ -1,19 +1,16 @@
 package com.yosemiteyss.greentransit.app.stop
 
-import android.os.Parcelable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.yosemiteyss.greentransit.R
-import com.yosemiteyss.greentransit.domain.models.Coordinate
 import com.yosemiteyss.greentransit.domain.models.StopInfo
 import com.yosemiteyss.greentransit.domain.states.Resource
 import com.yosemiteyss.greentransit.domain.usecases.stop.GetStopInfoUseCase
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
-import kotlinx.parcelize.Parcelize
-import kotlinx.parcelize.RawValue
 
 /**
  * Created by kevin on 17/5/2021
@@ -53,6 +50,13 @@ class StopViewModel @AssistedInject constructor(
             initialValue = null
         )
 
+    private val _navigateToRoute = Channel<Pair<Long, String>>()
+    val navigateToRoute: Flow<Pair<Long, String>> = _navigateToRoute.receiveAsFlow()
+
+    fun onNavigateToRoute(routeId: Long, routeCode: String) {
+        _navigateToRoute.offer(Pair(routeId, routeCode))
+    }
+
     @dagger.assisted.AssistedFactory
     interface StopViewModelFactory {
         fun create(stopId: Long): StopViewModel
@@ -76,9 +80,3 @@ sealed class StopUiState {
     data class Error(val message: String?) : StopUiState()
     object Loading : StopUiState()
 }
-
-@Parcelize
-data class StopProperty(
-    val stopId: Long,
-    val coordinate: @RawValue Coordinate
-) : Parcelable

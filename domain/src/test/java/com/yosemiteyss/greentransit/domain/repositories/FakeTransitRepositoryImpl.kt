@@ -22,11 +22,11 @@ class FakeTransitRepositoryImpl : TransitRepository {
 
     val fakeStopRoutes: List<StopRoute> = MutableList(20) { createFakeStopRoute() }
 
-    val fakeStopEtaShifts: List<StopEtaShift> = MutableList(20) { createFakeStopEtaShift() }
+    val fakeStopRouteShiftEtas: List<StopRouteShiftEta> = MutableList(20) { createFakeStopEtaShift() }
 
-    val fakeRegionRoutes: List<RouteCode> = MutableList(20) { createFakeRouteCode() }
+    val fakeRouteRegionCodes: List<RouteRegionCode> = MutableList(20) { createFakeRouteCode() }
 
-    val fakeRouteCode: RouteCode = createFakeRouteCode()
+    val fakeRouteRegionCode: RouteRegionCode = createFakeRouteCode()
 
     override suspend fun getNearbyStops(startHash: String, endHash: String): List<NearbyStop> {
         if (throwNetworkError) throw Exception("Network error.")
@@ -38,10 +38,10 @@ class FakeTransitRepositoryImpl : TransitRepository {
         return fakeNearbyRoute
     }
 
-    override suspend fun getRegionRoutes(region: RouteRegion): Flow<PagingData<RouteCode>> {
+    override suspend fun getRegionRoutes(region: RouteRegion): Flow<PagingData<RouteRegionCode>> {
         return flowOf(
             PagingData.from(
-                fakeRegionRoutes.filter { it.region == region }
+                fakeRouteRegionCodes.filter { it.region == region }
             )
         )
     }
@@ -56,23 +56,23 @@ class FakeTransitRepositoryImpl : TransitRepository {
         return fakeStopRoutes
     }
 
-    override suspend fun getStopEtaShifts(stopId: Long): List<StopEtaShift> {
+    override suspend fun getStopRouteShiftEtas(stopId: Long): List<StopRouteShiftEta> {
         if (throwNetworkError) throw Exception("Network error.")
-        return fakeStopEtaShifts
+        return fakeStopRouteShiftEtas
     }
 
-    override suspend fun getRouteCode(routeId: Long): RouteCode {
+    override suspend fun getRouteCode(routeId: Long): RouteRegionCode {
         if (throwNetworkError) throw Exception("Network error.")
-        return fakeRouteCode
+        return fakeRouteRegionCode
     }
 
-    override suspend fun getRouteInfo(routeId: Long): List<RouteInfo> {
+    override suspend fun getRouteInfos(routeId: Long): List<RouteInfo> {
         TODO("Not yet implemented")
     }
 
-    override suspend fun searchRoute(query: String, numOfRoutes: Int): List<RouteCode> {
+    override suspend fun searchRoute(query: String, numOfRoutes: Int): List<RouteRegionCode> {
         if (throwNetworkError) throw Exception("Network error.")
-        return fakeRegionRoutes
+        return fakeRouteRegionCodes
     }
 
     fun setNetworkError(throwError: Boolean) {
@@ -125,9 +125,9 @@ class FakeTransitRepositoryImpl : TransitRepository {
         )
     }
 
-    private fun createFakeStopEtaShift(): StopEtaShift {
+    private fun createFakeStopEtaShift(): StopRouteShiftEta {
         val random = Random()
-        return StopEtaShift(
+        return StopRouteShiftEta(
             routeId = random.nextLong(),
             routeSeq = random.nextInt(),
             etaSeq = random.nextInt(),
@@ -137,8 +137,8 @@ class FakeTransitRepositoryImpl : TransitRepository {
         )
     }
 
-    private fun createFakeRouteCode(): RouteCode {
-        return RouteCode(
+    private fun createFakeRouteCode(): RouteRegionCode {
+        return RouteRegionCode(
             code = UUID.randomUUID().toString(),
             region = RouteRegion.values().random()
         )
@@ -148,7 +148,7 @@ class FakeTransitRepositoryImpl : TransitRepository {
         return RouteInfo(
             routeId = Random().nextLong(),
             description = UUID.randomUUID().toString(),
-            direction = MutableList(20) { createFakeRouteDirection() }
+            directions = MutableList(20) { createFakeRouteDirection() }
         )
     }
 

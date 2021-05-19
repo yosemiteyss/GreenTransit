@@ -19,7 +19,7 @@ import com.yosemiteyss.greentransit.databinding.RoutesEmptyItemBinding
  */
 
 class NearbyRoutesAdapter(
-    private val onRouteClicked: () -> Unit
+    private val onRouteClicked: (routeId: Long, routeCode: String) -> Unit
 ) : ListAdapter<NearbyRoutesListModel, NearbyRoutesViewHolder>(
     NearbyRoutesListModel.Diff
 ) {
@@ -63,7 +63,9 @@ class NearbyRoutesAdapter(
             itemModel.routeDest
         )
 
-        root.setOnClickListener { onRouteClicked }
+        root.setOnClickListener {
+            onRouteClicked(itemModel.routeId, itemModel.routeCode)
+        }
     }
 }
 

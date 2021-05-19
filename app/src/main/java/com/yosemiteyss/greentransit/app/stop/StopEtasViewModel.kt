@@ -5,10 +5,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.yosemiteyss.greentransit.app.stop.StopEtasListModel.StopEtasEmptyModel
 import com.yosemiteyss.greentransit.app.stop.StopEtasListModel.StopEtasShiftModel
-import com.yosemiteyss.greentransit.domain.models.StopEtaResult
+import com.yosemiteyss.greentransit.domain.models.StopRouteShiftEtaResult
 import com.yosemiteyss.greentransit.domain.states.Resource
-import com.yosemiteyss.greentransit.domain.usecases.stop.GetStopEtaShiftsParameters
-import com.yosemiteyss.greentransit.domain.usecases.stop.GetStopEtaShiftsUseCase
+import com.yosemiteyss.greentransit.domain.usecases.stop.GetStopRouteShiftEtasParameters
+import com.yosemiteyss.greentransit.domain.usecases.stop.GetStopRouteShiftEtasUseCase
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.*
@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 private const val FETCH_ETAS_INTERVAL = 20000L
 
 class StopEtasViewModel @AssistedInject constructor(
-    private val getStopEtaShiftsUseCase: GetStopEtaShiftsUseCase,
+    private val getStopRouteShiftEtasUseCase: GetStopRouteShiftEtasUseCase,
     @Assisted stopId: Long
 ) : ViewModel() {
 
@@ -30,12 +30,12 @@ class StopEtasViewModel @AssistedInject constructor(
 
     init {
         viewModelScope.launch {
-            val param = GetStopEtaShiftsParameters(
+            val param = GetStopRouteShiftEtasParameters(
                 stopId = stopId,
                 interval = FETCH_ETAS_INTERVAL
             )
 
-            getStopEtaShiftsUseCase(param).map { res ->
+            getStopRouteShiftEtasUseCase(param).map { res ->
                 when (res) {
                     is Resource.Success -> StopEtasUiState.Success(
                         buildStopEtasListModels(res.data)
@@ -52,12 +52,12 @@ class StopEtasViewModel @AssistedInject constructor(
     }
 
     private fun buildStopEtasListModels(
-        stopEtaShiftWithCodes: List<StopEtaResult>
+        routeShiftEtaResults: List<StopRouteShiftEtaResult>
     ): List<StopEtasListModel> {
-        if (stopEtaShiftWithCodes.isEmpty())
+        if (routeShiftEtaResults.isEmpty())
             return listOf(StopEtasEmptyModel)
 
-        return stopEtaShiftWithCodes.map {
+        return routeShiftEtaResults.map {
             StopEtasShiftModel(it)
         }
     }

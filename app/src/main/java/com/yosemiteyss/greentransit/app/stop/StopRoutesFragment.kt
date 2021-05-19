@@ -40,7 +40,9 @@ class StopRoutesFragment : Fragment(R.layout.fragment_stop_routes) {
             loadingProgressBar.setVisibilityAfterHide(View.GONE)
         }
 
-        val routesAdapter = StopRoutesAdapter()
+        val routesAdapter = StopRoutesAdapter { routeId, routeCode ->
+            stopViewModel.onNavigateToRoute(routeId, routeCode)
+        }
 
         with(binding.routesRecyclerView) {
             adapter = routesAdapter

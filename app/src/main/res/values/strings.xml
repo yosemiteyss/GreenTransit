@@ -15,8 +15,11 @@
     <string name="search_title">Search Route</string>
     <string name="search_clear_text">Clear Text</string>
 
+    <!-- Empty List -->
+    <string name="routes_empty">No route found</string>
+    <string name="stops_empty">No stop found</string>
+
     <!-- Nearby routes -->
-    <string name="nearby_routes_empty">No routes nearby</string>
     <string name="nearby_routes_dest">to %s</string>
     <string name="nearby_routes_count">Nearby Routes (%d)</string>
 
@@ -26,14 +29,23 @@
     <string name="region_nt">New Territories</string>
 
     <!-- Stop -->
-    <string name="stop_eta_mins">mins</string>
+    <string name="stop_coordinates">Stop %.3f, %.3f</string>
+    <string name="stop_default_remark">GMB Stop</string>
     <string name="stop_tab_eta">Upcoming</string>
     <string name="stop_tab_routes">Routes</string>
     <string name="stop_routes_stop_name">Stop #%d: %s</string>
-    <string name="stop_location_coordinates">Stop %.3f, %.3f</string>
-    <string name="stop_default_remark">GMB Stop</string>
+    <string name="stop_eta_shift_mins">mins</string>
     <string name="stop_eta_shift_code">%s (%s)</string>
     <string name="stop_eta_shift_dest">to %s</string>
+
+    <!-- Route -->
+    <string name="route_origin_title">From</string>
+    <string name="route_dest_title">To</string>
+
+    <!-- Route Direction -->
+    <string name="route_direction_title">Directions</string>
+    <string name="route_header">%s (%d)</string>
+    <string name="route_direction">%s → %s</string>
 
     <string name="search_bar_content_desc">Search Route</string>
     <string name="my_location_content_desc">My Location</string>

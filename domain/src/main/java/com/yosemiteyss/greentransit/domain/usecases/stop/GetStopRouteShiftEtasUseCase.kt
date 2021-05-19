@@ -1,7 +1,7 @@
 package com.yosemiteyss.greentransit.domain.usecases.stop
 
 import com.yosemiteyss.greentransit.domain.di.IoDispatcher
-import com.yosemiteyss.greentransit.domain.models.StopEtaResult
+import com.yosemiteyss.greentransit.domain.models.StopRouteShiftEtaResult
 import com.yosemiteyss.greentransit.domain.repositories.TransitRepository
 import com.yosemiteyss.greentransit.domain.states.Resource
 import com.yosemiteyss.greentransit.domain.usecases.FlowUseCase
@@ -14,17 +14,17 @@ import javax.inject.Inject
  * Created by kevin on 17/5/2021
  */
 
-class GetStopEtaShiftsUseCase @Inject constructor(
+class GetStopRouteShiftEtasUseCase @Inject constructor(
     private val transitRepository: TransitRepository,
     @IoDispatcher coroutineDispatcher: CoroutineDispatcher
-) : FlowUseCase<GetStopEtaShiftsParameters, List<StopEtaResult>>(coroutineDispatcher) {
+) : FlowUseCase<GetStopRouteShiftEtasParameters, List<StopRouteShiftEtaResult>>(coroutineDispatcher) {
 
     override fun execute(
-        parameters: GetStopEtaShiftsParameters
-    ): Flow<Resource<List<StopEtaResult>>> = flow {
+        parameters: GetStopRouteShiftEtasParameters
+    ): Flow<Resource<List<StopRouteShiftEtaResult>>> = flow {
         while (true) {
             // Get eta shifts
-            val etaShifts = transitRepository.getStopEtaShifts(stopId = parameters.stopId)
+            val etaShifts = transitRepository.getStopRouteShiftEtas(stopId = parameters.stopId)
             val routeIds = etaShifts.map { it.routeId }.distinct()
 
             coroutineScope {
@@ -37,18 +37,18 @@ class GetStopEtaShiftsUseCase @Inject constructor(
 
                 val routeInfos = routeIds.map { routeId ->
                     async {
-                        Pair(routeId, transitRepository.getRouteInfo(routeId))
+                        Pair(routeId, transitRepository.getRouteInfos(routeId))
                     }
                 }.awaitAll()
 
                 val results = etaShifts.sortedBy { it.etaMin }
                     .map { shift ->
-                        StopEtaResult(
+                        StopRouteShiftEtaResult(
                             routeId = shift.routeId,
                             routeSeq = shift.routeSeq,
-                            routeCode = routeCodes.first { it.first == shift.routeId }.second,
+                            routeRegionCode = routeCodes.first { it.first == shift.routeId }.second,
                             dest = routeInfos.first { it.first == shift.routeId }.second
-                                .map { it.direction }
+                                .map { it.directions }
                                 .flatten()
                                 .first { it.routeSeq == shift.routeSeq }
                                 .dest,
@@ -66,7 +66,7 @@ class GetStopEtaShiftsUseCase @Inject constructor(
     }
 }
 
-data class GetStopEtaShiftsParameters(
+data class GetStopRouteShiftEtasParameters(
     val stopId: Long,
     val interval: Long
 )

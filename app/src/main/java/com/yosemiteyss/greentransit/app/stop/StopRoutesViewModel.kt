@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.yosemiteyss.greentransit.app.stop.StopRoutesListModel.StopRouteEmptyModel
 import com.yosemiteyss.greentransit.app.stop.StopRoutesListModel.StopRouteItemModel
-import com.yosemiteyss.greentransit.domain.models.StopRouteWithCode
+import com.yosemiteyss.greentransit.domain.models.StopRouteResult
 import com.yosemiteyss.greentransit.domain.states.Resource
 import com.yosemiteyss.greentransit.domain.usecases.stop.GetStopRoutesUseCase
 import dagger.assisted.Assisted
@@ -44,12 +44,12 @@ class StopRoutesViewModel @AssistedInject constructor(
     }
 
     private fun buildStopRouteListModels(
-        stopRouteWithCodes: List<StopRouteWithCode>
+        stopRouteResults: List<StopRouteResult>
     ): List<StopRoutesListModel> {
-        if (stopRouteWithCodes.isEmpty())
+        if (stopRouteResults.isEmpty())
             return listOf(StopRouteEmptyModel)
 
-        return stopRouteWithCodes.map {
+        return stopRouteResults.map {
             StopRouteItemModel(it)
         }
     }

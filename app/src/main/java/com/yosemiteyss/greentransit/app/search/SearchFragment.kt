@@ -8,6 +8,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.yosemiteyss.greentransit.R
+import com.yosemiteyss.greentransit.app.route.RouteOption
 import com.yosemiteyss.greentransit.app.utils.*
 import com.yosemiteyss.greentransit.databinding.FragmentSearchBinding
 import com.yosemiteyss.greentransit.domain.models.RouteRegion
@@ -45,8 +46,12 @@ class SearchFragment : DialogFragment(R.layout.fragment_search) {
         }
 
         // Set recycler view
-        val searchAdapter = SearchAdapter {
-            // TODO: navigate to RouteDetail
+        val searchAdapter = SearchAdapter { routeRegionCode ->
+            findNavController(R.id.searchFragment)?.navigate(
+                SearchFragmentDirections.actionSearchFragmentToRouteFragment(
+                    RouteOption(routeRegionCode = routeRegionCode)
+                )
+            )
         }
 
         with(binding.searchRecyclerView) {

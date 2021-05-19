@@ -1,7 +1,7 @@
 package com.yosemiteyss.greentransit.domain.usecases.stop
 
 import com.yosemiteyss.greentransit.domain.di.IoDispatcher
-import com.yosemiteyss.greentransit.domain.models.StopRouteWithCode
+import com.yosemiteyss.greentransit.domain.models.StopRouteResult
 import com.yosemiteyss.greentransit.domain.repositories.TransitRepository
 import com.yosemiteyss.greentransit.domain.states.Resource
 import com.yosemiteyss.greentransit.domain.usecases.FlowUseCase
@@ -20,9 +20,9 @@ import javax.inject.Inject
 class GetStopRoutesUseCase @Inject constructor(
     private val transitRepository: TransitRepository,
     @IoDispatcher coroutineDispatcher: CoroutineDispatcher
-) : FlowUseCase<Long, List<StopRouteWithCode>>(coroutineDispatcher) {
+) : FlowUseCase<Long, List<StopRouteResult>>(coroutineDispatcher) {
 
-    override fun execute(parameters: Long): Flow<Resource<List<StopRouteWithCode>>> = flow {
+    override fun execute(parameters: Long): Flow<Resource<List<StopRouteResult>>> = flow {
         val stopRoutes = transitRepository.getStopRoutes(stopId = parameters)
         val routeIds = stopRoutes.map { it.routeId }
 
@@ -36,9 +36,9 @@ class GetStopRoutesUseCase @Inject constructor(
 
             // Map the result back to StopRouteWithCode
             val result = stopRoutes.map { stopRoute ->
-                StopRouteWithCode(
+                StopRouteResult(
                     stopRoute = stopRoute,
-                    routeCode = routeCodes.first { it.first == stopRoute.routeId }.second
+                    routeRegionCode = routeCodes.first { it.first == stopRoute.routeId }.second
                 )
             }
 

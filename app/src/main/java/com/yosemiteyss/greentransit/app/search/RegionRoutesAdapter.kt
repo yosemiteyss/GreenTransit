@@ -11,14 +11,14 @@ import com.yosemiteyss.greentransit.app.search.RegionRoutesListModel.*
 import com.yosemiteyss.greentransit.app.search.RegionRoutesViewHolder.*
 import com.yosemiteyss.greentransit.databinding.RegionRoutesListItemBinding
 import com.yosemiteyss.greentransit.databinding.RoutesEmptyItemBinding
-import com.yosemiteyss.greentransit.domain.models.RouteCode
+import com.yosemiteyss.greentransit.domain.models.RouteRegionCode
 
 /**
  * Created by kevin on 17/5/2021
  */
 
 class RegionRoutesAdapter(
-    private val onRouteClicked: () -> Unit
+    private val onRouteClicked: (routeRegionCode: RouteRegionCode) -> Unit
 ) : PagingDataAdapter<RegionRoutesListModel, RegionRoutesViewHolder>(
     RegionRoutesListModel.Diff
 ) {
@@ -60,8 +60,11 @@ class RegionRoutesAdapter(
     ) = binding.run {
         if (itemModel == null) return@run
 
-        routeCodeTextView.text = itemModel.routeCode.code
-        root.setOnClickListener { onRouteClicked() }
+        routeCodeTextView.text = itemModel.routeRegionCode.code
+
+        root.setOnClickListener {
+            onRouteClicked(itemModel.routeRegionCode)
+        }
     }
 }
 
@@ -77,7 +80,7 @@ sealed class RegionRoutesViewHolder(itemView: View) : RecyclerView.ViewHolder(it
 
 sealed class RegionRoutesListModel {
     data class RegionRoutesItemModel(
-        val routeCode: RouteCode
+        val routeRegionCode: RouteRegionCode
     ) : RegionRoutesListModel()
 
     object RegionRoutesEmptyModel : RegionRoutesListModel()

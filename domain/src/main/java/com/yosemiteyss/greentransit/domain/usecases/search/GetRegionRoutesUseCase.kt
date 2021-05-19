@@ -2,8 +2,8 @@ package com.yosemiteyss.greentransit.domain.usecases.search
 
 import androidx.paging.PagingData
 import com.yosemiteyss.greentransit.domain.di.IoDispatcher
-import com.yosemiteyss.greentransit.domain.models.RouteCode
 import com.yosemiteyss.greentransit.domain.models.RouteRegion
+import com.yosemiteyss.greentransit.domain.models.RouteRegionCode
 import com.yosemiteyss.greentransit.domain.repositories.TransitRepository
 import com.yosemiteyss.greentransit.domain.usecases.PagingUseCase
 import kotlinx.coroutines.CoroutineDispatcher
@@ -19,9 +19,9 @@ import javax.inject.Inject
 class GetRegionRoutesUseCase @Inject constructor(
     private val transitRepository: TransitRepository,
     @IoDispatcher coroutineDispatcher: CoroutineDispatcher
-) : PagingUseCase<RouteRegion, RouteCode>(coroutineDispatcher) {
+) : PagingUseCase<RouteRegion, RouteRegionCode>(coroutineDispatcher) {
 
-    override fun execute(parameters: RouteRegion): Flow<PagingData<RouteCode>> = flow {
+    override fun execute(parameters: RouteRegion): Flow<PagingData<RouteRegionCode>> = flow {
         emitAll(transitRepository.getRegionRoutes(parameters))
     }
 }

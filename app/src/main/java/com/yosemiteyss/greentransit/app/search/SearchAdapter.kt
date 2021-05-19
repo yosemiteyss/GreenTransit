@@ -10,14 +10,14 @@ import com.yosemiteyss.greentransit.R
 import com.yosemiteyss.greentransit.app.search.SearchListModel.SearchResultListModel
 import com.yosemiteyss.greentransit.app.search.SearchViewHolder.SearchResultViewHolder
 import com.yosemiteyss.greentransit.databinding.SearchResultItemBinding
-import com.yosemiteyss.greentransit.domain.models.RouteCode
+import com.yosemiteyss.greentransit.domain.models.RouteRegionCode
 
 /**
  * Created by kevin on 16/5/2021
  */
 
 class SearchAdapter(
-    private val onResultClicked: (routeCode: RouteCode) -> Unit
+    private val onRouteClicked: (routeRegionCode: RouteRegionCode) -> Unit
 ) : ListAdapter<SearchListModel, SearchViewHolder>(SearchListModel.Diff) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder {
@@ -49,9 +49,12 @@ class SearchAdapter(
         binding: SearchResultItemBinding,
         resultListModel: SearchResultListModel
     ) = binding.run {
-        routeCodeTextView.text = resultListModel.routeCode.code
-        routeRegionTextView.text = resultListModel.routeCode.region.abbr
-        root.setOnClickListener { onResultClicked(resultListModel.routeCode) }
+        routeCodeTextView.text = resultListModel.routeRegionCode.code
+        routeRegionTextView.text = resultListModel.routeRegionCode.region.abbr
+
+        root.setOnClickListener {
+            onRouteClicked(resultListModel.routeRegionCode)
+        }
     }
 }
 
@@ -63,7 +66,7 @@ sealed class SearchViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView
 
 sealed class SearchListModel {
     data class SearchResultListModel(
-        val routeCode: RouteCode
+        val routeRegionCode: RouteRegionCode
     ) : SearchListModel()
 
     companion object {

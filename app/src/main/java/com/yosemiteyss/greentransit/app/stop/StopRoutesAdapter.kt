@@ -13,13 +13,15 @@ import com.yosemiteyss.greentransit.app.stop.StopRoutesViewHolder.StopRouteEmpty
 import com.yosemiteyss.greentransit.app.stop.StopRoutesViewHolder.StopRouteItemViewHolder
 import com.yosemiteyss.greentransit.databinding.RoutesEmptyItemBinding
 import com.yosemiteyss.greentransit.databinding.StopRouteListItemBinding
-import com.yosemiteyss.greentransit.domain.models.StopRouteWithCode
+import com.yosemiteyss.greentransit.domain.models.StopRouteResult
 
 /**
  * Created by kevin on 17/5/2021
  */
 
-class StopRoutesAdapter : ListAdapter<StopRoutesListModel, StopRoutesViewHolder>(StopRoutesListModel.Diff) {
+class StopRoutesAdapter(
+    private val onRouteClicked: (routeId: Long, routeCode: String) -> Unit
+) : ListAdapter<StopRoutesListModel, StopRoutesViewHolder>(StopRoutesListModel.Diff) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StopRoutesViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -54,12 +56,19 @@ class StopRoutesAdapter : ListAdapter<StopRoutesListModel, StopRoutesViewHolder>
         binding: StopRouteListItemBinding,
         routeItemModel: StopRouteItemModel
     ) = binding.run {
-        routeCodeTextView.text = routeItemModel.stopRouteWithCode.routeCode.code
+        routeCodeTextView.text = routeItemModel.stopRouteResult.routeRegionCode.code
         routeStopNameTextView.text = root.context.getString(
             R.string.stop_routes_stop_name,
-            routeItemModel.stopRouteWithCode.stopRoute.stopSeq,
-            routeItemModel.stopRouteWithCode.stopRoute.name
+            routeItemModel.stopRouteResult.stopRoute.stopSeq,
+            routeItemModel.stopRouteResult.stopRoute.name
         )
+
+        root.setOnClickListener {
+            onRouteClicked(
+                routeItemModel.stopRouteResult.stopRoute.routeId,
+                routeItemModel.stopRouteResult.routeRegionCode.code
+            )
+        }
     }
 }
 
@@ -75,7 +84,7 @@ sealed class StopRoutesViewHolder(itemView: View) : RecyclerView.ViewHolder(item
 
 sealed class StopRoutesListModel {
     data class StopRouteItemModel(
-        val stopRouteWithCode: StopRouteWithCode
+        val stopRouteResult: StopRouteResult
     ) : StopRoutesListModel()
 
     object StopRouteEmptyModel : StopRoutesListModel()
@@ -87,8 +96,8 @@ sealed class StopRoutesListModel {
                 newItem: StopRoutesListModel
             ): Boolean = when {
                 oldItem is StopRouteItemModel && newItem is StopRouteItemModel ->
-                    oldItem.stopRouteWithCode.stopRoute.routeId ==
-                        newItem.stopRouteWithCode.stopRoute.routeId
+                    oldItem.stopRouteResult.stopRoute.routeId ==
+                        newItem.stopRouteResult.stopRoute.routeId
                 oldItem is StopRouteEmptyModel && newItem is StopRouteEmptyModel ->
                     true
                 else -> false
@@ -99,7 +108,7 @@ sealed class StopRoutesListModel {
                 newItem: StopRoutesListModel
             ): Boolean = when {
                 oldItem is StopRouteItemModel && newItem is StopRouteItemModel ->
-                    oldItem.stopRouteWithCode == newItem.stopRouteWithCode
+                    oldItem.stopRouteResult == newItem.stopRouteResult
                 oldItem is StopRouteEmptyModel && newItem is StopRouteEmptyModel ->
                     true
                 else -> false

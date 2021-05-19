@@ -18,6 +18,9 @@
         <action
             android:id="@+id/action_homeFragment_to_stopFragment"
             app:destination="@id/stopFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_routeFragment"
+            app:destination="@id/routeFragment" />
     </fragment>
 
     <dialog
@@ -27,6 +30,9 @@
         <action
             android:id="@+id/action_searchFragment_to_regionRoutesFragment"
             app:destination="@id/regionRoutesFragment" />
+        <action
+            android:id="@+id/action_searchFragment_to_routeFragment"
+            app:destination="@id/routeFragment" />
     </dialog>
 
     <dialog
@@ -36,6 +42,9 @@
         <argument
             android:name="region"
             app:argType="com.yosemiteyss.greentransit.domain.models.RouteRegion"/>
+        <action
+            android:id="@+id/action_regionRoutesFragment_to_routeFragment"
+            app:destination="@id/routeFragment" />
     </dialog>
 
     <dialog
@@ -45,6 +54,24 @@
         <argument
             android:name="stopId"
             app:argType="long"/>
+        <argument
+            android:name="latitude"
+            app:argType="float"/>
+        <argument
+            android:name="longitude"
+            app:argType="float"/>
+        <action
+            android:id="@+id/action_stopFragment_to_routeFragment"
+            app:destination="@id/routeFragment" />
+    </dialog>
+
+    <dialog
+        android:id="@+id/routeFragment"
+        android:name="com.yosemiteyss.greentransit.app.route.RouteFragment"
+        tools:layout="@layout/fragment_route">
+        <argument
+            android:name="routeOption"
+            app:argType="com.yosemiteyss.greentransit.app.route.RouteOption"/>
     </dialog>
 
 </navigation>

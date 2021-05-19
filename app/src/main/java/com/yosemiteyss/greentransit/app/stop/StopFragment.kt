@@ -9,9 +9,11 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.maps.android.ktx.awaitMap
 import com.yosemiteyss.greentransit.R
+import com.yosemiteyss.greentransit.app.route.RouteOption
 import com.yosemiteyss.greentransit.app.utils.*
 import com.yosemiteyss.greentransit.databinding.FragmentStopBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -48,6 +50,13 @@ class StopFragment : FullScreenDialogFragment(R.layout.fragment_stop) {
                 findNavController(R.id.stopFragment)?.navigateUp()
             }
         }
+
+        // Set coordinate title
+        binding.stopCoordinateTextView.text = getString(
+            R.string.stop_coordinates,
+            navArgs.latitude,
+            navArgs.longitude
+        )
 
         // Setup view pager
         viewLifecycleOwner.lifecycleScope.launch {
@@ -92,17 +101,32 @@ class StopFragment : FullScreenDialogFragment(R.layout.fragment_stop) {
                     isMapToolbarEnabled = false
                     isScrollGesturesEnabled = false
                 }
+
+                // Switch map to night mode
+                if (requireContext().isNightModeOn()) {
+                    val nightStyle = MapStyleOptions.loadRawResourceStyle(
+                        requireContext(), R.raw.night_map_style
+                    )
+
+                    setMapStyle(nightStyle)
+                }
+            }
+        }
+
+        // Navigate to Route
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.navigateToRoute.collect {
+                findNavController(R.id.stopFragment)?.navigate(
+                    StopFragmentDirections.actionStopFragmentToRouteFragment(
+                        RouteOption(routeId = it.first, routeCode = it.second)
+                    )
+                )
             }
         }
     }
 
     private fun setupUI(uiState: StopUiState.Success) = with(binding) {
-        stopCoordinateTextView.text = getString(
-            R.string.stop_location_coordinates,
-            uiState.data.location.latitude,
-            uiState.data.location.longitude
-        )
-
+        // Show remarks if the stop is disabled
         stopRemarkTextView.text = uiState.data.remarks ?: getString(R.string.stop_default_remark)
 
         // Move camera to stop location
