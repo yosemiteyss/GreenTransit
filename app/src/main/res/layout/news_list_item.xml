@@ -5,79 +5,54 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="@dimen/spacing_large"
-    android:layout_marginTop="@dimen/spacing_xmedium"
-    android:layout_marginEnd="@dimen/spacing_large"
-    android:layout_marginBottom="@dimen/spacing_xmedium"
+    android:layout_marginHorizontal="@dimen/spacing_large"
+    android:layout_marginVertical="@dimen/spacing_xmedium"
     android:clickable="true"
     android:focusable="true"
-    app:cardCornerRadius="10dp">
+    app:shapeAppearance="?attr/shapeAppearanceLargeComponent"
+    app:cardBackgroundColor="#f4f4f4">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#F4F4F4">
+        android:padding="@dimen/spacing_large">
 
         <TextView
-            android:id="@+id/currentStatus"
+            android:id="@+id/current_status_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
             android:background="@drawable/round_corner_box"
-            android:padding="@dimen/spacing_medium"
+            android:padding="@dimen/spacing_xmedium"
+            android:textAppearance="?attr/textAppearanceCaption"
             android:textColor="@color/white"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="UPDATED" />
 
         <TextView
-            android:id="@+id/engShort"
+            android:id="@+id/content_text_view"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/round_corner_box"
-            android:padding="6dp"
-            android:textColor="@color/black"
-            android:textSize="16sp"
+            android:layout_marginTop="@dimen/spacing_xmedium"
+            android:padding="@dimen/spacing_xmedium"
+            android:textAppearance="?attr/textAppearanceBody2"
+            android:textColor="@color/material_on_surface_emphasis_medium"
             android:ellipsize="end"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/currentStatus"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/current_status_text_view"
             tools:text="Due to watermain emergency works , the fast lane of Wan Po Road (Tseung Kwan O Tunnel bound) near Pung Loi Avenue is closed to all traffic. Only remaining lane is still available to motorists." />
 
         <TextView
-            android:id="@+id/textView5"
+            android:id="@+id/date_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="16dp"
-            android:textSize="12sp"
+            android:textAppearance="?attr/textAppearanceCaption"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="2021/5/17 09:32:21" />
-
-        <View
-            android:id="@+id/bottom_bar_view"
-            android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/engShort" />
-
-        <TextView
-            android:id="@+id/textView8"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="2dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:text="..." />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

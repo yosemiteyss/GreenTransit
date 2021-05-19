@@ -21,8 +21,8 @@ class NewsViewModel @Inject constructor(
     @IoDispatcher private val coroutineDispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
-    private val _trafficNewsMutableList = MutableLiveData<List<TrafficNewsListModel>>(emptyList())
-    val trafficNews: LiveData<List<TrafficNewsListModel>> = _trafficNewsMutableList
+    private val _newsUiState = MutableLiveData<NewsUiState>(NewsUiState.Loading)
+    val newsUiState: LiveData<NewsUiState> = _newsUiState
 
     init {
         viewModelScope.launch(coroutineDispatcher) {
@@ -37,11 +37,21 @@ class NewsViewModel @Inject constructor(
                         TrafficNewsListModel.TrafficNewsItem(it)
                     })
                 }
+
+                _newsUiState.postValue(NewsUiState.Success(newsListModel))
             } catch (e: Exception) {
                 newsListModel.add(TrafficNewsListModel.TrafficNewsEmptyItem)
-            }
 
-            _trafficNewsMutableList.postValue(newsListModel)
+                _newsUiState.postValue(
+                    NewsUiState.Error(newsListModel, e.message)
+                )
+            }
         }
     }
+}
+
+sealed class NewsUiState {
+    data class Success(val data: List<TrafficNewsListModel>) : NewsUiState()
+    data class Error(val data: List<TrafficNewsListModel>, val message: String?) : NewsUiState()
+    object Loading : NewsUiState()
 }

@@ -53,6 +53,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spacing_xmedium"
+        android:background="@android:color/transparent"
         app:layout_constraintTop_toBottomOf="@id/stop_remark_text_view"/>
 
     <androidx.viewpager2.widget.ViewPager2

@@ -25,7 +25,9 @@
 
     <color name="grey">#202124</color>
 
-    <color name="new_red">#c30000</color>
-    <color name="new_green">#1d9a6c</color>
+    <color name="news_card_light">#f4f4f4</color>
+    <color name="news_card_dark">#424242</color>
+    <color name="news_status_red">#c30000</color>
+    <color name="news_status_green">#1d9a6c</color>
 
 </resources>

@@ -63,23 +63,35 @@ class NewsAdapter : ListAdapter<TrafficNewsListModel, TrafficNewsViewHolder>(Tra
         binding: NewsListItemBinding,
         trafficNewsListModel: TrafficNewsItem
     ) = binding.run {
-        val relativeTime = DateUtils.getRelativeTimeSpanString(trafficNewsListModel.trafficNews.referenceDate.time,
-        Date().time, DateUtils.MINUTE_IN_MILLIS, DateUtils.FORMAT_ABBREV_RELATIVE).toString()
+        currentStatusTextView.text = trafficNewsListModel.trafficNews.currentStatus.toString()
 
-        currentStatus.text = trafficNewsListModel.trafficNews.currentStatus.toString()
-        val color = when (trafficNewsListModel.trafficNews.currentStatus) {
-            TrafficNewsStatus.NEW -> root.context.getColorCompat(R.color.new_red)
-            TrafficNewsStatus.UPDATED -> root.context.getColorCompat(R.color.new_green)
+        val statusColor = when (trafficNewsListModel.trafficNews.currentStatus) {
+            TrafficNewsStatus.NEW -> root.context.getColorCompat(R.color.news_status_red)
+            TrafficNewsStatus.UPDATED -> root.context.getColorCompat(R.color.news_status_green)
         }
-        currentStatus.backgroundTintList = ColorStateList.valueOf(color)
-        textView5.text = root.context.getString(R.string.news_last_updated, relativeTime)
-        with(engShort) {
+
+        currentStatusTextView.backgroundTintList = ColorStateList.valueOf(statusColor)
+
+        val relativeTime = DateUtils.getRelativeTimeSpanString(
+            trafficNewsListModel.trafficNews.referenceDate.time,
+            Date().time,
+            DateUtils.MINUTE_IN_MILLIS,
+            DateUtils.FORMAT_ABBREV_RELATIVE
+        ).toString()
+
+        dateTextView.text = root.context.getString(
+            R.string.news_last_updated,
+            relativeTime
+        )
+
+        with(contentTextView) {
             text = trafficNewsListModel.trafficNews.engShort
             maxLines = NEWS_COLLAPSED_LINES
         }
 
+        // Collapse or expand
         root.setOnClickListener {
-            engShort.maxLines = if (engShort.maxLines == NEWS_COLLAPSED_LINES)
+            contentTextView.maxLines = if (contentTextView.maxLines == NEWS_COLLAPSED_LINES)
                 NEWS_MAX_LINES else NEWS_COLLAPSED_LINES
         }
     }

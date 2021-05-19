@@ -17,8 +17,7 @@
 
     <style name="ShapeAppearance.GreenTransit.LargeComponent" parent="ShapeAppearance.MaterialComponents.LargeComponent">
         <item name="cornerFamily">rounded</item>
-        <item name="cornerSizeTopLeft">@dimen/large_component_corner_radius</item>
-        <item name="cornerSizeTopRight">@dimen/large_component_corner_radius</item>
+        <item name="cornerSize">@dimen/large_component_corner_radius</item>
     </style>
 
     <dimen name="small_component_corner_radius">4dp</dimen>

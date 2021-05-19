@@ -50,6 +50,9 @@
     <string name="search_bar_content_desc">Search Route</string>
     <string name="my_location_content_desc">My Location</string>
 
+    <!-- News -->
+    <string name="news_header_title">Traffic Information at your fingertips</string>
+    <string name="news_header_subtitle">Data provided by Transport Department</string>
     <string name="news_last_updated">Last updated: %s</string>
 
 </resources>

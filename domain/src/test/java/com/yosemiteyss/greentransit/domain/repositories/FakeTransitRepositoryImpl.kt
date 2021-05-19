@@ -67,7 +67,22 @@ class FakeTransitRepositoryImpl : TransitRepository {
     }
 
     override suspend fun getRouteInfos(routeId: Long): List<RouteInfo> {
-        TODO("Not yet implemented")
+        throw Exception("Network error.")
+    }
+
+    override suspend fun getRouteInfos(routeRegionCode: RouteRegionCode): List<RouteInfo> {
+        throw Exception("Network error.")
+    }
+
+    override suspend fun getRouteStops(routeId: Long, routeSeq: Int): List<RouteStop> {
+        throw Exception("Network error.")
+    }
+
+    override suspend fun getRouteStopShiftEtas(
+        routeId: Long,
+        stopId: Long
+    ): List<RouteStopShiftEta> {
+        throw Exception("Network error.")
     }
 
     override suspend fun searchRoute(query: String, numOfRoutes: Int): List<RouteRegionCode> {
