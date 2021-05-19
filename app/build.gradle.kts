@@ -126,9 +126,14 @@ dependencies {
     testImplementation(Dependencies.JUNIT)
     testImplementation(Dependencies.MOCKK)
     testImplementation(Dependencies.TURBINE)
+    testImplementation(Dependencies.TEST_CORE)
 
     // Android Test
     androidTestImplementation(Dependencies.HILT_TESTING)
+    androidTestImplementation(Dependencies.TEST_ESPRESSO_CORE)
+    androidTestImplementation(Dependencies.TEST_RUNNER)
+    androidTestImplementation(Dependencies.TEST_EXT_JUNIT_KTX)
+    androidTestImplementation(Dependencies.NAVIGATION_TESTING)
     debugImplementation(Dependencies.FRAGMENT_TESTING)
     kaptAndroidTest(Annotation.HILT_ANDROID_COMPILER)
 }

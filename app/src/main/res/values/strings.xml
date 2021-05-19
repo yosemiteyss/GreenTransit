@@ -50,4 +50,6 @@
     <string name="search_bar_content_desc">Search Route</string>
     <string name="my_location_content_desc">My Location</string>
 
+    <string name="news_last_updated">Last updated: %s</string>
+
 </resources>
