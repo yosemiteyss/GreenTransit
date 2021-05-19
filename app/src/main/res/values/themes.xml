@@ -60,6 +60,7 @@
 
         <!-- Others -->
         <item name="searchBarColor">@color/green_50</item>
+        <item name="newsItemColor">@color/news_card_light</item>
     </style>
 
 </resources>

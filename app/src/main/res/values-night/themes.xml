@@ -31,6 +31,7 @@
         <item name="colorOnSurface">@color/white</item>
 
         <item name="searchBarColor">@color/background_dark</item>
+        <item name="newsItemColor">@color/news_card_dark</item>
     </style>
     
 </resources>
