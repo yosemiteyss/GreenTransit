@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.yosemiteyss.greentransit.R
+import com.yosemiteyss.greentransit.app.route.RouteOption
 import com.yosemiteyss.greentransit.domain.models.StopInfo
 import com.yosemiteyss.greentransit.domain.states.Resource
 import com.yosemiteyss.greentransit.domain.usecases.stop.GetStopInfoUseCase
@@ -50,11 +51,13 @@ class StopViewModel @AssistedInject constructor(
             initialValue = null
         )
 
-    private val _navigateToRoute = Channel<Pair<Long, String>>()
-    val navigateToRoute: Flow<Pair<Long, String>> = _navigateToRoute.receiveAsFlow()
+    private val _navigateToRoute = Channel<RouteOption>()
+    val navigateToRoute: Flow<RouteOption> = _navigateToRoute.receiveAsFlow()
 
     fun onNavigateToRoute(routeId: Long, routeCode: String) {
-        _navigateToRoute.offer(Pair(routeId, routeCode))
+        _navigateToRoute.offer(
+            RouteOption(routeId = routeId, routeCode = routeCode)
+        )
     }
 
     @dagger.assisted.AssistedFactory

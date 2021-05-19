@@ -5,6 +5,7 @@ package com.yosemiteyss.greentransit.domain.models
  */
 
 data class StopInfo(
+    val stopId: Long,
     val location: Coordinate,
     val enabled: Boolean,
     val remarks: String?

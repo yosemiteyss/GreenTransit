@@ -1,11 +1,12 @@
 package com.yosemiteyss.greentransit.app.route
 
+import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.yosemiteyss.greentransit.R
 import com.yosemiteyss.greentransit.app.route.RouteStopsListModel.RouteStopEmptyModel
@@ -15,6 +16,7 @@ import com.yosemiteyss.greentransit.app.route.RouteStopsViewHolder.RouteStopsIte
 import com.yosemiteyss.greentransit.app.utils.drawableFitVertical
 import com.yosemiteyss.greentransit.app.utils.format
 import com.yosemiteyss.greentransit.app.utils.getDrawableOrNull
+import com.yosemiteyss.greentransit.app.utils.themeColor
 import com.yosemiteyss.greentransit.databinding.RouteStopListItemBinding
 import com.yosemiteyss.greentransit.databinding.StopsEmptyItemBinding
 import java.util.*
@@ -26,8 +28,47 @@ import java.util.*
 private const val MAX_DISPLAY_MINUTES = 59
 
 class RouteStopsAdapter(
+    private val onStopClicked: (stopId: Long) -> Unit
+) : RecyclerView.Adapter<RouteStopsViewHolder>() {
 
-) : ListAdapter<RouteStopsListModel, RouteStopsViewHolder>(RouteStopsListModel.Diff) {
+    private val differ = AsyncListDiffer(this, RouteStopsListModel.Diff)
+
+    var routeStopsListModels: List<RouteStopsListModel> = emptyList()
+        set(value) {
+            field = value
+            selectedPosition = RecyclerView.NO_POSITION
+            differ.submitList(value)
+        }
+
+    private var selectedPosition: Int = RecyclerView.NO_POSITION
+        set(value) {
+            if (value != field) {
+                // Uncheck previous item
+                if (field != RecyclerView.NO_POSITION) {
+                    val previousItem = differ.currentList[field]
+                    if (previousItem is RouteStopItemModel &&
+                        previousItem.isSelected
+                    ) {
+                        previousItem.isSelected = false
+                        notifyItemChanged(field)
+                    }
+                }
+
+                // Check new item
+                if (value != RecyclerView.NO_POSITION) {
+                    val selectedItem = differ.currentList[value]
+                    if (selectedItem is RouteStopItemModel &&
+                        !selectedItem.isSelected
+                    ) {
+                        selectedItem.isSelected = true
+                        onStopClicked(selectedItem.stopId)
+                        notifyItemChanged(value)
+                    }
+                }
+
+                field = value
+            }
+        }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RouteStopsViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -46,24 +87,42 @@ class RouteStopsAdapter(
         if (holder is RouteStopsItemViewHolder) {
             bindRouteStopItem(
                 binding = holder.binding,
-                stopItemModel = getItem(position) as RouteStopItemModel
+                stopItemModel = differ.currentList[position] as RouteStopItemModel,
+                position = position
             )
         }
     }
 
     override fun getItemViewType(position: Int): Int {
-        return when (getItem(position)) {
+        return when (differ.currentList[position]) {
             is RouteStopItemModel -> R.layout.route_stop_list_item
             is RouteStopEmptyModel -> R.layout.stops_empty_item
         }
     }
 
+    override fun getItemCount(): Int = differ.currentList.size
+
     private fun bindRouteStopItem(
         binding: RouteStopListItemBinding,
-        stopItemModel: RouteStopItemModel
+        stopItemModel: RouteStopItemModel,
+        position: Int
     ) = binding.run {
         stopNameTextView.text = stopItemModel.stopName
-        stopSeqTextView.text = stopItemModel.stopSeq.toString()
+
+        with(stopSeqTextView) {
+            text = stopItemModel.stopSeq.toString()
+
+            if (stopItemModel.isSelected) {
+                setTextColor(context.themeColor(R.attr.colorOnPrimary))
+                background = context.getDrawableOrNull(R.drawable.shape_circle)
+                backgroundTintList = ColorStateList.valueOf(
+                    context.themeColor(R.attr.colorPrimary)
+                )
+            } else {
+                setTextColor(context.themeColor(R.attr.colorPrimary))
+                background = null
+            }
+        }
 
         with(etaRemarksDescriptionTextView) {
             isVisible = !stopItemModel.etaDescription.isNullOrBlank() ||
@@ -91,6 +150,11 @@ class RouteStopsAdapter(
 
         etaMinSuffixTextView.isVisible = stopItemModel.etaMin != null &&
             stopItemModel.etaMin <= MAX_DISPLAY_MINUTES
+
+        root.setOnClickListener {
+            onStopClicked(stopItemModel.stopId)
+            selectedPosition = position
+        }
     }
 }
 
@@ -114,7 +178,7 @@ sealed class RouteStopsListModel {
         val etaMin: Int?,
         val etaDate: Date?,
         val etaRemarks: String?,
-        val isCurrent: Boolean = false
+        var isSelected: Boolean = false
     ) : RouteStopsListModel()
 
     object RouteStopEmptyModel : RouteStopsListModel()

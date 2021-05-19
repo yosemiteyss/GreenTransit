@@ -69,7 +69,7 @@ class TransitRepositoryImpl @Inject constructor(
 
     override suspend fun getStopInfo(stopId: Long): StopInfo {
         return gmbService.getStopInfo(stopId)
-            .let { transitMapper.toStopInfo(it) }
+            .let { transitMapper.toStopInfo(stopId, it) }
     }
 
     override suspend fun getStopRoutes(stopId: Long): List<StopRoute> {

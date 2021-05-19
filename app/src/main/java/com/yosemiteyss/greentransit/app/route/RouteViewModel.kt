@@ -6,15 +6,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.yosemiteyss.greentransit.app.route.RouteStopsListModel.RouteStopEmptyModel
 import com.yosemiteyss.greentransit.app.route.RouteStopsListModel.RouteStopItemModel
-import com.yosemiteyss.greentransit.domain.models.RouteDirection
-import com.yosemiteyss.greentransit.domain.models.RouteInfo
-import com.yosemiteyss.greentransit.domain.models.RouteRegionCode
-import com.yosemiteyss.greentransit.domain.models.RouteStopShiftEtaResult
+import com.yosemiteyss.greentransit.domain.models.*
 import com.yosemiteyss.greentransit.domain.states.Resource
+import com.yosemiteyss.greentransit.domain.states.getSuccessDataOr
 import com.yosemiteyss.greentransit.domain.usecases.route.GetRouteInfoParameters
 import com.yosemiteyss.greentransit.domain.usecases.route.GetRouteInfoUseCase
 import com.yosemiteyss.greentransit.domain.usecases.route.GetRouteStopShiftEtasParameters
 import com.yosemiteyss.greentransit.domain.usecases.route.GetRouteStopShiftEtasUseCase
+import com.yosemiteyss.greentransit.domain.usecases.search.GetRouteStopInfosUseCase
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.*
@@ -30,7 +29,8 @@ private const val FETCH_ETAS_INTERVAL = 20000L
 
 class RouteViewModel @AssistedInject constructor(
     getRouteInfoUseCase: GetRouteInfoUseCase,
-    private val getRouteStopShiftEtasUseCase: GetRouteStopShiftEtasUseCase,
+    getRouteStopShiftEtasUseCase: GetRouteStopShiftEtasUseCase,
+    getRouteStopInfosUseCase: GetRouteStopInfosUseCase,
     @Assisted routeOption: RouteOption
 ): ViewModel() {
 
@@ -42,8 +42,8 @@ class RouteViewModel @AssistedInject constructor(
     private val _currentDirection = MutableStateFlow<RouteDirection?>(null)
     val currentDirection: StateFlow<RouteDirection?> = _currentDirection.asStateFlow()
 
-    // For each direction, use route_id, route_eq, get all the stops
-    val stopsListModels: StateFlow<Resource<List<RouteStopsListModel>>> = _currentRouteId.filterNotNull()
+    private val _stopShiftEtaResults: StateFlow<Resource<List<RouteStopShiftEtaResult>>> = _currentRouteId
+        .filterNotNull()
         .combine(_currentDirection.filterNotNull()) { routeId, direction ->
             GetRouteStopShiftEtasParameters(
                 routeId = routeId,
@@ -51,22 +51,34 @@ class RouteViewModel @AssistedInject constructor(
                 interval = FETCH_ETAS_INTERVAL
             )
         }
-        .flatMapLatest {
-            getRouteStopShiftEtasUseCase(it)
-        }
-        .map { res ->
-            when (res) {
-                is Resource.Success -> Resource.Success(buildRouteStopsListModels(res.data))
-                is Resource.Error -> Resource.Error(res.message)
-                is Resource.Loading -> Resource.Loading()
-            }
-
-        }
+        .flatMapLatest { getRouteStopShiftEtasUseCase(it) }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(),
             initialValue = Resource.Loading()
         )
+
+    val stopsListModels: Flow<Resource<List<RouteStopsListModel>>> = _stopShiftEtaResults
+        .map { res ->
+            when (res) {
+                is Resource.Success -> Resource.Success(
+                    buildRouteStopsListModels(results = res.data)
+                )
+                is Resource.Error -> Resource.Error(res.message)
+                is Resource.Loading -> Resource.Loading()
+            }
+        }
+
+    val directionStops: Flow<List<StopInfo>> = _stopShiftEtaResults
+        .map { res ->
+            when (res) {
+                is Resource.Success -> res.data.map { it.routeStop.stopId }
+                else -> emptyList()
+            }
+        }
+        .distinctUntilChanged()
+        .flatMapLatest { getRouteStopInfosUseCase(it) }
+        .map { it.getSuccessDataOr(emptyList()) }
 
     init {
         // Get route info
@@ -118,7 +130,7 @@ class RouteViewModel @AssistedInject constructor(
                 etaDescription = result.routeStopShiftEta?.etaDescription,
                 etaMin = result.routeStopShiftEta?.etaMin,
                 etaDate = result.routeStopShiftEta?.etaDate,
-                etaRemarks = result.routeStopShiftEta?.etaRemarks,
+                etaRemarks = result.routeStopShiftEta?.etaRemarks
             )
         }
     }

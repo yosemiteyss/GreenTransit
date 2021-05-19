@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.LocationSource
 import com.google.android.gms.maps.LocationSource.*
@@ -46,7 +45,7 @@ class HomeFragment : Fragment(R.layout.fragment_home),
     private val homeViewModel: HomeViewModel by viewModels()
     private var onLocationChangedListener: OnLocationChangedListener? = null
 
-    private var nearbyStopMarkers: MutableList<Marker> = mutableListOf()
+    private val nearbyStopMarkers: MutableList<Marker> = mutableListOf()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -73,7 +72,7 @@ class HomeFragment : Fragment(R.layout.fragment_home),
         // Check if it is a stop marker
         if (marker in nearbyStopMarkers) {
             marker.tag?.let {
-                navigateToStop(stopId = it.toString().toLong())
+                navigateToStop(stopId = it as Long)
             }
         }
 
@@ -145,7 +144,7 @@ class HomeFragment : Fragment(R.layout.fragment_home),
                                 stop.location.latitude, stop.location.longitude
                             ),
                             drawableRes = R.drawable.ic_stop,
-                            tag = stop.id.toString()
+                            tag = stop.id
                         )
                     })
                 }
@@ -228,11 +227,9 @@ class HomeFragment : Fragment(R.layout.fragment_home),
 
     private suspend fun zoomToCurrentLocation() {
         val location = mainViewModel.userLocation.first()
-        getMapInstance().animateCamera(
-            CameraUpdateFactory.newLatLngZoom(
-                LatLng(location.latitude, location.longitude),
-                MAP_DEFAULT_ZOOM
-            )
+        getMapInstance().zoomAnimateTo(
+            center = LatLng(location.latitude, location.longitude),
+            level = MAP_DEFAULT_ZOOM
         )
     }
 

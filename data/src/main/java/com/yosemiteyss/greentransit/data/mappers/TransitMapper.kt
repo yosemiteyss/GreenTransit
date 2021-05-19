@@ -41,8 +41,9 @@ class TransitMapper @Inject constructor() {
         )
     }
 
-    fun toStopInfo(dto: StopInfoDto): StopInfo {
+    fun toStopInfo(stopId: Long, dto: StopInfoDto): StopInfo {
         return StopInfo(
+            stopId = stopId,
             location = toCoordinates(dto.coordinates.wgs84),
             enabled = dto.enabled,
             remarks = dto.remarksEN

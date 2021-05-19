@@ -5,7 +5,6 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
-import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
@@ -13,7 +12,6 @@ import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.maps.android.ktx.awaitMap
 import com.yosemiteyss.greentransit.R
-import com.yosemiteyss.greentransit.app.route.RouteOption
 import com.yosemiteyss.greentransit.app.utils.*
 import com.yosemiteyss.greentransit.databinding.FragmentStopBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -100,6 +98,8 @@ class StopFragment : FullScreenDialogFragment(R.layout.fragment_stop) {
                     isMyLocationButtonEnabled = false
                     isMapToolbarEnabled = false
                     isScrollGesturesEnabled = false
+                    isRotateGesturesEnabled = false
+                    isZoomGesturesEnabled = false
                 }
 
                 // Switch map to night mode
@@ -117,9 +117,7 @@ class StopFragment : FullScreenDialogFragment(R.layout.fragment_stop) {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.navigateToRoute.collect {
                 findNavController(R.id.stopFragment)?.navigate(
-                    StopFragmentDirections.actionStopFragmentToRouteFragment(
-                        RouteOption(routeId = it.first, routeCode = it.second)
-                    )
+                    StopFragmentDirections.actionStopFragmentToRouteFragment(it)
                 )
             }
         }
@@ -137,9 +135,7 @@ class StopFragment : FullScreenDialogFragment(R.layout.fragment_stop) {
                     uiState.data.location.longitude
                 )
 
-                moveCamera(
-                    CameraUpdateFactory.newLatLngZoom(stopLocation, MAP_DEFAULT_ZOOM)
-                )
+                zoomTo(stopLocation, MAP_DEFAULT_ZOOM)
 
                 addMarker(
                     context = requireContext(),

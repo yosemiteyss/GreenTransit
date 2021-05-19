@@ -1,11 +1,18 @@
 package com.yosemiteyss.greentransit.app.route
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MapStyleOptions
+import com.google.android.gms.maps.model.Marker
+import com.google.maps.android.ktx.awaitMap
 import com.yosemiteyss.greentransit.R
 import com.yosemiteyss.greentransit.app.utils.*
 import com.yosemiteyss.greentransit.databinding.FragmentRouteBinding
@@ -19,6 +26,8 @@ import javax.inject.Inject
  * Created by kevin on 18/5/2021
  */
 
+private const val STOP_MARKER_ZOOM = 16f
+
 @AndroidEntryPoint
 class RouteFragment : FullScreenDialogFragment(R.layout.fragment_route) {
 
@@ -31,6 +40,8 @@ class RouteFragment : FullScreenDialogFragment(R.layout.fragment_route) {
     private val viewModel: RouteViewModel by viewModels {
         RouteViewModel.provideFactory(viewModelFactory, navArgs.routeOption)
     }
+
+    private val directionStopMarkers: MutableList<Marker> = mutableListOf()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -46,9 +57,18 @@ class RouteFragment : FullScreenDialogFragment(R.layout.fragment_route) {
             }
         }
 
-        // Expand directions button
-        binding.switchDirectionButton.setOnClickListener {
-            showRouteDirectionsBottomSheet()
+        setupRouteInfo()
+        setupRouteStopsList()
+        setupMapFragment()
+    }
+
+    private fun setupRouteInfo() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.routeInfos.collect { res ->
+                if (res is Resource.Error) {
+                    showShortToast(res.message)
+                }
+            }
         }
 
         // Current direction
@@ -69,17 +89,23 @@ class RouteFragment : FullScreenDialogFragment(R.layout.fragment_route) {
             }
         }
 
-        // Route info
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.routeInfos.collect { res ->
-                if (res is Resource.Error) {
-                    showShortToast(res.message)
+        // Expand directions button
+        binding.switchDirectionButton.setOnClickListener {
+            showRouteDirectionsBottomSheet()
+        }
+    }
+
+    private fun setupRouteStopsList() {
+        // Route stops
+        val routeStopsAdapter = RouteStopsAdapter { stopId ->
+            // Zoom to stop marker
+            viewLifecycleOwner.lifecycleScope.launch {
+                val stopLatLng = directionStopMarkers.firstOrNull { it.tag == stopId }?.position
+                stopLatLng?.let {
+                    getMapInstance().zoomTo(it, STOP_MARKER_ZOOM)
                 }
             }
         }
-
-        // Route stops
-        val routeStopsAdapter = RouteStopsAdapter()
 
         with(binding.stopsRecyclerView) {
             adapter = routeStopsAdapter
@@ -91,9 +117,60 @@ class RouteFragment : FullScreenDialogFragment(R.layout.fragment_route) {
                 binding.loadingProgressBar.isVisible = res is Resource.Loading
 
                 when (res) {
-                    is Resource.Success -> routeStopsAdapter.submitList(res.data)
+                    is Resource.Success -> routeStopsAdapter.routeStopsListModels = res.data
                     is Resource.Error -> showShortToast(res.message)
-                    is Resource.Loading -> routeStopsAdapter.submitList(emptyList())
+                    is Resource.Loading -> routeStopsAdapter.routeStopsListModels = emptyList()
+                }
+            }
+        }
+    }
+
+    private fun setupMapFragment() {
+        // Initialize map
+        viewLifecycleOwner.lifecycleScope.launch {
+            getMapInstance().run {
+                with(uiSettings) {
+                    isCompassEnabled = false
+                    isMyLocationButtonEnabled = false
+                    isMapToolbarEnabled = false
+                }
+
+                // Switch map to night mode
+                if (requireContext().isNightModeOn()) {
+                    val nightStyle = MapStyleOptions.loadRawResourceStyle(
+                        requireContext(), R.raw.night_map_style
+                    )
+
+                    setMapStyle(nightStyle)
+                }
+            }
+        }
+
+        // Add stop markers for a direction
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.directionStops.collect { stops ->
+                if (stops.isEmpty()) return@collect
+
+                getMapInstance().run {
+                    directionStopMarkers.clear()
+                    clear()
+
+                    Log.d("RouteFragment", "$stops")
+
+                    val markers = stops.map { stop ->
+                        addMarker(
+                            context = requireContext(),
+                            position = LatLng(
+                                stop.location.latitude, stop.location.longitude
+                            ),
+                            drawableRes = R.drawable.ic_stop,
+                            tag = stop.stopId
+                        )
+                    }
+
+                    directionStopMarkers.addAll(markers)
+
+                    zoomToBoundMarkers(markers)
                 }
             }
         }
@@ -102,5 +179,11 @@ class RouteFragment : FullScreenDialogFragment(R.layout.fragment_route) {
     private fun showRouteDirectionsBottomSheet() {
         RouteDirectionFragment.newInstance()
             .show(childFragmentManager, RouteDirectionFragment.TAG)
+    }
+
+    private suspend fun getMapInstance(): GoogleMap {
+        val mapFragment = childFragmentManager.findFragmentById(R.id.map_container_view)
+            as SupportMapFragment
+        return mapFragment.awaitMap()
     }
 }

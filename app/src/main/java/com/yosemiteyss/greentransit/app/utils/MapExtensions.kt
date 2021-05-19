@@ -11,15 +11,35 @@ import com.bumptech.glide.request.transition.Transition
 import com.firebase.geofire.GeoFireUtils
 import com.firebase.geofire.GeoLocation
 import com.firebase.geofire.GeoQueryBounds
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.Marker
 import com.google.maps.android.ktx.addMarker
 import com.yosemiteyss.greentransit.R
 import com.yosemiteyss.greentransit.domain.models.Coordinate
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
+
+fun GoogleMap.zoomTo(center: LatLng, level: Float) {
+    moveCamera(CameraUpdateFactory.newLatLngZoom(center, level))
+}
+
+fun GoogleMap.zoomAnimateTo(center: LatLng, level: Float) {
+    animateCamera(CameraUpdateFactory.newLatLngZoom(center, level))
+}
+
+fun GoogleMap.zoomToBoundMarkers(markers: List<Marker>) {
+    val bounds = LatLngBounds.Builder()
+        .apply {
+            markers.forEach { include(it.position) }
+        }
+        .build()
+
+    moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 5))
+}
 
 fun LatLng.geohashQueryBounds(radiusInMeters: Double): List<GeoQueryBounds> {
     val center = GeoLocation(latitude, longitude)
@@ -34,7 +54,7 @@ fun GoogleMap.addMarker(
     context: Context,
     position: LatLng,
     @DrawableRes drawableRes: Int,
-    tag: String? = null,
+    tag: Any? = null,
     hasBorder: Boolean = false
 ): Marker {
     val drawable = context.getDrawableOrNull(drawableRes) ?:
