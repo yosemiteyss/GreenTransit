@@ -29,7 +29,7 @@ class GetRouteStopShiftEtasUseCase @Inject constructor(
                 routeSeq = parameters.routeSeq
             )
 
-            // Get route stops' etas
+            // Get route stops' etas by stop ids
             coroutineScope {
                 val shiftEtas = routeStops.map { stop ->
                     async {
@@ -43,7 +43,7 @@ class GetRouteStopShiftEtasUseCase @Inject constructor(
                     }
                 }.awaitAll()
 
-                // Combine results
+                // Combine results, use the earliest shift eta
                 val results = routeStops.mapIndexed { index, routeStop ->
                     RouteStopShiftEtaResult(
                         routeStop = routeStop,

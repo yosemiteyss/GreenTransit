@@ -22,19 +22,18 @@ class GetRouteStopInfosUseCase @Inject constructor(
     @IoDispatcher coroutineDispatcher: CoroutineDispatcher
 ) : FlowUseCase<List<Long>, List<StopInfo>>(coroutineDispatcher) {
 
-    override fun execute(
-        parameters: List<Long>
-    ): Flow<Resource<List<StopInfo>>> = flow {
-        if (parameters.isEmpty()) {
-            emit(Resource.Success(emptyList<StopInfo>()))
-        } else {
+    override fun execute(parameters: List<Long>): Flow<Resource<List<StopInfo>>> = flow {
+        if (parameters.isNotEmpty()) {
             coroutineScope {
+                // Get stop infos from stop ids
                 val stopInfos = parameters.map {
                     async { transitRepository.getStopInfo(stopId = it) }
                 }.awaitAll()
 
                 emit(Resource.Success(stopInfos))
             }
+        } else {
+            emit(Resource.Success(emptyList<StopInfo>()))
         }
     }
 }

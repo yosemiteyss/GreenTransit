@@ -4,7 +4,6 @@ package com.yosemiteyss.greentransit.app.main
  * Created by kevin on 12/5/2021
  */
 
-/*
 class MainViewModelTest {
 
     @get:Rule
@@ -35,5 +34,3 @@ class MainViewModelTest {
         }
     }
 }
-
- */

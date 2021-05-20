@@ -5,11 +5,10 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.ProducerScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 /**
- * Created by kevin on 1/23/21
+ * Created by kevin on 5/20/21
  */
 
 inline fun <T> networkCacheResource(
@@ -20,43 +19,18 @@ inline fun <T> networkCacheResource(
     channel.offer(Resource.Loading())
 
     try {
+        // Update cache when network request is successful.
         val result = networkSource()
         channel.offer(Resource.Success(result))
         startUpdateCache(updateCache, result)
     } catch (e: Exception) {
-        startFetchCacheSource(cacheSource, false)
-    }
-}
-
-inline fun <T> networkCacheResource2(
-    noinline cacheSource: suspend () -> T,
-    crossinline networkSource: () -> Flow<Resource<T>>,
-    noinline updateCache: suspend (T) -> Unit,
-    keepNetworkAlive: Boolean = true
-): Flow<Resource<T>> = channelFlow {
-    var observeCacheJob: Job? = null
-    networkSource().collect { resource ->
-        when (resource) {
-            is Resource.Success -> {
-                // Cancel caching when the network is restored.
-                observeCacheJob?.cancelIfActive()
-                channel.offer(resource)
-                startUpdateCache(updateCache, resource.data, keepNetworkAlive)
-            }
-            is Resource.Error -> {
-                // Emit result from cache flow when the network is down.
-                observeCacheJob = startFetchCacheSource(cacheSource, keepNetworkAlive)
-            }
-            is Resource.Loading -> {
-                channel.offer(resource)
-            }
-        }
+        // Use local cache if network request is failed.
+        startFetchCacheSource(cacheSource)
     }
 }
 
 @PublishedApi internal fun<T> ProducerScope<Resource<T>>.startFetchCacheSource(
-    cacheSource: suspend () -> T,
-    keepNetworkAlive: Boolean = false,
+    cacheSource: suspend () -> T
 ): Job = launch {
     try {
         val result = cacheSource()
@@ -65,14 +39,16 @@ inline fun <T> networkCacheResource2(
         channel.offer(Resource.Error(e.message))
     }
 
-    if (!keepNetworkAlive) channel.close()
+    // Close channel when finished
+    channel.close()
 }
 
 @PublishedApi internal fun<T> ProducerScope<Resource<T>>.startUpdateCache(
     updateLocal: suspend (T) -> Unit,
-    networkData: T,
-    keepNetworkAlive: Boolean = false,
+    networkData: T
 ): Job = launch {
     updateLocal(networkData)
-    if (!keepNetworkAlive) channel.close()
+
+    // Close channel when finished
+    channel.close()
 }

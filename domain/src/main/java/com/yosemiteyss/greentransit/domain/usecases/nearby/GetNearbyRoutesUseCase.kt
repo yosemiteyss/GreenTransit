@@ -21,16 +21,15 @@ class GetNearbyRoutesUseCase @Inject constructor(
 ) : FlowUseCase<List<NearbyStop>, List<NearbyRoute>>(coroutineDispatcher) {
 
     override fun execute(parameters: List<NearbyStop>): Flow<Resource<List<NearbyRoute>>> = flow {
-        if (parameters.isEmpty()) {
-            emit(Resource.Success(emptyList<NearbyRoute>()))
-        } else {
-            // Get distinct route ids
+        if (parameters.isNotEmpty()) {
+            // Get distinct nearby routes
             val routeIds = parameters.map { it.routeId }.distinct()
-
             val routes = transitRepository.getNearbyRoutes(routeIds)
                 .sortedBy { it.code }
 
             emit(Resource.Success(routes))
+        } else {
+            emit(Resource.Success(emptyList<NearbyRoute>()))
         }
     }
 }

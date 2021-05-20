@@ -55,15 +55,12 @@ class GetNearbyRoutesUseCaseTest {
 
         useCase(nearbyStops).test {
             assert(expectItem() is Resource.Loading)
-
-            val expectItem = expectItem()
-            println(expectItem)
-
-            assert(
-                expectItem is Resource.Success &&
-                expectItem.data == expectItem.data.distinctBy { it.id }
-            )
-
+            expectItem().let { actual ->
+                assert(
+                    actual is Resource.Success &&
+                    actual.data == actual.data.distinctBy { it.id }
+                )
+            }
             expectComplete()
         }
     }
@@ -77,6 +74,9 @@ class GetNearbyRoutesUseCaseTest {
 
         useCase(nearbyStops).test {
             assert(expectItem() is Resource.Loading)
+            expectItem().let {
+                assert(it is Resource.Success && it.data.isEmpty())
+            }
             expectComplete()
         }
     }

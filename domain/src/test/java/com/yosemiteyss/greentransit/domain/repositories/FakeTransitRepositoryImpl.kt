@@ -25,6 +25,8 @@ class FakeTransitRepositoryImpl : TransitRepository {
 
     val fakeRouteStopShiftEtas = MutableList(20) { createFakeRouteStopShiftEta() }
 
+    val fakeStopRoutes = MutableList(10) { createFakeStopRoute() }
+
     override suspend fun getNearbyStops(startHash: String, endHash: String): List<NearbyStop> {
         if (throwNetworkError) throw Exception("Network error.")
         return fakeNearbyStops
@@ -51,7 +53,7 @@ class FakeTransitRepositoryImpl : TransitRepository {
 
     override suspend fun getStopRoutes(stopId: Long): List<StopRoute> {
         if (throwNetworkError) throw Exception("Network error.")
-        return MutableList(10) { createFakeStopRoute() }
+        return fakeStopRoutes
     }
 
     override suspend fun getStopRouteShiftEtas(stopId: Long): List<StopRouteShiftEta> {

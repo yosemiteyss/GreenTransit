@@ -94,3 +94,7 @@ class MainViewModel @Inject constructor(
         }
     }
 }
+
+sealed class MainUiState {
+    data class Success(val )
+}

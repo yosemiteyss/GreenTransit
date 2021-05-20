@@ -58,13 +58,12 @@ class GetRouteInfoUseCaseTest {
 
         getRouteInfoUseCase(param).test {
             assert(expectItem() is Resource.Loading)
-
-            val result = expectItem()
-            assert(
-                result is Resource.Success &&
-                result.data == fakeTransitRepositoryImpl.fakeRouteInfoByRegionCode
-            )
-
+            expectItem().let {
+                assert(
+                    it is Resource.Success &&
+                    it.data == fakeTransitRepositoryImpl.fakeRouteInfoByRegionCode
+                )
+            }
             expectComplete()
         }
     }
@@ -78,12 +77,12 @@ class GetRouteInfoUseCaseTest {
 
         getRouteInfoUseCase(param).test {
             assert(expectItem() is Resource.Loading)
-
-            val result = expectItem()
-            assert(
-                result is Resource.Success &&
-                result.data == fakeTransitRepositoryImpl.fakeRouteInfoByRouteId
-            )
+            expectItem().let {
+                assert(
+                    it is Resource.Success &&
+                    it.data == fakeTransitRepositoryImpl.fakeRouteInfoByRouteId
+                )
+            }
 
             expectComplete()
         }
