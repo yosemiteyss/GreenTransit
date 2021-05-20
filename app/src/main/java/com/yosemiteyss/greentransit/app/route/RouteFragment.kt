@@ -1,7 +1,6 @@
 package com.yosemiteyss.greentransit.app.route
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
@@ -154,8 +153,6 @@ class RouteFragment : FullScreenDialogFragment(R.layout.fragment_route) {
                 getMapInstance().run {
                     directionStopMarkers.clear()
                     clear()
-
-                    Log.d("RouteFragment", "$stops")
 
                     val markers = stops.map { stop ->
                         addMarker(

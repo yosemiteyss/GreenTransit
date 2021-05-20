@@ -60,9 +60,7 @@ class RouteViewModel @AssistedInject constructor(
                 is Resource.Success -> Resource.Success(
                     buildRouteStopsListModels(results = res.data)
                 )
-                is Resource.Error -> {
-                    Resource.Error(res.message)
-                }
+                is Resource.Error -> Resource.Error(res.message)
                 is Resource.Loading -> Resource.Loading()
             }
         }
@@ -87,12 +85,13 @@ class RouteViewModel @AssistedInject constructor(
             )
 
             getRouteInfoUseCase(param).collect { res ->
-                when (res) {
+                _routeInfos.value = when (res) {
                     is Resource.Success -> {
                         val routeInfo = res.data
-                        _routeInfos.value = Resource.Success(routeInfo)
                         _currentRouteId.value = routeInfo.first().routeId
                         _currentDirection.value = routeInfo.first().directions.first()
+
+                        Resource.Success(routeInfo)
                     }
                     is Resource.Error -> Resource.Error(res.message)
                     is Resource.Loading -> Resource.Loading()

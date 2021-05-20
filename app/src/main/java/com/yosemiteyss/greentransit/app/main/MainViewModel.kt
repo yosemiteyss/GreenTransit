@@ -1,7 +1,6 @@
 package com.yosemiteyss.greentransit.app.main
 
 import android.location.Location
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.model.LatLng
@@ -13,6 +12,7 @@ import com.yosemiteyss.greentransit.domain.usecases.nearby.GetNearbyStopsParams
 import com.yosemiteyss.greentransit.domain.usecases.nearby.GetNearbyStopsUseCase
 import com.yosemiteyss.greentransit.domain.usecases.nearby.NearbyGeoBound
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -28,11 +28,12 @@ class MainViewModel @Inject constructor(
     private val getNearbyStopsUseCase: GetNearbyStopsUseCase
 ) : ViewModel() {
 
-    private val _enableMap = MutableStateFlow(false)
-    val enableMap: StateFlow<Boolean> = _enableMap.asStateFlow()
+    private val _mapEnabled = MutableStateFlow(false)
+    val mapEnabled: StateFlow<Boolean> = _mapEnabled.asStateFlow()
 
     private val _locationInput = MutableSharedFlow<Location>()
-    private val _azimuthInput = MutableSharedFlow<Float>()
+
+    private val _bearingInput = MutableSharedFlow<Float>()
 
     private val _userLocation = MutableSharedFlow<Location>()
     val userLocation: SharedFlow<Location> = _userLocation.asSharedFlow()
@@ -40,10 +41,13 @@ class MainViewModel @Inject constructor(
     private val _nearbyStops = MutableStateFlow<List<NearbyStop>>(emptyList())
     val nearbyStops: StateFlow<List<NearbyStop>> = _nearbyStops.asStateFlow()
 
+    private val _toastMessage = Channel<String>()
+    val toastMessage: Flow<String> = _toastMessage.receiveAsFlow()
+
     init {
         // Build user location
         viewModelScope.launch {
-            _locationInput.combine(_azimuthInput, ::buildLocation).collect {
+            _bearingInput.combine(_locationInput, ::buildLocation).collect {
                 _userLocation.emit(it)
             }
         }
@@ -67,7 +71,7 @@ class MainViewModel @Inject constructor(
             }.collect {
                 when (it) {
                     is Resource.Success -> _nearbyStops.emit(it.data)
-                    is Resource.Error -> Log.d("MainViewModel", "${it.message}")
+                    is Resource.Error -> onShowToastMessage(it.message)
                     is Resource.Loading -> Unit
                 }
             }
@@ -75,7 +79,7 @@ class MainViewModel @Inject constructor(
     }
 
     fun onEnableMap(isEnabled: Boolean) {
-        _enableMap.value = isEnabled
+        _mapEnabled.value = isEnabled
     }
 
     fun onUpdateLocation(location: Location) = viewModelScope.launch {
@@ -83,18 +87,20 @@ class MainViewModel @Inject constructor(
     }
 
     fun onUpdateBearing(bearing: Float) = viewModelScope.launch {
-        _azimuthInput.emit(bearing)
+        _bearingInput.emit(bearing)
     }
 
-    private fun buildLocation(location: Location, azimuth: Float): Location {
+    fun onShowToastMessage(message: String?) {
+        message?.let {
+            _toastMessage.offer(it)
+        }
+    }
+
+    private fun buildLocation(bearing: Float, location: Location): Location {
         return Location("").apply {
             latitude = location.latitude
             longitude = location.longitude
-            bearing = azimuth
+            this.bearing = bearing
         }
     }
-}
-
-sealed class MainUiState {
-    data class Success(val )
 }

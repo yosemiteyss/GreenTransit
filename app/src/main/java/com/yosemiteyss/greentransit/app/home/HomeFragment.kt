@@ -106,7 +106,7 @@ class HomeFragment : Fragment(R.layout.fragment_home),
 
         // Attach location source if permission is granted
         viewLifecycleOwner.lifecycleScope.launch {
-            mainViewModel.enableMap.collect { enabled ->
+            mainViewModel.mapEnabled.collect { enabled ->
                 if (enabled) {
                     getMapInstance().run {
                         isMyLocationEnabled = true

@@ -74,9 +74,6 @@ class GetNearbyRoutesUseCaseTest {
 
         useCase(nearbyStops).test {
             assert(expectItem() is Resource.Loading)
-            expectItem().let {
-                assert(it is Resource.Success && it.data.isEmpty())
-            }
             expectComplete()
         }
     }

@@ -38,6 +38,26 @@ class RegionRoutesViewModelTest {
         }
     }
 
+    @Test
+    fun `test get route region success, return success ui state`() = coroutineRule.runBlockingTest {
+        val region = Region.values().random()
+        val viewModel = createRegionRoutesViewModel(region)
+
+        viewModel.routesUiState.test {
+            assert(expectItem() is RegionRoutesUiState.Success)
+        }
+    }
+
+    @Test
+    fun `test get route region failed, return error ui state`() = coroutineRule.runBlockingTest {
+        val region = Region.values().random()
+        val viewModel = createRegionRoutesViewModel(region, true)
+
+        viewModel.routesUiState.test {
+            assert(expectItem() is RegionRoutesUiState.Error)
+        }
+    }
+
     private fun createRegionRoutesViewModel(
         region: Region,
         networkError: Boolean = false

@@ -40,11 +40,8 @@ class MainActivity : AppCompatActivity() {
     private val requestLocation = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { isGranted ->
-        if (isGranted) {
-            observerFusedLocation()
-        } else {
+        if (isGranted) observerFusedLocation() else
             showLocationDeniedSnackbar()
-        }
     }
 
     private val locationRequest: LocationRequest by lazy(LazyThreadSafetyMode.NONE) {

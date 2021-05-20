@@ -1,13 +1,15 @@
 package com.yosemiteyss.greentransit.app.home
 
+import android.location.Location
 import app.cash.turbine.test
-import com.yosemiteyss.greentransit.domain.models.Coordinate
-import com.yosemiteyss.greentransit.domain.models.NearbyStop
+import com.yosemiteyss.greentransit.app.main.MainViewModel
 import com.yosemiteyss.greentransit.domain.repositories.FakeTransitRepositoryImpl
 import com.yosemiteyss.greentransit.domain.usecases.nearby.GetNearbyRoutesUseCase
+import com.yosemiteyss.greentransit.domain.usecases.nearby.GetNearbyStopsUseCase
 import com.yosemiteyss.greentransit.testshared.TestCoroutineRule
 import com.yosemiteyss.greentransit.testshared.runBlockingTest
-import kotlinx.coroutines.flow.MutableStateFlow
+import io.mockk.every
+import io.mockk.mockk
 import org.junit.Rule
 import org.junit.Test
 import kotlin.random.Random
@@ -22,49 +24,107 @@ class HomeViewModelTest {
     var coroutineRule = TestCoroutineRule()
 
     @Test
-    fun `test map nearby stops to success ui state, not empty`() = coroutineRule.runBlockingTest {
+    fun `test get nearby stops success, return not empty success ui state`() = coroutineRule.runBlockingTest {
+        val mainViewModel = createMainViewModel()
         val homeViewModel = createHomeViewModel()
-        val nearbyStops = MutableStateFlow(createFakeNearbyStops())
 
-        homeViewModel.getHomeUiState(nearbyStops).test {
-            println(expectItem())
+        homeViewModel.getHomeUiState(mainViewModel.nearbyStops).test {
+            assert(expectItem() is HomeUiState.Loading)
+
+            mainViewModel.onUpdateLocation(createMockLocation(
+                latitude = Random.nextDouble(),
+                longitude = Random.nextDouble(),
+                bearing = Random.nextFloat()
+            ))
+
+            assert(expectItem() is HomeUiState.Success)
         }
     }
 
     @Test
-    fun `test map nearby stops to success ui state, is empty`() = coroutineRule.runBlockingTest {
-        val nearbyStops = createFakeNearbyStops()
+    fun  `test get nearby stops error, return loading ui state`() = coroutineRule.runBlockingTest {
+        val mainViewModel = createMainViewModel(throwNetworkError = true)
+        val homeViewModel = createHomeViewModel()
+
+        homeViewModel.getHomeUiState(mainViewModel.nearbyStops).test {
+            assert(expectItem() is HomeUiState.Loading)
+
+            mainViewModel.onUpdateLocation(createMockLocation(
+                latitude = Random.nextDouble(),
+                longitude = Random.nextDouble(),
+                bearing = Random.nextFloat()
+            ))
+
+            expectNoEvents()
+        }
     }
 
     @Test
-    fun `test map nearby stops to error ui state`() = coroutineRule.runBlockingTest {
+    fun `test get nearby stops success, get nearby routes error, return error ui state`() = coroutineRule.runBlockingTest {
+        val mainViewModel = createMainViewModel()
+        val homeViewModel = createHomeViewModel(throwNetworkError = true)
 
+        homeViewModel.getHomeUiState(mainViewModel.nearbyStops).test {
+            assert(expectItem() is HomeUiState.Loading)
+
+            mainViewModel.onUpdateLocation(createMockLocation(
+                latitude = Random.nextDouble(),
+                longitude = Random.nextDouble(),
+                bearing = Random.nextFloat()
+            ))
+
+            assert(expectItem() is HomeUiState.Error)
+        }
     }
 
     @Test
     fun `test nearby routes count updated`() = coroutineRule.runBlockingTest {
+        val mainViewModel = createMainViewModel()
         val homeViewModel = createHomeViewModel()
-        val nearbyStops = MutableStateFlow(createFakeNearbyStops())
 
+        homeViewModel.getHomeUiState(mainViewModel.nearbyStops).test {
+            assert(expectItem() is HomeUiState.Loading)
 
+            mainViewModel.onUpdateLocation(createMockLocation(
+                latitude = Random.nextDouble(),
+                longitude = Random.nextDouble(),
+                bearing = Random.nextFloat()
+            ))
+
+            expectItem().let {
+                assert(it is HomeUiState.Success && it.data.isNotEmpty())
+            }
+        }
     }
 
-    private fun createFakeNearbyStops(): List<NearbyStop> {
-        return MutableList(10) {
-            NearbyStop(
-                id = Random.nextLong(),
-                routeId = Random.nextLong(),
-                location = Coordinate(
-                    latitude = Random.nextDouble(),
-                    longitude = Random.nextDouble()
-                )
-            )
-        }
+    private fun createMockLocation(
+        latitude: Double,
+        longitude: Double,
+        bearing: Float? = null
+    ): Location {
+        val location = mockk<Location>()
+
+        every { location.latitude } returns latitude
+        every { location.longitude } returns longitude
+        bearing?.let { every { location.bearing } returns it }
+
+        return location
     }
 
     private fun createHomeViewModel(throwNetworkError: Boolean = false): HomeViewModel {
         return HomeViewModel(
             getNearbyRoutesUseCase = GetNearbyRoutesUseCase(
+                transitRepository = FakeTransitRepositoryImpl().apply {
+                    setNetworkError(throwNetworkError)
+                },
+                coroutineDispatcher = coroutineRule.testDispatcher
+            )
+        )
+    }
+
+    private fun createMainViewModel(throwNetworkError: Boolean = false): MainViewModel {
+        return MainViewModel(
+            getNearbyStopsUseCase = GetNearbyStopsUseCase(
                 transitRepository = FakeTransitRepositoryImpl().apply {
                     setNetworkError(throwNetworkError)
                 },
