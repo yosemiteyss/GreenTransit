@@ -17,7 +17,7 @@ inline fun <reified T : Fragment> launchFragmentInHiltContainer(
     themeResId: Int = R.style.FragmentScenarioEmptyFragmentActivityTheme,
     fragmentFactory: FragmentFactory?= null,
     crossinline action: T.() -> Unit = {}
-    ) {
+) {
     val mainActivityIntent = Intent.makeMainActivity(
         ComponentName(
             ApplicationProvider.getApplicationContext(),

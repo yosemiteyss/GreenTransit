@@ -33,12 +33,10 @@ fun GoogleMap.zoomAnimateTo(center: LatLng, level: Float) {
 
 fun GoogleMap.zoomToBoundMarkers(markers: List<Marker>) {
     val bounds = LatLngBounds.Builder()
-        .apply {
-            markers.forEach { include(it.position) }
-        }
+        .apply { markers.forEach { include(it.position) } }
         .build()
 
-    moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 5))
+    moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 10))
 }
 
 fun LatLng.geohashQueryBounds(radiusInMeters: Double): List<GeoQueryBounds> {
@@ -58,7 +56,7 @@ fun GoogleMap.addMarker(
     hasBorder: Boolean = false
 ): Marker {
     val drawable = context.getDrawableOrNull(drawableRes) ?:
-    throw IllegalStateException("Drawable not found.")
+        throw IllegalStateException("Drawable not found.")
 
     val pixels = computeMarkerPixels(context.resources.displayMetrics.density)
     var bitmap = Bitmap.createScaledBitmap(drawable.toBitmap(), pixels, pixels, true)

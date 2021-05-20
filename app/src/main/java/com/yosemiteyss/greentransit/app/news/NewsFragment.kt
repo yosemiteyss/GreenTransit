@@ -20,7 +20,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class NewsFragment : Fragment(R.layout.fragment_news) {
 
     private val binding: FragmentNewsBinding by viewBinding(FragmentNewsBinding::bind)
-    private val viewModel: NewsViewModel by viewModels()
+    val viewModel: NewsViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
