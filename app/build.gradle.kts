@@ -135,8 +135,6 @@ dependencies {
     androidTestImplementation(Dependencies.TEST_RUNNER)
     androidTestImplementation(Dependencies.TEST_EXT_JUNIT_KTX)
     androidTestImplementation(Dependencies.NAVIGATION_TESTING)
-    androidTestImplementation("androidx.test.espresso:espresso-contrib:3.1.0")
-    androidTestImplementation("io.mockk:mockk-android:1.11.0")
     debugImplementation(Dependencies.FRAGMENT_TESTING)
     kaptAndroidTest(Annotation.HILT_ANDROID_COMPILER)
 }
