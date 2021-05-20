@@ -24,7 +24,7 @@ android {
         targetSdkVersion(Application.TARGET_SDK)
         versionCode = Application.MAIN_VERSION_CODE
         versionName = Application.MAIN_VERSION_NAME
-        testInstrumentationRunner = Dependencies.HILT_TEST_RUNNER
+        testInstrumentationRunner = "com.yosemiteyss.greentransit.app.HiltTestRunner"
     }
 
     buildTypes {
@@ -129,11 +129,13 @@ dependencies {
     testImplementation(Dependencies.TEST_CORE)
 
     // Android Test
+    androidTestImplementation(Dependencies.MOCKK)
     androidTestImplementation(Dependencies.HILT_TESTING)
     androidTestImplementation(Dependencies.TEST_ESPRESSO_CORE)
     androidTestImplementation(Dependencies.TEST_RUNNER)
     androidTestImplementation(Dependencies.TEST_EXT_JUNIT_KTX)
     androidTestImplementation(Dependencies.NAVIGATION_TESTING)
+    androidTestImplementation("androidx.test.espresso:espresso-contrib:3.1.0")
     debugImplementation(Dependencies.FRAGMENT_TESTING)
     kaptAndroidTest(Annotation.HILT_ANDROID_COMPILER)
 }

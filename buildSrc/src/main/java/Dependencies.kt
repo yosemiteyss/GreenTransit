@@ -77,7 +77,7 @@ object Dependencies {
     const val ARCH_CORE_TESTING = "androidx.arch.core:core-testing:${Versions.ARCH}"
     const val COROUTINE_TEST = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.COROUTINE}"
     const val ANDROID_JUNIT_RUNNER = "androidx.test.runner.AndroidJUnitRunner"
-    const val HILT_TEST_RUNNER = "com.foobarust.android.HiltTestRunner"
+    const val HILT_TEST_RUNNER = "com.yosemiteyss.greentransit.HiltTestRunner"
     const val JUNIT = "junit:junit:${Versions.JUNIT}"
     const val KOTLIN_TEST = "org.jetbrains.kotlin:kotlin-test-junit:${Versions.KOTLIN}"
     const val MOCKITO_CORE = "org.mockito:mockito-core:${Versions.MOCKITO_CORE}"
