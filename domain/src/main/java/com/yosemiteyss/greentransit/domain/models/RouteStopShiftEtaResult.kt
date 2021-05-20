@@ -7,5 +7,5 @@ package com.yosemiteyss.greentransit.domain.models
 
 data class RouteStopShiftEtaResult(
     val routeStop: RouteStop,
-    val routeStopShiftEta: RouteStopShiftEta?
+    val routeStopShiftEta: RouteStopShiftEta? = null
 )

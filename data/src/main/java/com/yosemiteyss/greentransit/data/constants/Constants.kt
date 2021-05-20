@@ -8,6 +8,8 @@ object Constants {
     const val GMB_URL = "https://data.etagmb.gov.hk"
     const val TRAFFIC_NEWS_URL = "https://resource.data.one.gov.hk/"
 
+    const val APP_DB_NAME = "green_transit_db"
+
     const val GMB_RESPONSE_TYPE = "type"
     const val GMB_RESPONSE_VERSION = "version"
     const val GMB_RESPONSE_GENERATED_TIMESTAMP = "generated_timestamp"
@@ -17,10 +19,16 @@ object Constants {
     const val ROUTE_REGION_HKI = "HKI"
     const val ROUTE_REGION_NT = "NT"
 
-    const val ROUTE_REGION_CODES_COLLECTION = "route_codes"
-    const val ROUTE_REGION_CODE_DTO_CODE = "code"
-    const val ROUTE_REGION_CODE_DTO_REGION = "region"
-    const val ROUTE_REGION_CODE_DTO_ROUTE_IDS = "route_ids"
+    const val ROUTE_CODES_LOCAL_TABLE = "route_codes"
+    const val ROUTE_CODES_LOCAL_DTO_CODE = "code"
+    const val ROUTE_CODES_LOCAL_DTO_REGION = "region"
+
+    const val ROUTE_CODES_NETWORK_DTO_ROUTES = "routes"
+
+    const val ROUTE_SEARCH_COLLECTION = "route_codes"
+    const val ROUTE_SEARCH_DTO_CODE = "code"
+    const val ROUTE_SEARCH_DTO_REGION = "region"
+    const val ROUTE_SEARCH_DTO_ROUTE_IDS = "route_ids"
 
     const val NEARBY_STOP_COLLECTION = "stop_id"
     const val NEARBY_STOP_DTO_ID = "stop_id"

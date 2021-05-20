@@ -3,25 +3,26 @@ package com.yosemiteyss.greentransit.app.search
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.yosemiteyss.greentransit.R
-import com.yosemiteyss.greentransit.app.search.RegionRoutesListModel.*
-import com.yosemiteyss.greentransit.app.search.RegionRoutesViewHolder.*
+import com.yosemiteyss.greentransit.app.search.RegionRoutesListModel.RegionRoutesEmptyModel
+import com.yosemiteyss.greentransit.app.search.RegionRoutesListModel.RegionRoutesItemModel
+import com.yosemiteyss.greentransit.app.search.RegionRoutesViewHolder.RegionRoutesEmptyViewHolder
+import com.yosemiteyss.greentransit.app.search.RegionRoutesViewHolder.RegionRoutesItemViewHolder
 import com.yosemiteyss.greentransit.databinding.RegionRoutesListItemBinding
 import com.yosemiteyss.greentransit.databinding.RoutesEmptyItemBinding
-import com.yosemiteyss.greentransit.domain.models.RouteRegionCode
+import com.yosemiteyss.greentransit.domain.models.RouteCode
 
 /**
  * Created by kevin on 17/5/2021
  */
 
 class RegionRoutesAdapter(
-    private val onRouteClicked: (routeRegionCode: RouteRegionCode) -> Unit
-) : PagingDataAdapter<RegionRoutesListModel, RegionRoutesViewHolder>(
-    RegionRoutesListModel.Diff
-) {
+    private val onRouteClicked: (routeCode: RouteCode) -> Unit
+) : ListAdapter<RegionRoutesListModel, RegionRoutesViewHolder>(RegionRoutesListModel.Diff) {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RegionRoutesViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         return when (viewType) {
@@ -40,7 +41,7 @@ class RegionRoutesAdapter(
         when (holder) {
             is RegionRoutesItemViewHolder -> bindRegionRouteItemModel(
                 binding = holder.binding,
-                itemModel = getItem(position) as? RegionRoutesItemModel
+                itemModel = getItem(position) as RegionRoutesItemModel
             )
             is RegionRoutesEmptyViewHolder -> Unit
         }
@@ -56,14 +57,12 @@ class RegionRoutesAdapter(
 
     private fun bindRegionRouteItemModel(
         binding: RegionRoutesListItemBinding,
-        itemModel: RegionRoutesItemModel?
+        itemModel: RegionRoutesItemModel
     ) = binding.run {
-        if (itemModel == null) return@run
-
-        routeCodeTextView.text = itemModel.routeRegionCode.code
+        routeCodeTextView.text = itemModel.routeCode.code
 
         root.setOnClickListener {
-            onRouteClicked(itemModel.routeRegionCode)
+            onRouteClicked(itemModel.routeCode)
         }
     }
 }
@@ -80,7 +79,7 @@ sealed class RegionRoutesViewHolder(itemView: View) : RecyclerView.ViewHolder(it
 
 sealed class RegionRoutesListModel {
     data class RegionRoutesItemModel(
-        val routeRegionCode: RouteRegionCode
+        val routeCode: RouteCode
     ) : RegionRoutesListModel()
 
     object RegionRoutesEmptyModel : RegionRoutesListModel()

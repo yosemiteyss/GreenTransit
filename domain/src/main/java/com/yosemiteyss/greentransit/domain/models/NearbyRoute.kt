@@ -10,5 +10,5 @@ data class NearbyRoute(
     val code: String,
     val origin: String,
     val dest: String,
-    val region: RouteRegion,
+    val region: Region,
 )

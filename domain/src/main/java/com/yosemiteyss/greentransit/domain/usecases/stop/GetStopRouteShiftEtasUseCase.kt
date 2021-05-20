@@ -46,7 +46,7 @@ class GetStopRouteShiftEtasUseCase @Inject constructor(
                         StopRouteShiftEtaResult(
                             routeId = shift.routeId,
                             routeSeq = shift.routeSeq,
-                            routeRegionCode = routeCodes.first { it.first == shift.routeId }.second,
+                            routeCode = routeCodes.first { it.first == shift.routeId }.second,
                             dest = routeInfos.first { it.first == shift.routeId }.second
                                 .map { it.directions }
                                 .flatten()

@@ -207,7 +207,7 @@ class HomeFragment : Fragment(R.layout.fragment_home),
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            homeViewModel.getNearbyRouteEtas(nearbyStops = mainViewModel.nearbyStops).collect { uiState ->
+            homeViewModel.getHomeUiState(nearbyStops = mainViewModel.nearbyStops).collect { uiState ->
                 binding.loadingProgressBar.showIf(uiState is HomeUiState.Loading)
 
                 if (uiState is HomeUiState.Success) {

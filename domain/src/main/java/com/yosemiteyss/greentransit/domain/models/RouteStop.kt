@@ -7,5 +7,5 @@ package com.yosemiteyss.greentransit.domain.models
 data class RouteStop(
     val stopId: Long,
     val stopSeq: Int,
-    val name: String
+    val stopName: String
 )

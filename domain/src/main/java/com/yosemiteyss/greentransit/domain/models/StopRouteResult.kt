@@ -6,6 +6,6 @@ package com.yosemiteyss.greentransit.domain.models
  */
 
 data class StopRouteResult(
-    val routeRegionCode: RouteRegionCode,
+    val routeCode: RouteCode,
     val stopRoute: StopRoute
 )

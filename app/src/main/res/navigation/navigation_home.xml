@@ -41,7 +41,7 @@
         tools:layout="@layout/fragment_region_routes">
         <argument
             android:name="region"
-            app:argType="com.yosemiteyss.greentransit.domain.models.RouteRegion"/>
+            app:argType="com.yosemiteyss.greentransit.domain.models.Region"/>
         <action
             android:id="@+id/action_regionRoutesFragment_to_routeFragment"
             app:destination="@id/routeFragment" />

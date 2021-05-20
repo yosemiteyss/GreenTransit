@@ -9,11 +9,7 @@ import com.yosemiteyss.greentransit.app.route.RouteStopsListModel.RouteStopItemM
 import com.yosemiteyss.greentransit.domain.models.*
 import com.yosemiteyss.greentransit.domain.states.Resource
 import com.yosemiteyss.greentransit.domain.states.getSuccessDataOr
-import com.yosemiteyss.greentransit.domain.usecases.route.GetRouteInfoParameters
-import com.yosemiteyss.greentransit.domain.usecases.route.GetRouteInfoUseCase
-import com.yosemiteyss.greentransit.domain.usecases.route.GetRouteStopShiftEtasParameters
-import com.yosemiteyss.greentransit.domain.usecases.route.GetRouteStopShiftEtasUseCase
-import com.yosemiteyss.greentransit.domain.usecases.search.GetRouteStopInfosUseCase
+import com.yosemiteyss.greentransit.domain.usecases.route.*
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.*
@@ -64,7 +60,9 @@ class RouteViewModel @AssistedInject constructor(
                 is Resource.Success -> Resource.Success(
                     buildRouteStopsListModels(results = res.data)
                 )
-                is Resource.Error -> Resource.Error(res.message)
+                is Resource.Error -> {
+                    Resource.Error(res.message)
+                }
                 is Resource.Loading -> Resource.Loading()
             }
         }
@@ -85,7 +83,7 @@ class RouteViewModel @AssistedInject constructor(
         viewModelScope.launch {
             val param = GetRouteInfoParameters(
                 routeId = routeOption.routeId,
-                routeRegionCode = routeOption.routeRegionCode
+                routeCode = routeOption.routeRegionCode
             )
 
             getRouteInfoUseCase(param).collect { res ->
@@ -125,7 +123,7 @@ class RouteViewModel @AssistedInject constructor(
             RouteStopItemModel(
                 stopId = result.routeStop.stopId,
                 stopSeq = result.routeStop.stopSeq,
-                stopName = result.routeStop.name,
+                stopName = result.routeStop.stopName,
                 etaEnabled = result.routeStopShiftEta?.etaEnabled ?: false,
                 etaDescription = result.routeStopShiftEta?.etaDescription,
                 etaMin = result.routeStopShiftEta?.etaMin,
@@ -155,7 +153,7 @@ class RouteViewModel @AssistedInject constructor(
 
 @Parcelize
 data class RouteOption(
-    val routeRegionCode: @RawValue RouteRegionCode? = null,
+    val routeRegionCode: @RawValue RouteCode? = null,
     val routeId: Long? = null,
     val routeCode: String? = null
 ) : Parcelable

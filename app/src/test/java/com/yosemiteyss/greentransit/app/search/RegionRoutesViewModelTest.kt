@@ -3,7 +3,7 @@ package com.yosemiteyss.greentransit.app.search
 import android.content.Context
 import app.cash.turbine.test
 import com.yosemiteyss.greentransit.R
-import com.yosemiteyss.greentransit.domain.models.RouteRegion
+import com.yosemiteyss.greentransit.domain.models.Region
 import com.yosemiteyss.greentransit.domain.repositories.FakeTransitRepositoryImpl
 import com.yosemiteyss.greentransit.domain.usecases.search.GetRegionRoutesUseCase
 import com.yosemiteyss.greentransit.testshared.TestCoroutineRule
@@ -25,13 +25,13 @@ class RegionRoutesViewModelTest {
 
     @Test
     fun `test used correct toolbar title for region`() = coroutineRule.runBlockingTest {
-        var viewModel = createRegionRoutesViewModel(routeRegion = RouteRegion.KLN)
+        var viewModel = createRegionRoutesViewModel(region = Region.KLN)
 
         viewModel.toolbarTitle.test {
             assertEquals(TITLE_REGION_KLN, expectItem())
         }
 
-        viewModel = createRegionRoutesViewModel(routeRegion = RouteRegion.NT)
+        viewModel = createRegionRoutesViewModel(region = Region.NT)
 
         viewModel.toolbarTitle.test {
             assertEquals(TITLE_REGION_NT, expectItem())
@@ -39,7 +39,7 @@ class RegionRoutesViewModelTest {
     }
 
     private fun createRegionRoutesViewModel(
-        routeRegion: RouteRegion,
+        region: Region,
         networkError: Boolean = false
     ): RegionRoutesViewModel {
         val fakeTransitRepositoryImpl = FakeTransitRepositoryImpl().apply {
@@ -52,7 +52,7 @@ class RegionRoutesViewModelTest {
                 transitRepository = fakeTransitRepositoryImpl,
                 coroutineDispatcher = coroutineRule.testDispatcher
             ),
-            routeRegion = routeRegion
+            region = region
         )
     }
 

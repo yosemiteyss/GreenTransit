@@ -34,10 +34,30 @@ class TransitMapper @Inject constructor() {
         )
     }
 
-    fun toRouteCode(dto: RouteRegionCodeDto): RouteRegionCode {
-        return RouteRegionCode(
+    fun fromSearchToRouteCode(dto: RouteSearchDto): RouteCode {
+        return RouteCode(
             code = dto.code!!,
             region = toRouteRegion(dto.region!!)
+        )
+    }
+
+    fun fromNetworkToRouteCode(region: Region, dto: RouteCodesNetworkDto): List<RouteCode> {
+        return dto.routeCodes.map {
+            RouteCode(code = it, region = region)
+        }
+    }
+
+    fun fromLocalToRouteCode(localDto: RouteCodeLocalDto): RouteCode {
+        return RouteCode(
+            code = localDto.code,
+            region = toRouteRegion(localDto.region)
+        )
+    }
+
+    fun toRouteCodeLocalDto(routeCode: RouteCode): RouteCodeLocalDto {
+        return RouteCodeLocalDto(
+            code = routeCode.code,
+            region = toRouteRegion(routeCode.region)
         )
     }
 
@@ -72,20 +92,20 @@ class TransitMapper @Inject constructor() {
         } ?: emptyList()
     }
 
-    fun toRouteRegion(region: String): RouteRegion {
+    fun toRouteRegion(region: String): Region {
         return when (region) {
-            ROUTE_REGION_KLN -> RouteRegion.KLN
-            ROUTE_REGION_HKI -> RouteRegion.HKI
-            ROUTE_REGION_NT -> RouteRegion.NT
+            ROUTE_REGION_KLN -> Region.KLN
+            ROUTE_REGION_HKI -> Region.HKI
+            ROUTE_REGION_NT -> Region.NT
             else -> throw Exception("Invalid region: $region")
         }
     }
 
-    fun toRouteRegion(region: RouteRegion): String {
+    fun toRouteRegion(region: Region): String {
         return when (region) {
-            RouteRegion.KLN -> ROUTE_REGION_KLN
-            RouteRegion.HKI -> ROUTE_REGION_HKI
-            RouteRegion.NT -> ROUTE_REGION_NT
+            Region.KLN -> ROUTE_REGION_KLN
+            Region.HKI -> ROUTE_REGION_HKI
+            Region.NT -> ROUTE_REGION_NT
         }
     }
 
@@ -106,12 +126,14 @@ class TransitMapper @Inject constructor() {
         )
     }
 
-    fun toRouteStop(dto: RouteStopDto): RouteStop {
-        return RouteStop(
-            stopId = dto.stopId,
-            stopSeq = dto.stopSeq,
-            name = dto.nameEN
-        )
+    fun toRouteStop(dto: RouteStopListDto): List<RouteStop> {
+        return dto.routeStops.map {
+            RouteStop(
+                stopId = it.stopId,
+                stopSeq = it.stopSeq,
+                stopName = it.nameEN
+            )
+        }
     }
 
     fun toRouteStopShiftEta(dto: RouteStopEtaDto): List<RouteStopShiftEta> {

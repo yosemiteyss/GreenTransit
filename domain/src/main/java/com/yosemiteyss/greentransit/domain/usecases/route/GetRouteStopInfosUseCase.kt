@@ -1,4 +1,4 @@
-package com.yosemiteyss.greentransit.domain.usecases.search
+package com.yosemiteyss.greentransit.domain.usecases.route
 
 import com.yosemiteyss.greentransit.domain.di.IoDispatcher
 import com.yosemiteyss.greentransit.domain.models.StopInfo

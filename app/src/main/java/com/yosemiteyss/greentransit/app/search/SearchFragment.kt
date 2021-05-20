@@ -11,7 +11,7 @@ import com.yosemiteyss.greentransit.R
 import com.yosemiteyss.greentransit.app.route.RouteOption
 import com.yosemiteyss.greentransit.app.utils.*
 import com.yosemiteyss.greentransit.databinding.FragmentSearchBinding
-import com.yosemiteyss.greentransit.domain.models.RouteRegion
+import com.yosemiteyss.greentransit.domain.models.Region
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -96,21 +96,21 @@ class SearchFragment : DialogFragment(R.layout.fragment_search) {
 
         // Region chips
         binding.regionKlnChip.setOnClickListener {
-            navigateToRegionRoutes(RouteRegion.KLN)
+            navigateToRegionRoutes(Region.KLN)
         }
 
         binding.regionHkiChip.setOnClickListener {
-            navigateToRegionRoutes(RouteRegion.HKI)
+            navigateToRegionRoutes(Region.HKI)
         }
 
         binding.regionNtChip.setOnClickListener {
-            navigateToRegionRoutes(RouteRegion.NT)
+            navigateToRegionRoutes(Region.NT)
         }
     }
 
-    private fun navigateToRegionRoutes(routeRegion: RouteRegion) {
+    private fun navigateToRegionRoutes(region: Region) {
         findNavController(R.id.searchFragment)?.navigate(
-            SearchFragmentDirections.actionSearchFragmentToRegionRoutesFragment(routeRegion)
+            SearchFragmentDirections.actionSearchFragmentToRegionRoutesFragment(region)
         )
     }
 }

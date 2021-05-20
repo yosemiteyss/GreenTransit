@@ -5,7 +5,6 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
-import androidx.paging.LoadState
 import com.yosemiteyss.greentransit.R
 import com.yosemiteyss.greentransit.app.route.RouteOption
 import com.yosemiteyss.greentransit.app.search.RegionRoutesViewModel.RegionRoutesViewModelFactory
@@ -13,7 +12,6 @@ import com.yosemiteyss.greentransit.app.utils.*
 import com.yosemiteyss.greentransit.databinding.FragmentRegionRoutesBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -58,21 +56,20 @@ class RegionRoutesFragment : FullScreenDialogFragment(R.layout.fragment_region_r
         }
 
         with(binding.routesRecyclerView) {
-            adapter = regionRoutesAdapter.withLoadStateFooter(
-                footer = PagingLoadStateAdapter { regionRoutesAdapter.retry() }
-            )
-        }
-
-        regionRoutesAdapter.addLoadStateListener { loadStates ->
-            binding.loadingProgressBar.showIf(loadStates.source.refresh is LoadState.Loading)
-            loadStates.anyError()?.let {
-                showShortToast(it.toString())
-            }
+            adapter = regionRoutesAdapter
+            setHasFixedSize(true)
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.regionRoutes.collectLatest {
-                regionRoutesAdapter.submitData(it)
+            viewModel.routesUiState.collect { uiState ->
+                binding.loadingProgressBar.showIf(uiState is RegionRoutesUiState.Loading)
+
+                if (uiState is RegionRoutesUiState.Success) {
+                    regionRoutesAdapter.submitList(uiState.data)
+                } else if (uiState is RegionRoutesUiState.Error) {
+                    regionRoutesAdapter.submitList(uiState.data)
+                    showShortToast(uiState.message)
+                }
             }
         }
     }

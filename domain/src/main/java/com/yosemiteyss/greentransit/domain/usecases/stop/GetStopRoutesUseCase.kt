@@ -38,7 +38,7 @@ class GetStopRoutesUseCase @Inject constructor(
             val result = stopRoutes.map { stopRoute ->
                 StopRouteResult(
                     stopRoute = stopRoute,
-                    routeRegionCode = routeCodes.first { it.first == stopRoute.routeId }.second
+                    routeCode = routeCodes.first { it.first == stopRoute.routeId }.second
                 )
             }
 

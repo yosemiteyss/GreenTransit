@@ -1,25 +1,22 @@
 package com.yosemiteyss.greentransit.data.repositories
 
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
-import androidx.paging.map
 import com.google.firebase.firestore.FirebaseFirestore
 import com.yosemiteyss.greentransit.data.api.GMBService
 import com.yosemiteyss.greentransit.data.constants.Constants.NEARBY_ROUTE_COLLECTION
 import com.yosemiteyss.greentransit.data.constants.Constants.NEARBY_ROUTE_DTO_ID
 import com.yosemiteyss.greentransit.data.constants.Constants.NEARBY_STOP_COLLECTION
 import com.yosemiteyss.greentransit.data.constants.Constants.NEARBY_STOP_DTO_GEO_HASH
-import com.yosemiteyss.greentransit.data.constants.Constants.ROUTE_REGION_CODES_COLLECTION
-import com.yosemiteyss.greentransit.data.constants.Constants.ROUTE_REGION_CODE_DTO_CODE
-import com.yosemiteyss.greentransit.data.constants.Constants.ROUTE_REGION_CODE_DTO_ROUTE_IDS
+import com.yosemiteyss.greentransit.data.constants.Constants.ROUTE_SEARCH_COLLECTION
+import com.yosemiteyss.greentransit.data.constants.Constants.ROUTE_SEARCH_DTO_CODE
+import com.yosemiteyss.greentransit.data.constants.Constants.ROUTE_SEARCH_DTO_ROUTE_IDS
+import com.yosemiteyss.greentransit.data.db.AppDatabase
 import com.yosemiteyss.greentransit.data.mappers.TransitMapper
-import com.yosemiteyss.greentransit.data.paging.RegionRoutesPagingSource
 import com.yosemiteyss.greentransit.data.utils.getAwaitResult
 import com.yosemiteyss.greentransit.domain.models.*
 import com.yosemiteyss.greentransit.domain.repositories.TransitRepository
+import com.yosemiteyss.greentransit.domain.states.Resource
+import com.yosemiteyss.greentransit.domain.utils.networkCacheResource
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 /**
@@ -31,6 +28,7 @@ private const val ARRAY_CONTAINS_MAX = 10
 class TransitRepositoryImpl @Inject constructor(
     private val firestore: FirebaseFirestore,
     private val gmbService: GMBService,
+    private val appDatabase: AppDatabase,
     private val transitMapper: TransitMapper
 ) : TransitRepository {
 
@@ -48,23 +46,22 @@ class TransitRepositoryImpl @Inject constructor(
             .getAwaitResult(transitMapper::toNearbyRoute)
     }
 
-    override suspend fun getRegionRoutes(region: RouteRegion): Flow<PagingData<RouteRegionCode>> {
-        return Pager(
-            config = PagingConfig(
-                initialLoadSize = 15,
-                pageSize = 10
-            ),
-            pagingSourceFactory = {
-                RegionRoutesPagingSource(
-                    firestore = firestore,
-                    region = transitMapper.toRouteRegion(region)
-                )
+    override fun getRegionRoutes(region: Region): Flow<Resource<List<RouteCode>>> {
+        return networkCacheResource(
+            cacheSource = {
+                appDatabase.regionRoutesDao().getRegionRoutes(transitMapper.toRouteRegion(region))
+                    .map { transitMapper.fromLocalToRouteCode(it) }
+            },
+            networkSource = {
+                gmbService.getRegionRoutes(transitMapper.toRouteRegion(region))
+                    .let { transitMapper.fromNetworkToRouteCode(region, it) }
+            },
+            updateCache = { routeCodes ->
+                appDatabase.regionRoutesDao().insertRoute(routeCodes.map {
+                    transitMapper.toRouteCodeLocalDto(it)
+                })
             }
         )
-            .flow
-            .map { pagingData ->
-                pagingData.map { transitMapper.toRouteCode(it) }
-            }
     }
 
     override suspend fun getStopInfo(stopId: Long): StopInfo {
@@ -83,11 +80,11 @@ class TransitRepositoryImpl @Inject constructor(
             .flatten()
     }
 
-    override suspend fun getRouteCode(routeId: Long): RouteRegionCode {
-        return firestore.collection(ROUTE_REGION_CODES_COLLECTION)
-            .whereArrayContains(ROUTE_REGION_CODE_DTO_ROUTE_IDS, routeId)
+    override suspend fun getRouteCode(routeId: Long): RouteCode {
+        return firestore.collection(ROUTE_SEARCH_COLLECTION)
+            .whereArrayContains(ROUTE_SEARCH_DTO_ROUTE_IDS, routeId)
             .limit(1)
-            .getAwaitResult(transitMapper::toRouteCode)
+            .getAwaitResult(transitMapper::fromSearchToRouteCode)
             .first()
     }
 
@@ -96,16 +93,16 @@ class TransitRepositoryImpl @Inject constructor(
             .map { transitMapper.toRouteInfo(it) }
     }
 
-    override suspend fun getRouteInfos(routeRegionCode: RouteRegionCode): List<RouteInfo> {
+    override suspend fun getRouteInfos(routeCode: RouteCode): List<RouteInfo> {
         return gmbService.getRouteInfo(
-            transitMapper.toRouteRegion(routeRegionCode.region),
-            routeRegionCode.code
+            transitMapper.toRouteRegion(routeCode.region),
+            routeCode.code
         ).map { transitMapper.toRouteInfo(it) }
     }
 
     override suspend fun getRouteStops(routeId: Long, routeSeq: Int): List<RouteStop> {
-        return gmbService.getRouteStops(routeId, routeSeq).routeStops
-            .map { transitMapper.toRouteStop(it) }
+        return gmbService.getRouteStops(routeId, routeSeq)
+            .let { transitMapper.toRouteStop(it) }
     }
 
     override suspend fun getRouteStopShiftEtas(routeId: Long, stopId: Long): List<RouteStopShiftEta> {
@@ -115,11 +112,11 @@ class TransitRepositoryImpl @Inject constructor(
     }
 
     @ExperimentalStdlibApi
-    override suspend fun searchRoute(query: String, numOfRoutes: Int): List<RouteRegionCode> {
-        return firestore.collection(ROUTE_REGION_CODES_COLLECTION)
-            .whereGreaterThanOrEqualTo(ROUTE_REGION_CODE_DTO_CODE, query.uppercase())
-            .whereLessThanOrEqualTo(ROUTE_REGION_CODE_DTO_CODE, (query + '\uf8ff').uppercase())
+    override suspend fun searchRoute(query: String, numOfRoutes: Int): List<RouteCode> {
+        return firestore.collection(ROUTE_SEARCH_COLLECTION)
+            .whereGreaterThanOrEqualTo(ROUTE_SEARCH_DTO_CODE, query.uppercase())
+            .whereLessThanOrEqualTo(ROUTE_SEARCH_DTO_CODE, (query + '\uf8ff').uppercase())
             .limit(numOfRoutes.toLong())
-            .getAwaitResult(transitMapper::toRouteCode)
+            .getAwaitResult(transitMapper::fromSearchToRouteCode)
     }
 }

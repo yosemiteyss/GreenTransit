@@ -1,8 +1,8 @@
 package com.yosemiteyss.greentransit.domain.usecases.route
 
 import com.yosemiteyss.greentransit.domain.di.IoDispatcher
+import com.yosemiteyss.greentransit.domain.models.RouteCode
 import com.yosemiteyss.greentransit.domain.models.RouteInfo
-import com.yosemiteyss.greentransit.domain.models.RouteRegionCode
 import com.yosemiteyss.greentransit.domain.repositories.TransitRepository
 import com.yosemiteyss.greentransit.domain.states.Resource
 import com.yosemiteyss.greentransit.domain.usecases.FlowUseCase
@@ -34,6 +34,6 @@ class GetRouteInfoUseCase @Inject constructor(
 }
 
 data class GetRouteInfoParameters(
-    val routeRegionCode: RouteRegionCode? = null,
+    val routeCode: RouteCode? = null,
     val routeId: Long? = null
 )

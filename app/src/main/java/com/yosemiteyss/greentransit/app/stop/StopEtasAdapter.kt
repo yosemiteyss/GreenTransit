@@ -67,10 +67,10 @@ class StopEtasAdapter(
         routeCodeTextView.text = etasShiftModel.routeShiftEtaResult.remarks?.let {
             root.context.getString(
                 R.string.stop_eta_shift_code,
-                etasShiftModel.routeShiftEtaResult.routeRegionCode.code,
+                etasShiftModel.routeShiftEtaResult.routeCode.code,
                 it
             )
-        } ?: etasShiftModel.routeShiftEtaResult.routeRegionCode.code
+        } ?: etasShiftModel.routeShiftEtaResult.routeCode.code
 
         routeDestTextView.text = root.context.getString(
             R.string.stop_eta_shift_dest,
@@ -90,7 +90,7 @@ class StopEtasAdapter(
         root.setOnClickListener {
             onRouteClicked(
                 etasShiftModel.routeShiftEtaResult.routeId,
-                etasShiftModel.routeShiftEtaResult.routeRegionCode.code
+                etasShiftModel.routeShiftEtaResult.routeCode.code
             )
         }
     }

@@ -10,7 +10,7 @@ import java.util.*
 data class StopRouteShiftEtaResult(
     val routeId: Long,
     val routeSeq: Int,
-    val routeRegionCode: RouteRegionCode,
+    val routeCode: RouteCode,
     val dest: String,
     val etaMin: Int,
     val etaDate: Date,

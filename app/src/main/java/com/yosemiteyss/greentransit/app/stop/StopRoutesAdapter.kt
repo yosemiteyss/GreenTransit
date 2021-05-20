@@ -56,7 +56,7 @@ class StopRoutesAdapter(
         binding: StopRouteListItemBinding,
         routeItemModel: StopRouteItemModel
     ) = binding.run {
-        routeCodeTextView.text = routeItemModel.stopRouteResult.routeRegionCode.code
+        routeCodeTextView.text = routeItemModel.stopRouteResult.routeCode.code
         routeStopNameTextView.text = root.context.getString(
             R.string.stop_routes_stop_name,
             routeItemModel.stopRouteResult.stopRoute.stopSeq,
@@ -66,7 +66,7 @@ class StopRoutesAdapter(
         root.setOnClickListener {
             onRouteClicked(
                 routeItemModel.stopRouteResult.stopRoute.routeId,
-                routeItemModel.stopRouteResult.routeRegionCode.code
+                routeItemModel.stopRouteResult.routeCode.code
             )
         }
     }

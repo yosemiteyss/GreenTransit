@@ -2,7 +2,7 @@ package com.yosemiteyss.greentransit.app.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.yosemiteyss.greentransit.domain.models.RouteRegionCode
+import com.yosemiteyss.greentransit.domain.models.RouteCode
 import com.yosemiteyss.greentransit.domain.states.Resource
 import com.yosemiteyss.greentransit.domain.usecases.search.SearchRoutesParameter
 import com.yosemiteyss.greentransit.domain.usecases.search.SearchRoutesUseCase
@@ -53,8 +53,8 @@ class SearchViewModel @Inject constructor(
         _searchQuery.value = query
     }
 
-    private fun buildSearchListModels(routeRegionCodes: List<RouteRegionCode>): List<SearchListModel> {
-        return routeRegionCodes.map {
+    private fun buildSearchListModels(routeCodes: List<RouteCode>): List<SearchListModel> {
+        return routeCodes.map {
             SearchListModel.SearchResultListModel(it)
         }
     }

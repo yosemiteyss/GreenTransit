@@ -13,6 +13,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.simplexml.SimpleXmlConverterFactory
@@ -38,8 +40,19 @@ class RemoteModule {
 
     @Singleton
     @Provides
-    fun provideGMBService(): GMBService {
+    fun provideOkHttpClient(): OkHttpClient {
+        return OkHttpClient.Builder().apply {
+            addInterceptor(HttpLoggingInterceptor().apply {
+                level = HttpLoggingInterceptor.Level.BODY
+            })
+        }.build()
+    }
+
+    @Singleton
+    @Provides
+    fun provideGMBService(okHttpClient: OkHttpClient): GMBService {
         return Retrofit.Builder()
+            .client(okHttpClient)
             .baseUrl(GMB_URL)
             .addConverterFactory(GMBResponseConverterFactory())
             .addConverterFactory(GsonConverterFactory.create())

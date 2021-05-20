@@ -22,7 +22,7 @@ class HomeViewModel @Inject constructor(
     private val _nearbyRoutesCount = MutableStateFlow(0)
     val nearbyRoutesCount: StateFlow<Int> = _nearbyRoutesCount.asStateFlow()
 
-    fun getNearbyRouteEtas(nearbyStops: StateFlow<List<NearbyStop>>): StateFlow<HomeUiState> {
+    fun getHomeUiState(nearbyStops: StateFlow<List<NearbyStop>>): StateFlow<HomeUiState> {
         return nearbyStops.flatMapLatest { getNearbyRoutesUseCase(it) }
             .map { res ->
                 when (res) {
