@@ -1,3 +1,7 @@
+//  COMP4521    HON KIN TAT     20514332        kthon@connect.ust.hk
+//  COMP4521    LAI CHEUK HEI   20464044        chlaiak@connect.ust.hk
+//  COMP4521    CHAN HOK HIM    20435392        hhchanal@connect.ust.hk
+
 package com.yosemiteyss.greentransit.data.utils
 
 import android.util.Log
@@ -21,9 +25,6 @@ private const val TAG = "FirebaseExtensions"
 const val ERROR_DOCUMENT_NOT_EXIST = "Document does not exist."
 const val ERROR_NETWORK_UNAVAILABLE = "Network error."
 
-/**
- * Check if the query snapshot is came from network data instead of local caches.
- */
 internal fun QuerySnapshot.isNetworkData(): Boolean {
     return !metadata.isFromCache
 }

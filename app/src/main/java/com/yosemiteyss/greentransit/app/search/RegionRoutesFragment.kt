@@ -1,3 +1,7 @@
+//  COMP4521    HON KIN TAT     20514332        kthon@connect.ust.hk
+//  COMP4521    LAI CHEUK HEI   20464044        chlaiak@connect.ust.hk
+//  COMP4521    CHAN HOK HIM    20435392        hhchanal@connect.ust.hk
+
 package com.yosemiteyss.greentransit.app.search
 
 import android.os.Bundle
@@ -15,9 +19,6 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-/**
- * Created by kevin on 16/5/2021
- */
 
 @AndroidEntryPoint
 class RegionRoutesFragment : FullScreenDialogFragment(R.layout.fragment_region_routes) {

@@ -1,3 +1,7 @@
+//  COMP4521    HON KIN TAT     20514332        kthon@connect.ust.hk
+//  COMP4521    LAI CHEUK HEI   20464044        chlaiak@connect.ust.hk
+//  COMP4521    CHAN HOK HIM    20435392        hhchanal@connect.ust.hk
+
 package com.yosemiteyss.greentransit.app.stop
 
 import android.os.Bundle
@@ -18,10 +22,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
-/**
- * Created by kevin on 17/5/2021
- */
 
 private const val MAP_DEFAULT_ZOOM = 18f
 

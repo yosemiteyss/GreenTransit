@@ -42,12 +42,19 @@ android {
         }
     }
 
+    /*
     sourceSets {
         // Provide fake repositories
         getByName("test") {
             java.srcDir(project(":domain").file("src/test/java"))
         }
+
+        getByName("androidTest") {
+            java.srcDir(project(":domain").file("src/test/java"))
+        }
     }
+
+     */
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -62,6 +69,13 @@ android {
 
     buildFeatures {
         viewBinding = true
+    }
+
+    packagingOptions {
+        exclude("**/attach_hotspot_windows.dll")
+        exclude("META-INF/licenses/**")
+        exclude("META-INF/AL2.0")
+        exclude("META-INF/LGPL2.1")
     }
 
     tasks.withType<KotlinCompile> {
@@ -83,6 +97,7 @@ dependencies {
     implementation(project(":data"))
     implementation(project(":domain"))
     testImplementation(project(":test-shared"))
+    androidTestImplementation(project(":test-shared"))
 
     implementation(Dependencies.KOTLIN_STDLIB)
     implementation(Dependencies.COROUTINE_CORE)
@@ -129,12 +144,17 @@ dependencies {
     testImplementation(Dependencies.TEST_CORE)
 
     // Android Test
-    //androidTestImplementation(Dependencies.MOCKK)
     androidTestImplementation(Dependencies.HILT_TESTING)
-    androidTestImplementation(Dependencies.TEST_ESPRESSO_CORE)
+    //androidTestImplementation(Dependencies.TEST_ESPRESSO_CORE)
+    //androidTestImplementation(Dependencies.TEST_ESPRESSO_CONTRIB)
     androidTestImplementation(Dependencies.TEST_RUNNER)
     androidTestImplementation(Dependencies.TEST_EXT_JUNIT_KTX)
     androidTestImplementation(Dependencies.NAVIGATION_TESTING)
+    androidTestImplementation(Dependencies.ARCH_CORE_TESTING)
+    androidTestImplementation("com.github.AdevintaSpain:Barista:v3.9.0") {
+        exclude("org.jetbrains.kotlin")
+    }
     debugImplementation(Dependencies.FRAGMENT_TESTING)
+
     kaptAndroidTest(Annotation.HILT_ANDROID_COMPILER)
 }

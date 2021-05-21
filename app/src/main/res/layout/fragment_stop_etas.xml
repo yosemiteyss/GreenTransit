@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- COMP4521    HON KIN TAT     20514332        kthon@connect.ust.hk
+     COMP4521    LAI CHEUK HEI   20464044        chlaiak@connect.ust.hk
+     COMP4521    CHAN HOK HIM    20435392        hhchanal@connect.ust.hk
+-->
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"

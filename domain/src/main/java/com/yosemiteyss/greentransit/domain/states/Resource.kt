@@ -1,10 +1,12 @@
+//  COMP4521    HON KIN TAT     20514332        kthon@connect.ust.hk
+//  COMP4521    LAI CHEUK HEI   20464044        chlaiak@connect.ust.hk
+//  COMP4521    CHAN HOK HIM    20435392        hhchanal@connect.ust.hk
+
+
 package com.yosemiteyss.greentransit.domain.states
 
 import androidx.annotation.FloatRange
 
-/**
- * Created by kevin on 8/9/20
- */
 sealed class Resource<out T> {
 
     data class Success<out T>(val data: T) : Resource<T>()
@@ -16,10 +18,6 @@ sealed class Resource<out T> {
     ) : Resource<Nothing>()
 }
 
-/**
- * Check if there is a correctly received data,
- * or else return a custom fallback object
- */
 fun<T> Resource<T>.getSuccessDataOr(fallback: T): T {
     return (this as? Resource.Success<T>)?.data ?: fallback
 }

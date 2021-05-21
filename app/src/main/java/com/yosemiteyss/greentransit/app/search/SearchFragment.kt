@@ -1,3 +1,7 @@
+//  COMP4521    HON KIN TAT     20514332        kthon@connect.ust.hk
+//  COMP4521    LAI CHEUK HEI   20464044        chlaiak@connect.ust.hk
+//  COMP4521    CHAN HOK HIM    20435392        hhchanal@connect.ust.hk
+
 package com.yosemiteyss.greentransit.app.search
 
 import android.os.Bundle
@@ -15,10 +19,6 @@ import com.yosemiteyss.greentransit.domain.models.Region
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-
-/**
- * Created by kevin on 12/5/2021
- */
 
 @AndroidEntryPoint
 class SearchFragment : DialogFragment(R.layout.fragment_search) {

@@ -1,3 +1,8 @@
+//  COMP4521    HON KIN TAT     20514332        kthon@connect.ust.hk
+//  COMP4521    LAI CHEUK HEI   20464044        chlaiak@connect.ust.hk
+//  COMP4521    CHAN HOK HIM    20435392        hhchanal@connect.ust.hk
+
+
 package com.yosemiteyss.greentransit.app.stop
 
 import android.view.LayoutInflater
@@ -17,10 +22,6 @@ import com.yosemiteyss.greentransit.app.utils.format
 import com.yosemiteyss.greentransit.databinding.RoutesEmptyItemBinding
 import com.yosemiteyss.greentransit.databinding.StopEtaListItemBinding
 import com.yosemiteyss.greentransit.domain.models.StopRouteShiftEtaResult
-
-/**
- * Created by kevin on 17/5/2021
- */
 
 private const val MAX_DISPLAY_MINUTES = 59
 

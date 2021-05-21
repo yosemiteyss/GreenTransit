@@ -18,6 +18,7 @@
     <!-- Empty List -->
     <string name="routes_empty">No route found</string>
     <string name="stops_empty">No stop found</string>
+    <string name="news_empty">No news found</string>
 
     <!-- Nearby routes -->
     <string name="nearby_routes_dest">to %s</string>

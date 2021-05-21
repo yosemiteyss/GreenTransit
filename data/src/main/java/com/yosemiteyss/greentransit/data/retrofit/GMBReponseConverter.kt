@@ -1,3 +1,7 @@
+//  COMP4521    HON KIN TAT     20514332        kthon@connect.ust.hk
+//  COMP4521    LAI CHEUK HEI   20464044        chlaiak@connect.ust.hk
+//  COMP4521    CHAN HOK HIM    20435392        hhchanal@connect.ust.hk
+
 package com.yosemiteyss.greentransit.data.retrofit
 
 import com.google.gson.annotations.SerializedName
@@ -10,10 +14,6 @@ import okhttp3.ResponseBody
 import retrofit2.Converter
 import retrofit2.Retrofit
 import java.lang.reflect.Type
-
-/**
- * Extract the 'data' object from the GMB api response.
- */
 
 internal class GMBResponseConverter(
     private val delegate: Converter<ResponseBody, GMBResponse<Any>>

@@ -1,21 +1,21 @@
+//  COMP4521    HON KIN TAT     20514332        kthon@connect.ust.hk
+//  COMP4521    LAI CHEUK HEI   20464044        chlaiak@connect.ust.hk
+//  COMP4521    CHAN HOK HIM    20435392        hhchanal@connect.ust.hk
+
 package com.yosemiteyss.greentransit.domain.usecases.route
 
 import app.cash.turbine.test
 import com.yosemiteyss.greentransit.domain.models.Region
 import com.yosemiteyss.greentransit.domain.models.RouteCode
-import com.yosemiteyss.greentransit.domain.repositories.FakeTransitRepositoryImpl
 import com.yosemiteyss.greentransit.domain.states.Resource
-import com.yosemiteyss.greentransit.testshared.TestCoroutineRule
-import com.yosemiteyss.greentransit.testshared.runBlockingTest
+import com.yosemiteyss.greentransit.testshared.repositories.FakeTransitRepositoryImpl
+import com.yosemiteyss.greentransit.testshared.utils.TestCoroutineRule
+import com.yosemiteyss.greentransit.testshared.utils.runBlockingTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import java.util.*
 import kotlin.random.Random
-
-/**
- * Created by kevin on 19/5/2021
- */
 
 class GetRouteInfoUseCaseTest {
 

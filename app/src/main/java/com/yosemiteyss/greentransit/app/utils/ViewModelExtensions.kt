@@ -1,3 +1,7 @@
+//  COMP4521    HON KIN TAT     20514332        kthon@connect.ust.hk
+//  COMP4521    LAI CHEUK HEI   20464044        chlaiak@connect.ust.hk
+//  COMP4521    CHAN HOK HIM    20435392        hhchanal@connect.ust.hk
+
 package com.yosemiteyss.greentransit.app.utils
 
 import android.os.Bundle
@@ -6,10 +10,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
 import androidx.savedstate.SavedStateRegistryOwner
 import kotlin.reflect.KClass
-
-/**
- * Created by kevin on 8/14/20
- */
 
 @MainThread
 inline fun <reified VM : ViewModel> Fragment.parentViewModels() = createLazyViewModel(

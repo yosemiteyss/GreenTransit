@@ -1,12 +1,12 @@
+//  COMP4521    HON KIN TAT     20514332        kthon@connect.ust.hk
+//  COMP4521    LAI CHEUK HEI   20464044        chlaiak@connect.ust.hk
+//  COMP4521    CHAN HOK HIM    20435392        hhchanal@connect.ust.hk
+
 package com.yosemiteyss.greentransit.app.utils
 
 import android.app.Activity
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-
-/**
- * Created by kevin on 8/14/20
- */
 
 fun Activity.showShortToast(message: String?) {
     message?.let {

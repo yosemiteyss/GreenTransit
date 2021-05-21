@@ -1,3 +1,7 @@
+//  COMP4521    HON KIN TAT     20514332        kthon@connect.ust.hk
+//  COMP4521    LAI CHEUK HEI   20464044        chlaiak@connect.ust.hk
+//  COMP4521    CHAN HOK HIM    20435392        hhchanal@connect.ust.hk
+
 package com.yosemiteyss.greentransit.app.news
 
 import android.content.res.ColorStateList
@@ -17,13 +21,6 @@ import com.yosemiteyss.greentransit.databinding.NewsListItemBinding
 import com.yosemiteyss.greentransit.domain.models.TrafficNews
 import com.yosemiteyss.greentransit.domain.models.TrafficNewsStatus
 import java.util.*
-
-/**
- * Created by kevin on 14/5/2021
- */
-
-private const val NEWS_COLLAPSED_LINES = 3
-private const val NEWS_MAX_LINES = Int.MAX_VALUE
 
 class NewsAdapter : ListAdapter<TrafficNewsListModel, TrafficNewsViewHolder>(TrafficNewsListModelDiff) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrafficNewsViewHolder {
@@ -92,8 +89,13 @@ class NewsAdapter : ListAdapter<TrafficNewsListModel, TrafficNewsViewHolder>(Tra
         // Collapse or expand
         root.setOnClickListener {
             contentTextView.maxLines = if (contentTextView.maxLines == NEWS_COLLAPSED_LINES)
-                NEWS_MAX_LINES else NEWS_COLLAPSED_LINES
+                NEWS_EXPANDED_LINES else NEWS_COLLAPSED_LINES
         }
+    }
+
+    companion object {
+        const val NEWS_COLLAPSED_LINES = 3
+        const val NEWS_EXPANDED_LINES = Int.MAX_VALUE
     }
 }
 

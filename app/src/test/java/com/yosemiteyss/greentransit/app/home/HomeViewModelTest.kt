@@ -3,11 +3,11 @@ package com.yosemiteyss.greentransit.app.home
 import android.location.Location
 import app.cash.turbine.test
 import com.yosemiteyss.greentransit.app.main.MainViewModel
-import com.yosemiteyss.greentransit.domain.repositories.FakeTransitRepositoryImpl
 import com.yosemiteyss.greentransit.domain.usecases.nearby.GetNearbyRoutesUseCase
 import com.yosemiteyss.greentransit.domain.usecases.nearby.GetNearbyStopsUseCase
-import com.yosemiteyss.greentransit.testshared.TestCoroutineRule
-import com.yosemiteyss.greentransit.testshared.runBlockingTest
+import com.yosemiteyss.greentransit.testshared.repositories.FakeTransitRepositoryImpl
+import com.yosemiteyss.greentransit.testshared.utils.TestCoroutineRule
+import com.yosemiteyss.greentransit.testshared.utils.runBlockingTest
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.Rule

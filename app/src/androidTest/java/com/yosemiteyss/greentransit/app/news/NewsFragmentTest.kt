@@ -1,27 +1,62 @@
+//  COMP4521    HON KIN TAT     20514332        kthon@connect.ust.hk
+//  COMP4521    LAI CHEUK HEI   20464044        chlaiak@connect.ust.hk
+//  COMP4521    CHAN HOK HIM    20435392        hhchanal@connect.ust.hk
+
 package com.yosemiteyss.greentransit.app.news
 
-import android.view.View
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.UiController
-import androidx.test.espresso.ViewAction
-import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.*
+import android.widget.TextView
+import androidx.test.espresso.ViewAssertion
+import androidx.test.espresso.matcher.ViewMatchers.assertThat
 import androidx.test.filters.MediumTest
+import androidx.test.platform.app.InstrumentationRegistry
+import com.schibsted.spain.barista.assertion.BaristaListAssertions.assertCustomAssertionAtPosition
+import com.schibsted.spain.barista.assertion.BaristaListAssertions.assertDisplayedAtPosition
+import com.schibsted.spain.barista.assertion.BaristaVisibilityAssertions.assertDisplayed
+import com.schibsted.spain.barista.interaction.BaristaListInteractions.clickListItem
 import com.yosemiteyss.greentransit.R
 import com.yosemiteyss.greentransit.app.launchFragmentInHiltContainer
+import com.yosemiteyss.greentransit.data.di.TrafficNewsModule
+import com.yosemiteyss.greentransit.data.mappers.TrafficNewsMapper
+import com.yosemiteyss.greentransit.domain.repositories.TrafficNewsRepository
+import com.yosemiteyss.greentransit.testshared.repositories.FakeTrafficNewsRepositoryImpl
+import com.yosemiteyss.greentransit.testshared.utils.TestCoroutineRule
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import org.hamcrest.Matcher
+import dagger.hilt.android.testing.UninstallModules
+import dagger.hilt.components.SingletonComponent
+import org.hamcrest.CoreMatchers
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import javax.inject.Singleton
 
 @MediumTest
 @HiltAndroidTest
+@UninstallModules(TrafficNewsModule::class)
 class NewsFragmentTest {
 
     @get:Rule
     var hiltRule = HiltAndroidRule(this)
+
+    @get:Rule
+    var coroutineRule = TestCoroutineRule()
+
+    val context = InstrumentationRegistry.getInstrumentation().targetContext
+
+    @Module
+    @InstallIn(SingletonComponent::class)
+    object TrafficNewsTestModule {
+        @Singleton
+        @Provides
+        fun provideTrafficNewsRepository(): TrafficNewsRepository = FakeTrafficNewsRepositoryImpl()
+
+        @Singleton
+        @Provides
+        fun provideTrafficNewsMapper(): TrafficNewsMapper = TrafficNewsMapper()
+    }
 
     @Before
     fun setup() {
@@ -29,39 +64,53 @@ class NewsFragmentTest {
     }
 
     @Test
-    fun testLaunchFragmentInHiltContainer() {
-        launchFragmentInHiltContainer<NewsFragment> {
+    fun test_news_header() {
+        launchFragmentInHiltContainer<NewsFragment>()
 
-        }
+        assertDisplayed(R.id.news_recycler_view)
 
-        onView(isRoot()).perform(waitFor(20000))
-        onView(withId(R.id.news_recycler_view)).check(matches(isDisplayed()))
+        assertDisplayedAtPosition(
+            R.id.news_recycler_view, 0,
+            R.id.news_header_title_text_view, context.getString(R.string.news_header_title)
+        )
+
+        assertDisplayedAtPosition(
+            R.id.news_recycler_view, 0,
+            R.id.news_header_subtitle_text_view, context.getString(R.string.news_header_subtitle)
+        )
+    }
+
+    @Test
+    fun test_news_card_expand_and_collapse() {
+        launchFragmentInHiltContainer<NewsFragment>()
+
+        // Default
+        assertDisplayed(R.id.news_recycler_view)
+        assertCustomAssertionAtPosition(
+            R.id.news_recycler_view, 1,
+            R.id.content_text_view, hasMaxLines(NewsAdapter.NEWS_COLLAPSED_LINES)
+        )
+
+        // Expand card
+        clickListItem(R.id.news_recycler_view, 1)
+        assertCustomAssertionAtPosition(
+            R.id.news_recycler_view, 1,
+            R.id.content_text_view, hasMaxLines(NewsAdapter.NEWS_EXPANDED_LINES)
+        )
+
+        // Collapse card
+        clickListItem(R.id.news_recycler_view, 1)
+        assertCustomAssertionAtPosition(
+            R.id.news_recycler_view, 1,
+            R.id.content_text_view, hasMaxLines(NewsAdapter.NEWS_COLLAPSED_LINES)
+        )
     }
 }
 
-fun waitFor(delay: Long): ViewAction {
-    return object : ViewAction {
-        override fun getConstraints(): Matcher<View> = isRoot()
-        override fun getDescription(): String = "wait for $delay milliseconds"
-        override fun perform(uiController: UiController, v: View?) {
-            uiController.loopMainThreadForAtLeast(delay)
-        }
-    }
-}
-
-fun clickNewsItemWithId(id: Int): ViewAction {
-    return object : ViewAction {
-        override fun getConstraints(): Matcher<View>? {
-            return null
-        }
-
-        override fun getDescription(): String {
-            return "Click News Item with a specific ID"
-        }
-
-        override fun perform(uiController: UiController?, view: View) {
-            val v = view.findViewById<View>(id)
-            v.performClick()
-        }
+fun hasMaxLines(count: Int) : ViewAssertion {
+    return ViewAssertion { view, noViewFoundException ->
+        if (noViewFoundException != null) throw noViewFoundException
+        if (view !is TextView) throw IllegalStateException("Not a TextView.")
+        assertThat("Textview max lines", view.maxLines, CoreMatchers.equalTo(count))
     }
 }

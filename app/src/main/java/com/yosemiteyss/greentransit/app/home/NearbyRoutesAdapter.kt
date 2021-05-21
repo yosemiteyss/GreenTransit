@@ -1,3 +1,7 @@
+//  COMP4521    HON KIN TAT     20514332        kthon@connect.ust.hk
+//  COMP4521    LAI CHEUK HEI   20464044        chlaiak@connect.ust.hk
+//  COMP4521    CHAN HOK HIM    20435392        hhchanal@connect.ust.hk
+
 package com.yosemiteyss.greentransit.app.home
 
 import android.view.LayoutInflater
@@ -13,10 +17,6 @@ import com.yosemiteyss.greentransit.app.home.NearbyRoutesViewHolder.NearbyRoutes
 import com.yosemiteyss.greentransit.app.home.NearbyRoutesViewHolder.NearbyRoutesItemViewHolder
 import com.yosemiteyss.greentransit.databinding.NearbyRoutesListItemBinding
 import com.yosemiteyss.greentransit.databinding.RoutesEmptyItemBinding
-
-/**
- * Created by kevin on 13/5/2021
- */
 
 class NearbyRoutesAdapter(
     private val onRouteClicked: (routeId: Long, routeCode: String) -> Unit

@@ -15,7 +15,7 @@ android {
         targetSdkVersion(Application.TARGET_SDK)
         versionCode = Application.MAIN_VERSION_CODE
         versionName = Application.MAIN_VERSION_NAME
-        testInstrumentationRunner = Dependencies.HILT_TEST_RUNNER
+        testInstrumentationRunner = "com.yosemiteyss.greentransit.app.HiltTestRunner"
 
         consumerProguardFiles("consumer-proguard-rules.pro")
     }

@@ -1,8 +1,8 @@
-package com.yosemiteyss.greentransit.data.constants
+//  COMP4521    HON KIN TAT     20514332        kthon@connect.ust.hk
+//  COMP4521    LAI CHEUK HEI   20464044        chlaiak@connect.ust.hk
+//  COMP4521    CHAN HOK HIM    20435392        hhchanal@connect.ust.hk
 
-/**
- * Created by kevin on 11/5/2021
- */
+package com.yosemiteyss.greentransit.data.constants
 
 object Constants {
     const val GMB_URL = "https://data.etagmb.gov.hk"

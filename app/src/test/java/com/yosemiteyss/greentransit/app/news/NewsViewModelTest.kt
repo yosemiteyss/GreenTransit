@@ -2,8 +2,8 @@ package com.yosemiteyss.greentransit.app.news
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.yosemiteyss.greentransit.app.utils.getOrAwaitValue
-import com.yosemiteyss.greentransit.domain.repositories.FakeTrafficNewsRepositoryImpl
-import com.yosemiteyss.greentransit.testshared.TestCoroutineRule
+import com.yosemiteyss.greentransit.testshared.repositories.FakeTrafficNewsRepositoryImpl
+import com.yosemiteyss.greentransit.testshared.utils.TestCoroutineRule
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test

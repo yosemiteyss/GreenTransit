@@ -1,3 +1,7 @@
+//  COMP4521    HON KIN TAT     20514332        kthon@connect.ust.hk
+//  COMP4521    LAI CHEUK HEI   20464044        chlaiak@connect.ust.hk
+//  COMP4521    CHAN HOK HIM    20435392        hhchanal@connect.ust.hk
+
 package com.yosemiteyss.greentransit.app.utils
 
 import android.view.LayoutInflater
@@ -7,10 +11,6 @@ import androidx.paging.LoadState
 import androidx.paging.LoadStateAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.yosemiteyss.greentransit.databinding.PagingLoadStateItemBinding
-
-/**
- * Created by kevin on 9/28/20
- */
 
 class PagingLoadStateAdapter(
     private val retryAction: () -> Unit

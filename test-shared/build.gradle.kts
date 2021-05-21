@@ -6,6 +6,7 @@ plugins {
 
 dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
+    implementation(project(":domain"))
 
     implementation(Dependencies.KOTLIN_STDLIB)
     implementation(Dependencies.JUNIT)

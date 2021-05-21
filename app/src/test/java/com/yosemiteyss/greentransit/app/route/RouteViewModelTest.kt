@@ -3,13 +3,13 @@ package com.yosemiteyss.greentransit.app.route
 import app.cash.turbine.test
 import com.yosemiteyss.greentransit.domain.models.Region
 import com.yosemiteyss.greentransit.domain.models.RouteCode
-import com.yosemiteyss.greentransit.domain.repositories.FakeTransitRepositoryImpl
 import com.yosemiteyss.greentransit.domain.states.Resource
 import com.yosemiteyss.greentransit.domain.usecases.route.GetRouteInfoUseCase
 import com.yosemiteyss.greentransit.domain.usecases.route.GetRouteStopInfosUseCase
 import com.yosemiteyss.greentransit.domain.usecases.route.GetRouteStopShiftEtasUseCase
-import com.yosemiteyss.greentransit.testshared.TestCoroutineRule
-import com.yosemiteyss.greentransit.testshared.runBlockingTest
+import com.yosemiteyss.greentransit.testshared.repositories.FakeTransitRepositoryImpl
+import com.yosemiteyss.greentransit.testshared.utils.TestCoroutineRule
+import com.yosemiteyss.greentransit.testshared.utils.runBlockingTest
 import org.junit.Assert.assertNotNull
 import org.junit.Rule
 import org.junit.Test
