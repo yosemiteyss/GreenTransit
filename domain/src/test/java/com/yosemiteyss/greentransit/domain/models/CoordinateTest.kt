@@ -21,4 +21,17 @@ class CoordinateTest {
 
         assertEquals(expected, current.distance(from), 0.0)
     }
+
+    @Test
+    fun `test decimal places`() {
+        val expectedDp = 4
+        val coordinate = Coordinate(53.32055555555556, -1.7297222222222221)
+            .round(expectedDp)
+
+        val latitudeDp = coordinate.latitude.toString().split('.')[1].length
+        val longitudeDp = coordinate.longitude.toString().split('.')[1].length
+
+        assertEquals(expectedDp, latitudeDp)
+        assertEquals(expectedDp, longitudeDp)
+    }
 }
