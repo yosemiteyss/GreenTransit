@@ -30,7 +30,7 @@ private const val NEARBY_BOUND_METER = 300
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val getDeviceLocationUseCase: GetDeviceLocationUseCase,
+    getDeviceLocationUseCase: GetDeviceLocationUseCase,
     private val getNearbyStopsUseCase: GetNearbyStopsUseCase
 ) : ViewModel() {
 

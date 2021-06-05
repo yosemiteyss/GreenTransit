@@ -10,7 +10,6 @@ import android.hardware.SensorManager
 import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.annotation.RequiresPermission
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
 import androidx.navigation.NavController
@@ -35,8 +34,11 @@ class MainActivity : AppCompatActivity() {
     private val requestLocation = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { isGranted ->
-        if (isGranted) observerFusedLocation() else
+        if (isGranted) {
+            viewModel.onEnableMap(true)
+        } else {
             showLocationDeniedSnackbar()
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,7 +54,7 @@ class MainActivity : AppCompatActivity() {
 
         // Get fused location
         if (isPermissionGranted(Manifest.permission.ACCESS_FINE_LOCATION)) {
-            observerFusedLocation()
+            viewModel.onEnableMap(true)
         } else {
             requestLocation.launch(Manifest.permission.ACCESS_FINE_LOCATION)
         }
@@ -75,11 +77,6 @@ class MainActivity : AppCompatActivity() {
             containerId = R.id.nav_host_container,
             intent = intent
         )
-    }
-
-    @RequiresPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-    private fun observerFusedLocation() {
-        viewModel.onEnableMap(true)
     }
 
     private fun showLocationDeniedSnackbar() {

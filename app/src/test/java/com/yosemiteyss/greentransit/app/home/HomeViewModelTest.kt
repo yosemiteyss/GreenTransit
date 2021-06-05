@@ -1,18 +1,16 @@
 package com.yosemiteyss.greentransit.app.home
 
-import android.location.Location
 import app.cash.turbine.test
 import com.yosemiteyss.greentransit.app.main.MainViewModel
+import com.yosemiteyss.greentransit.domain.usecases.location.GetDeviceLocationUseCase
 import com.yosemiteyss.greentransit.domain.usecases.nearby.GetNearbyRoutesUseCase
 import com.yosemiteyss.greentransit.domain.usecases.nearby.GetNearbyStopsUseCase
+import com.yosemiteyss.greentransit.testshared.repositories.FakeLocationRepositoryImpl
 import com.yosemiteyss.greentransit.testshared.repositories.FakeTransitRepositoryImpl
 import com.yosemiteyss.greentransit.testshared.utils.TestCoroutineRule
 import com.yosemiteyss.greentransit.testshared.utils.runBlockingTest
-import io.mockk.every
-import io.mockk.mockk
 import org.junit.Rule
 import org.junit.Test
-import kotlin.random.Random
 
 /**
  * Created by kevin on 20/5/2021
@@ -29,14 +27,6 @@ class HomeViewModelTest {
         val homeViewModel = createHomeViewModel()
 
         homeViewModel.getHomeUiState(mainViewModel.nearbyStops).test {
-            assert(expectItem() is HomeUiState.Loading)
-
-            mainViewModel.onUpdateLocation(createMockLocation(
-                latitude = Random.nextDouble(),
-                longitude = Random.nextDouble(),
-                bearing = Random.nextFloat()
-            ))
-
             assert(expectItem() is HomeUiState.Success)
         }
     }
@@ -48,14 +38,6 @@ class HomeViewModelTest {
 
         homeViewModel.getHomeUiState(mainViewModel.nearbyStops).test {
             assert(expectItem() is HomeUiState.Loading)
-
-            mainViewModel.onUpdateLocation(createMockLocation(
-                latitude = Random.nextDouble(),
-                longitude = Random.nextDouble(),
-                bearing = Random.nextFloat()
-            ))
-
-            expectNoEvents()
         }
     }
 
@@ -65,14 +47,6 @@ class HomeViewModelTest {
         val homeViewModel = createHomeViewModel(throwNetworkError = true)
 
         homeViewModel.getHomeUiState(mainViewModel.nearbyStops).test {
-            assert(expectItem() is HomeUiState.Loading)
-
-            mainViewModel.onUpdateLocation(createMockLocation(
-                latitude = Random.nextDouble(),
-                longitude = Random.nextDouble(),
-                bearing = Random.nextFloat()
-            ))
-
             assert(expectItem() is HomeUiState.Error)
         }
     }
@@ -83,32 +57,10 @@ class HomeViewModelTest {
         val homeViewModel = createHomeViewModel()
 
         homeViewModel.getHomeUiState(mainViewModel.nearbyStops).test {
-            assert(expectItem() is HomeUiState.Loading)
-
-            mainViewModel.onUpdateLocation(createMockLocation(
-                latitude = Random.nextDouble(),
-                longitude = Random.nextDouble(),
-                bearing = Random.nextFloat()
-            ))
-
             expectItem().let {
                 assert(it is HomeUiState.Success && it.data.isNotEmpty())
             }
         }
-    }
-
-    private fun createMockLocation(
-        latitude: Double,
-        longitude: Double,
-        bearing: Float? = null
-    ): Location {
-        val location = mockk<Location>()
-
-        every { location.latitude } returns latitude
-        every { location.longitude } returns longitude
-        bearing?.let { every { location.bearing } returns it }
-
-        return location
     }
 
     private fun createHomeViewModel(throwNetworkError: Boolean = false): HomeViewModel {
@@ -124,6 +76,10 @@ class HomeViewModelTest {
 
     private fun createMainViewModel(throwNetworkError: Boolean = false): MainViewModel {
         return MainViewModel(
+            getDeviceLocationUseCase = GetDeviceLocationUseCase(
+                locationRepository = FakeLocationRepositoryImpl(),
+                coroutineDispatcher = coroutineRule.testDispatcher
+            ),
             getNearbyStopsUseCase = GetNearbyStopsUseCase(
                 transitRepository = FakeTransitRepositoryImpl().apply {
                     setNetworkError(throwNetworkError)

@@ -2,7 +2,7 @@ package com.yosemiteyss.greentransit.app.search
 
 import android.content.Context
 import app.cash.turbine.test
-import com.yosemiteyss.greentransit.R
+import com.yosemiteyss.greentransit.app.R
 import com.yosemiteyss.greentransit.domain.models.Region
 import com.yosemiteyss.greentransit.domain.usecases.search.GetRegionRoutesUseCase
 import com.yosemiteyss.greentransit.testshared.repositories.FakeTransitRepositoryImpl
