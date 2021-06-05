@@ -11,12 +11,12 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.yosemiteyss.greentransit.R
+import com.yosemiteyss.greentransit.app.R
+import com.yosemiteyss.greentransit.app.databinding.RouteDirectionHeaderItemBinding
+import com.yosemiteyss.greentransit.app.databinding.RouteDirectionListItemBinding
+import com.yosemiteyss.greentransit.app.databinding.RoutesEmptyItemBinding
 import com.yosemiteyss.greentransit.app.route.RouteDirectionListModel.*
 import com.yosemiteyss.greentransit.app.route.RouteDirectionViewHolder.*
-import com.yosemiteyss.greentransit.databinding.RouteDirectionHeaderItemBinding
-import com.yosemiteyss.greentransit.databinding.RouteDirectionListItemBinding
-import com.yosemiteyss.greentransit.databinding.RoutesEmptyItemBinding
 
 class RouteDirectionAdapter(
     private val onDirectionSelected: (routeId: Long, routeSeq: Int) -> Unit

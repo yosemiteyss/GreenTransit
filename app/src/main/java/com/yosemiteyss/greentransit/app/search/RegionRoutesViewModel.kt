@@ -8,7 +8,7 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.yosemiteyss.greentransit.R
+import com.yosemiteyss.greentransit.app.R
 import com.yosemiteyss.greentransit.app.search.RegionRoutesListModel.RegionRoutesEmptyModel
 import com.yosemiteyss.greentransit.app.search.RegionRoutesListModel.RegionRoutesItemModel
 import com.yosemiteyss.greentransit.domain.models.Region

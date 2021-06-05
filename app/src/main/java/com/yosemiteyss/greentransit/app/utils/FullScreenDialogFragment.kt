@@ -8,7 +8,7 @@ import android.app.Dialog
 import android.os.Bundle
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.DialogFragment
-import com.yosemiteyss.greentransit.R
+import com.yosemiteyss.greentransit.app.R
 
 open class FullScreenDialogFragment : DialogFragment {
 

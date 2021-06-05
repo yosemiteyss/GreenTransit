@@ -11,10 +11,10 @@ import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.yosemiteyss.greentransit.R
+import com.yosemiteyss.greentransit.app.R
+import com.yosemiteyss.greentransit.app.databinding.FragmentSearchBinding
 import com.yosemiteyss.greentransit.app.route.RouteOption
 import com.yosemiteyss.greentransit.app.utils.*
-import com.yosemiteyss.greentransit.databinding.FragmentSearchBinding
 import com.yosemiteyss.greentransit.domain.models.Region
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect

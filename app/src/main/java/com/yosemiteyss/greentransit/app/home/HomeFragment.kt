@@ -6,12 +6,16 @@ package com.yosemiteyss.greentransit.app.home
 
 import android.annotation.SuppressLint
 import android.content.res.ColorStateList
+import android.location.Location
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.LocationSource
 import com.google.android.gms.maps.LocationSource.*
@@ -22,11 +26,11 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.material.shape.MaterialShapeDrawable
 import com.google.android.material.shape.ShapeAppearanceModel
 import com.google.maps.android.ktx.awaitMap
-import com.yosemiteyss.greentransit.R
+import com.yosemiteyss.greentransit.app.R
+import com.yosemiteyss.greentransit.app.databinding.FragmentHomeBinding
 import com.yosemiteyss.greentransit.app.main.MainViewModel
 import com.yosemiteyss.greentransit.app.route.RouteOption
 import com.yosemiteyss.greentransit.app.utils.*
-import com.yosemiteyss.greentransit.databinding.FragmentHomeBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
@@ -34,6 +38,8 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 private const val MAP_DEFAULT_ZOOM = 16f
+private const val MAP_DEFAULT_LATITUDE = 22.302711
+private const val MAP_DEFAULT_LONGITUDE = 114.177216
 
 @AndroidEntryPoint
 class HomeFragment : Fragment(R.layout.fragment_home),
@@ -100,6 +106,13 @@ class HomeFragment : Fragment(R.layout.fragment_home),
                     setMapStyle(nightStyle)
                 }
 
+                // Move to default location
+                moveCamera(
+                    CameraUpdateFactory.newLatLngZoom(
+                        LatLng(MAP_DEFAULT_LATITUDE, MAP_DEFAULT_LONGITUDE), 12f
+                    )
+                )
+
                 setOnMarkerClickListener(this@HomeFragment)
             }
         }
@@ -123,8 +136,15 @@ class HomeFragment : Fragment(R.layout.fragment_home),
 
         // Pass current location to location source
         viewLifecycleOwner.lifecycleScope.launch {
-            mainViewModel.userLocation.collectLatest {
-                onLocationChangedListener?.onLocationChanged(it)
+            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                mainViewModel.userLocation.collectLatest { userLocation ->
+                    val location = Location("").apply {
+                        latitude = userLocation.coordinate.latitude
+                        longitude = userLocation.coordinate.longitude
+                        bearing = userLocation.orientation
+                    }
+                    onLocationChangedListener?.onLocationChanged(location)
+                }
             }
         }
 
@@ -228,7 +248,7 @@ class HomeFragment : Fragment(R.layout.fragment_home),
     private suspend fun zoomToCurrentLocation() {
         val location = mainViewModel.userLocation.first()
         getMapInstance().zoomAnimateTo(
-            center = LatLng(location.latitude, location.longitude),
+            center = LatLng(location.coordinate.latitude, location.coordinate.longitude),
             level = MAP_DEFAULT_ZOOM
         )
     }

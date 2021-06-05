@@ -10,10 +10,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.yosemiteyss.greentransit.R
+import com.yosemiteyss.greentransit.app.R
+import com.yosemiteyss.greentransit.app.databinding.SearchResultItemBinding
 import com.yosemiteyss.greentransit.app.search.SearchListModel.SearchResultListModel
 import com.yosemiteyss.greentransit.app.search.SearchViewHolder.SearchResultViewHolder
-import com.yosemiteyss.greentransit.databinding.SearchResultItemBinding
 import com.yosemiteyss.greentransit.domain.models.RouteCode
 
 class SearchAdapter(

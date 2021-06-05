@@ -12,7 +12,9 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.yosemiteyss.greentransit.R
+import com.yosemiteyss.greentransit.app.R
+import com.yosemiteyss.greentransit.app.databinding.RouteStopListItemBinding
+import com.yosemiteyss.greentransit.app.databinding.StopsEmptyItemBinding
 import com.yosemiteyss.greentransit.app.route.RouteStopsListModel.RouteStopEmptyModel
 import com.yosemiteyss.greentransit.app.route.RouteStopsListModel.RouteStopItemModel
 import com.yosemiteyss.greentransit.app.route.RouteStopsViewHolder.RouteStopsEmptyViewHolder
@@ -21,8 +23,6 @@ import com.yosemiteyss.greentransit.app.utils.drawableFitVertical
 import com.yosemiteyss.greentransit.app.utils.format
 import com.yosemiteyss.greentransit.app.utils.getDrawableOrNull
 import com.yosemiteyss.greentransit.app.utils.themeColor
-import com.yosemiteyss.greentransit.databinding.RouteStopListItemBinding
-import com.yosemiteyss.greentransit.databinding.StopsEmptyItemBinding
 import java.util.*
 
 private const val MAX_DISPLAY_MINUTES = 59

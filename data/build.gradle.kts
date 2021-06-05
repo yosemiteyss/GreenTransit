@@ -67,6 +67,7 @@ dependencies {
     implementation(Dependencies.PLAY_SERVICES_MAP)
     implementation(Dependencies.MAPS_UTILS)
 
+    api(Dependencies.PLAY_SERVICES_LOCATION)
     api(Dependencies.FIREBASE_FIRESTORE)
     api(Dependencies.ROOM_RUNTIME)
     api(Dependencies.ROOM_KTX)

@@ -10,13 +10,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.yosemiteyss.greentransit.R
+import com.yosemiteyss.greentransit.app.R
+import com.yosemiteyss.greentransit.app.databinding.RegionRoutesListItemBinding
+import com.yosemiteyss.greentransit.app.databinding.RoutesEmptyItemBinding
 import com.yosemiteyss.greentransit.app.search.RegionRoutesListModel.RegionRoutesEmptyModel
 import com.yosemiteyss.greentransit.app.search.RegionRoutesListModel.RegionRoutesItemModel
 import com.yosemiteyss.greentransit.app.search.RegionRoutesViewHolder.RegionRoutesEmptyViewHolder
 import com.yosemiteyss.greentransit.app.search.RegionRoutesViewHolder.RegionRoutesItemViewHolder
-import com.yosemiteyss.greentransit.databinding.RegionRoutesListItemBinding
-import com.yosemiteyss.greentransit.databinding.RoutesEmptyItemBinding
 import com.yosemiteyss.greentransit.domain.models.RouteCode
 
 class RegionRoutesAdapter(

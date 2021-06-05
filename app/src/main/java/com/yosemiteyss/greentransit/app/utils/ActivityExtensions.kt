@@ -10,7 +10,7 @@ import android.provider.Settings
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
-import com.yosemiteyss.greentransit.BuildConfig
+import com.yosemiteyss.greentransit.app.BuildConfig
 
 fun AppCompatActivity.setLayoutFullscreen(aboveNavBar: Boolean = false) {
     WindowCompat.setDecorFitsSystemWindows(window, false)

@@ -85,7 +85,6 @@ android {
                 "-Xuse-experimental=kotlinx.coroutines.ExperimentalCoroutinesApi",
                 "-Xuse-experimental=kotlinx.coroutines.FlowPreview",
                 "-Xuse-experimental=kotlin.ExperimentalStdlibApi",
-                "-Xuse-experimental=androidx.paging.ExperimentalPagingApi",
                 "-Xopt-in=kotlin.time.ExperimentalTime"
             )
         }
@@ -118,10 +117,8 @@ dependencies {
     implementation(Dependencies.HILT)
     implementation(Dependencies.HILT_NAVIGATION)
     implementation(Dependencies.HILT_WORK)
-    implementation(Dependencies.PAGING_RUNTIME)
     implementation(Dependencies.SWIPE_REFRESH_LAYOUT)
     implementation(Dependencies.PLAY_SERVICES_MAP)
-    implementation(Dependencies.PLAY_SERVICES_LOCATION)
     implementation(Dependencies.MATERIAL)
     implementation(Dependencies.GLIDE)
     implementation(Dependencies.MAPS_KTX)

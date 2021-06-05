@@ -10,13 +10,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.yosemiteyss.greentransit.R
+import com.yosemiteyss.greentransit.app.R
+import com.yosemiteyss.greentransit.app.databinding.NearbyRoutesListItemBinding
+import com.yosemiteyss.greentransit.app.databinding.RoutesEmptyItemBinding
 import com.yosemiteyss.greentransit.app.home.NearbyRoutesListModel.NearbyRoutesEmptyModel
 import com.yosemiteyss.greentransit.app.home.NearbyRoutesListModel.NearbyRoutesItemModel
 import com.yosemiteyss.greentransit.app.home.NearbyRoutesViewHolder.NearbyRoutesEmptyViewHolder
 import com.yosemiteyss.greentransit.app.home.NearbyRoutesViewHolder.NearbyRoutesItemViewHolder
-import com.yosemiteyss.greentransit.databinding.NearbyRoutesListItemBinding
-import com.yosemiteyss.greentransit.databinding.RoutesEmptyItemBinding
 
 class NearbyRoutesAdapter(
     private val onRouteClicked: (routeId: Long, routeCode: String) -> Unit

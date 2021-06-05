@@ -33,7 +33,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.snackbar.Snackbar
-import com.yosemiteyss.greentransit.R
+import com.yosemiteyss.greentransit.app.R
 
 /**
  * Add multiple [Chip] to a [ChipGroup]

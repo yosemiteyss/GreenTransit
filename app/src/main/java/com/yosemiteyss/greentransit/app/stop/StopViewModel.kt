@@ -7,7 +7,7 @@ package com.yosemiteyss.greentransit.app.stop
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.yosemiteyss.greentransit.R
+import com.yosemiteyss.greentransit.app.R
 import com.yosemiteyss.greentransit.app.route.RouteOption
 import com.yosemiteyss.greentransit.domain.models.StopInfo
 import com.yosemiteyss.greentransit.domain.states.Resource

@@ -12,12 +12,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.yosemiteyss.greentransit.R
+import com.yosemiteyss.greentransit.app.R
+import com.yosemiteyss.greentransit.app.databinding.NewsEmptyItemBinding
+import com.yosemiteyss.greentransit.app.databinding.NewsHeaderItemBinding
+import com.yosemiteyss.greentransit.app.databinding.NewsListItemBinding
 import com.yosemiteyss.greentransit.app.news.TrafficNewsListModel.*
 import com.yosemiteyss.greentransit.app.utils.getColorCompat
-import com.yosemiteyss.greentransit.databinding.NewsEmptyItemBinding
-import com.yosemiteyss.greentransit.databinding.NewsHeaderItemBinding
-import com.yosemiteyss.greentransit.databinding.NewsListItemBinding
 import com.yosemiteyss.greentransit.domain.models.TrafficNews
 import com.yosemiteyss.greentransit.domain.models.TrafficNewsStatus
 import java.util.*

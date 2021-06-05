@@ -15,7 +15,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.yosemiteyss.greentransit.R
+import com.yosemiteyss.greentransit.app.R
 
 /**
  * Manages the various graphs needed for a [BottomNavigationView].

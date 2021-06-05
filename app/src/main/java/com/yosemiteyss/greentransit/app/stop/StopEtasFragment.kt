@@ -9,12 +9,12 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.yosemiteyss.greentransit.R
+import com.yosemiteyss.greentransit.app.R
+import com.yosemiteyss.greentransit.app.databinding.FragmentStopEtasBinding
 import com.yosemiteyss.greentransit.app.utils.parentViewModels
 import com.yosemiteyss.greentransit.app.utils.showIf
 import com.yosemiteyss.greentransit.app.utils.showShortToast
 import com.yosemiteyss.greentransit.app.utils.viewBinding
-import com.yosemiteyss.greentransit.databinding.FragmentStopEtasBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch

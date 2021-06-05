@@ -10,8 +10,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.yosemiteyss.greentransit.app.databinding.FragmentRouteDirectionBinding
 import com.yosemiteyss.greentransit.app.utils.parentViewModels
-import com.yosemiteyss.greentransit.databinding.FragmentRouteDirectionBinding
 import com.yosemiteyss.greentransit.domain.models.RouteInfo
 import com.yosemiteyss.greentransit.domain.states.Resource
 import dagger.hilt.android.AndroidEntryPoint

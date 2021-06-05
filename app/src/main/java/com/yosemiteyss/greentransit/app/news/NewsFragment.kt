@@ -8,12 +8,12 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.yosemiteyss.greentransit.R
+import com.yosemiteyss.greentransit.app.R
+import com.yosemiteyss.greentransit.app.databinding.FragmentNewsBinding
 import com.yosemiteyss.greentransit.app.utils.applySystemWindowInsetsPadding
 import com.yosemiteyss.greentransit.app.utils.showIf
 import com.yosemiteyss.greentransit.app.utils.showShortToast
 import com.yosemiteyss.greentransit.app.utils.viewBinding
-import com.yosemiteyss.greentransit.databinding.FragmentNewsBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

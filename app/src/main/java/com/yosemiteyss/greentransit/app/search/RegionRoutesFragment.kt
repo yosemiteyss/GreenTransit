@@ -9,11 +9,11 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
-import com.yosemiteyss.greentransit.R
+import com.yosemiteyss.greentransit.app.R
+import com.yosemiteyss.greentransit.app.databinding.FragmentRegionRoutesBinding
 import com.yosemiteyss.greentransit.app.route.RouteOption
 import com.yosemiteyss.greentransit.app.search.RegionRoutesViewModel.RegionRoutesViewModelFactory
 import com.yosemiteyss.greentransit.app.utils.*
-import com.yosemiteyss.greentransit.databinding.FragmentRegionRoutesBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch

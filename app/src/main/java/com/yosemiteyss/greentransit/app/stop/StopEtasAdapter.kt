@@ -13,14 +13,14 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.yosemiteyss.greentransit.R
+import com.yosemiteyss.greentransit.app.R
+import com.yosemiteyss.greentransit.app.databinding.RoutesEmptyItemBinding
+import com.yosemiteyss.greentransit.app.databinding.StopEtaListItemBinding
 import com.yosemiteyss.greentransit.app.stop.StopEtasListModel.StopEtasEmptyModel
 import com.yosemiteyss.greentransit.app.stop.StopEtasListModel.StopEtasShiftModel
 import com.yosemiteyss.greentransit.app.stop.StopEtasViewHolder.StopEtasEmptyViewHolder
 import com.yosemiteyss.greentransit.app.stop.StopEtasViewHolder.StopEtasShiftViewHolder
 import com.yosemiteyss.greentransit.app.utils.format
-import com.yosemiteyss.greentransit.databinding.RoutesEmptyItemBinding
-import com.yosemiteyss.greentransit.databinding.StopEtaListItemBinding
 import com.yosemiteyss.greentransit.domain.models.StopRouteShiftEtaResult
 
 private const val MAX_DISPLAY_MINUTES = 59

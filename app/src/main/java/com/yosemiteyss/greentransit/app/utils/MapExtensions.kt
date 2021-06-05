@@ -22,7 +22,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.Marker
 import com.google.maps.android.ktx.addMarker
-import com.yosemiteyss.greentransit.R
+import com.yosemiteyss.greentransit.app.R
 import com.yosemiteyss.greentransit.domain.models.Coordinate
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume

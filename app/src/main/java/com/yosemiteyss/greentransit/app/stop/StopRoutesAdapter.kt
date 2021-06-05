@@ -10,13 +10,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.yosemiteyss.greentransit.R
+import com.yosemiteyss.greentransit.app.R
+import com.yosemiteyss.greentransit.app.databinding.RoutesEmptyItemBinding
+import com.yosemiteyss.greentransit.app.databinding.StopRouteListItemBinding
 import com.yosemiteyss.greentransit.app.stop.StopRoutesListModel.StopRouteEmptyModel
 import com.yosemiteyss.greentransit.app.stop.StopRoutesListModel.StopRouteItemModel
 import com.yosemiteyss.greentransit.app.stop.StopRoutesViewHolder.StopRouteEmptyViewHolder
 import com.yosemiteyss.greentransit.app.stop.StopRoutesViewHolder.StopRouteItemViewHolder
-import com.yosemiteyss.greentransit.databinding.RoutesEmptyItemBinding
-import com.yosemiteyss.greentransit.databinding.StopRouteListItemBinding
 import com.yosemiteyss.greentransit.domain.models.StopRouteResult
 
 class StopRoutesAdapter(

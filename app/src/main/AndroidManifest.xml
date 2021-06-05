@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.yosemiteyss.greentransit">
+    package="com.yosemiteyss.greentransit.app">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name=".app.GreenTransitApp"
+        android:name=".GreenTransitApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GreenTransit.DayNight">
         <activity
-            android:name=".app.main.MainActivity"
+            android:name=".main.MainActivity"
             android:theme="@style/Theme.GreenTransit.Splash.DayNight">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

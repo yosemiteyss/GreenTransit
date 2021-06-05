@@ -16,9 +16,9 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.Marker
 import com.google.maps.android.ktx.awaitMap
-import com.yosemiteyss.greentransit.R
+import com.yosemiteyss.greentransit.app.R
+import com.yosemiteyss.greentransit.app.databinding.FragmentRouteBinding
 import com.yosemiteyss.greentransit.app.utils.*
-import com.yosemiteyss.greentransit.databinding.FragmentRouteBinding
 import com.yosemiteyss.greentransit.domain.states.Resource
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
