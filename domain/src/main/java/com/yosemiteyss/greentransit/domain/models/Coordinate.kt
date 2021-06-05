@@ -34,3 +34,15 @@ fun Coordinate.distance(from: Coordinate): Double {
 
     return c * R * 1000
 }
+
+fun Coordinate.round(dp: Int): Coordinate {
+    return Coordinate(
+        latitude = latitude.roundTo(dp),
+        longitude = longitude.roundTo(dp)
+    )
+}
+
+private fun Double.roundTo(numFractionDigits: Int): Double {
+    val factor = 10.0.pow(numFractionDigits.toDouble())
+    return (this * factor).roundToInt() / factor
+}

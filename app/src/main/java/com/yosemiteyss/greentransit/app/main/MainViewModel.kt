@@ -8,9 +8,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.model.LatLng
 import com.yosemiteyss.greentransit.app.utils.geohashQueryBounds
-import com.yosemiteyss.greentransit.domain.models.Coordinate
 import com.yosemiteyss.greentransit.domain.models.Location
 import com.yosemiteyss.greentransit.domain.models.NearbyStop
+import com.yosemiteyss.greentransit.domain.models.round
 import com.yosemiteyss.greentransit.domain.states.Resource
 import com.yosemiteyss.greentransit.domain.usecases.location.GetDeviceLocationUseCase
 import com.yosemiteyss.greentransit.domain.usecases.nearby.GetNearbyStopsParams
@@ -54,18 +54,18 @@ class MainViewModel @Inject constructor(
         // Build nearby stops
         viewModelScope.launch {
             userLocation.mapLatest { it.coordinate }
-                .distinctUntilChanged()
-                .mapLatest { location ->
-                    val queryBounds = LatLng(location.latitude, location.longitude)
+                .distinctUntilChangedBy { coordinate ->
+                    // Accuracy: 11m
+                    coordinate.round(4)
+                }
+                .mapLatest { coordinate ->
+                    val queryBounds = LatLng(coordinate.latitude, coordinate.longitude)
                         .geohashQueryBounds(NEARBY_BOUND_METER.toDouble())
                     val nearbyBounds = queryBounds.map {
                         NearbyGeoBound(it.startHash, it.endHash)
                     }
 
-                    GetNearbyStopsParams(
-                        currentCoord = Coordinate(location.latitude, location.longitude),
-                        bounds = nearbyBounds
-                    )
+                    GetNearbyStopsParams(currentCoord = coordinate, bounds = nearbyBounds)
                 }.flatMapLatest {
                     getNearbyStopsUseCase(it)
                 }.collect {
