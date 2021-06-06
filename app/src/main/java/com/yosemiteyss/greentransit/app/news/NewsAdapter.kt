@@ -60,7 +60,10 @@ class NewsAdapter : ListAdapter<TrafficNewsListModel, TrafficNewsViewHolder>(Tra
         binding: NewsListItemBinding,
         trafficNewsListModel: TrafficNewsItem
     ) = binding.run {
-        currentStatusTextView.text = trafficNewsListModel.trafficNews.currentStatus.toString()
+        currentStatusTextView.text = when (trafficNewsListModel.trafficNews.currentStatus) {
+            TrafficNewsStatus.NEW -> root.context.getString(R.string.news_status_new)
+            TrafficNewsStatus.UPDATED -> root.context.getString(R.string.news_status_updated)
+        }.uppercase()
 
         val statusColor = when (trafficNewsListModel.trafficNews.currentStatus) {
             TrafficNewsStatus.NEW -> root.context.getColorCompat(R.color.news_status_red)
@@ -69,17 +72,12 @@ class NewsAdapter : ListAdapter<TrafficNewsListModel, TrafficNewsViewHolder>(Tra
 
         currentStatusTextView.backgroundTintList = ColorStateList.valueOf(statusColor)
 
-        val relativeTime = DateUtils.getRelativeTimeSpanString(
+        dateTextView.text = DateUtils.getRelativeTimeSpanString(
             trafficNewsListModel.trafficNews.referenceDate.time,
             Date().time,
             DateUtils.MINUTE_IN_MILLIS,
             DateUtils.FORMAT_ABBREV_RELATIVE
         ).toString()
-
-        dateTextView.text = root.context.getString(
-            R.string.news_last_updated,
-            relativeTime
-        )
 
         with(contentTextView) {
             text = trafficNewsListModel.trafficNews.engShort

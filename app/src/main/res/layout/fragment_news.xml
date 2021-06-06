@@ -3,25 +3,33 @@
      COMP4521    LAI CHEUK HEI   20464044        chlaiak@connect.ust.hk
      COMP4521    CHAN HOK HIM    20435392        hhchanal@connect.ust.hk
 -->
-<FrameLayout
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swipe_refresh_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/news_recycler_view"
+    <FrameLayout
+        android:id="@+id/news_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/news_list_item"/>
+        android:layout_height="match_parent">
 
-    <com.google.android.material.progressindicator.CircularProgressIndicator
-        android:id="@+id/loading_progress_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:indeterminate="true"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/news_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/news_list_item"/>
 
-</FrameLayout>
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/loading_progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminate="true"/>
+
+    </FrameLayout>
+
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

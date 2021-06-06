@@ -14,12 +14,14 @@ class FakeTrafficNewsRepositoryImpl : TrafficNewsRepository {
     private var throwNetworkError = false
     private var dontMakeData = false
 
+    val fakeTrafficNews: List<TrafficNews> = MutableList(5) { createFakeTrafficNews() }
+
     override suspend fun getTrafficNews(): List<TrafficNews> {
         if (throwNetworkError) throw Exception("Network error.")
         return if (dontMakeData) {
             emptyList()
         } else {
-            MutableList(5) { createFakeTrafficNews() }
+            fakeTrafficNews
         }
     }
 

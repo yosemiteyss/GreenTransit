@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.yosemiteyss.greentransit.app.R
 import com.yosemiteyss.greentransit.app.databinding.FragmentNewsBinding
-import com.yosemiteyss.greentransit.app.utils.applySystemWindowInsetsPadding
+import com.yosemiteyss.greentransit.app.utils.applySystemWindowInsetsMargin
 import com.yosemiteyss.greentransit.app.utils.showIf
 import com.yosemiteyss.greentransit.app.utils.showShortToast
 import com.yosemiteyss.greentransit.app.utils.viewBinding
@@ -25,7 +25,7 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.root.applySystemWindowInsetsPadding(applyTop = true)
+        binding.root.applySystemWindowInsetsMargin(applyTop = true)
         binding.loadingProgressBar.setVisibilityAfterHide(View.GONE)
 
         // Setup news recycler view
@@ -37,14 +37,23 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         }
 
         viewModel.newsUiState.observe(viewLifecycleOwner) { uiState ->
-            binding.loadingProgressBar.showIf(uiState is NewsUiState.Loading)
+            binding.loadingProgressBar.showIf(
+                uiState is NewsUiState.Loading &&
+                    !uiState.isSwipeRefresh
+            )
 
             if (uiState is NewsUiState.Success) {
                 newsAdapter.submitList(uiState.data)
+                binding.swipeRefreshLayout.isRefreshing = false
             } else if (uiState is NewsUiState.Error) {
                 newsAdapter.submitList(uiState.data)
                 showShortToast(uiState.message)
+                binding.swipeRefreshLayout.isRefreshing = false
             }
+        }
+        // Swipe to refresh
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            viewModel.loadTrafficNews(isSwipeRefresh = true)
         }
     }
 }

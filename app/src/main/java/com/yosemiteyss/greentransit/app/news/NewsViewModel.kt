@@ -8,50 +8,56 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.yosemiteyss.greentransit.domain.di.IoDispatcher
-import com.yosemiteyss.greentransit.domain.repositories.TrafficNewsRepository
+import com.yosemiteyss.greentransit.domain.models.TrafficNews
+import com.yosemiteyss.greentransit.domain.states.Resource
+import com.yosemiteyss.greentransit.domain.usecases.news.GetTrafficNewsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class NewsViewModel @Inject constructor(
-    private val newsRepository: TrafficNewsRepository,
-    @IoDispatcher private val coroutineDispatcher: CoroutineDispatcher,
+    private val getTrafficNewsUseCase: GetTrafficNewsUseCase
 ) : ViewModel() {
 
-    private val _newsUiState = MutableLiveData<NewsUiState>(NewsUiState.Loading)
+    private val _newsUiState = MutableLiveData<NewsUiState>(NewsUiState.Loading())
     val newsUiState: LiveData<NewsUiState> = _newsUiState
 
     init {
-        viewModelScope.launch(coroutineDispatcher) {
-            val newsListModel = mutableListOf<TrafficNewsListModel>()
+        loadTrafficNews()
+    }
 
-            try {
-                val fetchedTrafficNewsList = newsRepository.getTrafficNews()
-                newsListModel.add(TrafficNewsListModel.TrafficNewsHeader)
-
-                if (fetchedTrafficNewsList.isNotEmpty()) {
-                    newsListModel.addAll(fetchedTrafficNewsList.map {
-                        TrafficNewsListModel.TrafficNewsItem(it)
-                    })
-                }
-
-                _newsUiState.postValue(NewsUiState.Success(newsListModel))
-            } catch (e: Exception) {
-                newsListModel.add(TrafficNewsListModel.TrafficNewsEmptyItem)
-
-                _newsUiState.postValue(
-                    NewsUiState.Error(newsListModel, e.message)
-                )
+    fun loadTrafficNews(isSwipeRefresh: Boolean = false) = viewModelScope.launch {
+        getTrafficNewsUseCase(Unit).collect { res ->
+            _newsUiState.value = when (res) {
+                is Resource.Success -> NewsUiState.Success(buildTrafficNewsListModels(res.data))
+                is Resource.Error -> NewsUiState.Error(buildTrafficNewsListModels(), res.message)
+                is Resource.Loading -> NewsUiState.Loading(isSwipeRefresh)
             }
         }
+    }
+
+    private fun buildTrafficNewsListModels(
+        trafficNews: List<TrafficNews>? = null
+    ): List<TrafficNewsListModel> {
+        val newsListModel = mutableListOf<TrafficNewsListModel>()
+
+        if (!trafficNews.isNullOrEmpty()) {
+            newsListModel.add(TrafficNewsListModel.TrafficNewsHeader)
+            newsListModel.addAll(trafficNews.map {
+                TrafficNewsListModel.TrafficNewsItem(it)
+            })
+        } else {
+            newsListModel.add(TrafficNewsListModel.TrafficNewsEmptyItem)
+        }
+
+        return newsListModel
     }
 }
 
 sealed class NewsUiState {
     data class Success(val data: List<TrafficNewsListModel>) : NewsUiState()
     data class Error(val data: List<TrafficNewsListModel>, val message: String?) : NewsUiState()
-    object Loading : NewsUiState()
+    data class Loading(val isSwipeRefresh: Boolean = false) : NewsUiState()
 }
