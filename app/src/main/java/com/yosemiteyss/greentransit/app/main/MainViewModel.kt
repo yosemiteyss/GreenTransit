@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.model.LatLng
 import com.yosemiteyss.greentransit.app.utils.geohashQueryBounds
+import com.yosemiteyss.greentransit.domain.models.Coordinate
 import com.yosemiteyss.greentransit.domain.models.Location
 import com.yosemiteyss.greentransit.domain.models.NearbyStop
 import com.yosemiteyss.greentransit.domain.models.round
@@ -49,6 +50,11 @@ class MainViewModel @Inject constructor(
             started = SharingStarted.WhileSubscribed(),
             replay = 1
         )
+
+    val defaultCoordinate = Coordinate(
+        latitude = 22.302711,
+        longitude = 114.177216
+    )
 
     init {
         // Build nearby stops

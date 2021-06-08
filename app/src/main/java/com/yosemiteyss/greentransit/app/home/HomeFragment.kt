@@ -38,8 +38,6 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 private const val MAP_DEFAULT_ZOOM = 16f
-private const val MAP_DEFAULT_LATITUDE = 22.302711
-private const val MAP_DEFAULT_LONGITUDE = 114.177216
 
 @AndroidEntryPoint
 class HomeFragment : Fragment(R.layout.fragment_home),
@@ -51,7 +49,8 @@ class HomeFragment : Fragment(R.layout.fragment_home),
     private val homeViewModel: HomeViewModel by viewModels()
     private var onLocationChangedListener: OnLocationChangedListener? = null
 
-    private val nearbyStopMarkers: MutableList<Marker> = mutableListOf()
+    private var hasLoadedDefaultCoordinate: Boolean = false
+    private val nearbyStopsMarkers: MutableList<Marker> = mutableListOf()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -61,7 +60,7 @@ class HomeFragment : Fragment(R.layout.fragment_home),
 
     override fun onDestroyView() {
         super.onDestroyView()
-        nearbyStopMarkers.clear()
+        nearbyStopsMarkers.clear()
     }
 
     override fun activate(listener: OnLocationChangedListener?) {
@@ -76,7 +75,7 @@ class HomeFragment : Fragment(R.layout.fragment_home),
         if (marker == null) return false
 
         // Check if it is a stop marker
-        if (marker in nearbyStopMarkers) {
+        if (marker in nearbyStopsMarkers) {
             marker.tag?.let {
                 navigateToStop(stopId = it as Long)
             }
@@ -107,11 +106,15 @@ class HomeFragment : Fragment(R.layout.fragment_home),
                 }
 
                 // Move to default location
-                moveCamera(
-                    CameraUpdateFactory.newLatLngZoom(
-                        LatLng(MAP_DEFAULT_LATITUDE, MAP_DEFAULT_LONGITUDE), 12f
-                    )
-                )
+                if (!hasLoadedDefaultCoordinate) {
+                    moveCamera(CameraUpdateFactory.newLatLngZoom(
+                        LatLng(
+                            mainViewModel.defaultCoordinate.latitude,
+                            mainViewModel.defaultCoordinate.longitude
+                        ), 12f
+                    ))
+                    hasLoadedDefaultCoordinate = true
+                }
 
                 setOnMarkerClickListener(this@HomeFragment)
             }
@@ -153,11 +156,11 @@ class HomeFragment : Fragment(R.layout.fragment_home),
             mainViewModel.nearbyStops.collect { stops ->
                 getMapInstance().run {
                     // Clear existing markers
-                    nearbyStopMarkers.clear()
-                    clear()
+                    nearbyStopsMarkers.clear()
+                    this.clear()
 
                     // Add new group of markers
-                    nearbyStopMarkers.addAll(stops.map { stop ->
+                    nearbyStopsMarkers.addAll(stops.map { stop ->
                         addMarker(
                             context = requireContext(),
                             position = LatLng(
@@ -169,6 +172,7 @@ class HomeFragment : Fragment(R.layout.fragment_home),
                     })
                 }
             }
+
         }
 
         // My location button

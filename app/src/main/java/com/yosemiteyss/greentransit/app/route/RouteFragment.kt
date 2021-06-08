@@ -7,9 +7,11 @@ package com.yosemiteyss.greentransit.app.route
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
@@ -18,6 +20,7 @@ import com.google.android.gms.maps.model.Marker
 import com.google.maps.android.ktx.awaitMap
 import com.yosemiteyss.greentransit.app.R
 import com.yosemiteyss.greentransit.app.databinding.FragmentRouteBinding
+import com.yosemiteyss.greentransit.app.main.MainViewModel
 import com.yosemiteyss.greentransit.app.utils.*
 import com.yosemiteyss.greentransit.domain.states.Resource
 import dagger.hilt.android.AndroidEntryPoint
@@ -33,11 +36,13 @@ class RouteFragment : FullScreenDialogFragment(R.layout.fragment_route) {
     private val binding: FragmentRouteBinding by viewBinding(FragmentRouteBinding::bind)
     private val navArgs: RouteFragmentArgs by navArgs()
 
-    @Inject
-    lateinit var viewModelFactory: RouteViewModel.RouteViewModelFactory
+    private val mainViewModel: MainViewModel by activityViewModels()
 
-    private val viewModel: RouteViewModel by viewModels {
-        RouteViewModel.provideFactory(viewModelFactory, navArgs.routeOption)
+    @Inject
+    lateinit var routeViewModelFactory: RouteViewModel.RouteViewModelFactory
+
+    private val routeViewModel: RouteViewModel by viewModels {
+        RouteViewModel.provideFactory(routeViewModelFactory, navArgs.routeOption)
     }
 
     private val directionStopMarkers: MutableList<Marker> = mutableListOf()
@@ -63,7 +68,7 @@ class RouteFragment : FullScreenDialogFragment(R.layout.fragment_route) {
 
     private fun setupRouteInfo() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.routeInfos.collect { res ->
+            routeViewModel.routeInfos.collect { res ->
                 if (res is Resource.Error) {
                     showShortToast(res.message)
                 }
@@ -72,7 +77,7 @@ class RouteFragment : FullScreenDialogFragment(R.layout.fragment_route) {
 
         // Current direction
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.currentDirection.collect { direction ->
+            routeViewModel.currentDirection.collect { direction ->
                 binding.switchDirectionButton.isVisible = direction != null
 
                 direction?.let {
@@ -112,7 +117,7 @@ class RouteFragment : FullScreenDialogFragment(R.layout.fragment_route) {
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.stopsListModels.collect { res ->
+            routeViewModel.stopsListModels.collect { res ->
                 binding.loadingProgressBar.isVisible = res is Resource.Loading
 
                 when (res) {
@@ -142,12 +147,22 @@ class RouteFragment : FullScreenDialogFragment(R.layout.fragment_route) {
 
                     setMapStyle(nightStyle)
                 }
+
+                // Move to default location
+                moveCamera(
+                    CameraUpdateFactory.newLatLngZoom(
+                        LatLng(
+                            mainViewModel.defaultCoordinate.latitude,
+                            mainViewModel.defaultCoordinate.longitude
+                        ), 12f
+                    )
+                )
             }
         }
 
         // Add stop markers for a direction
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.directionStops.collect { stops ->
+            routeViewModel.directionStops.collect { stops ->
                 if (stops.isEmpty()) return@collect
 
                 getMapInstance().run {

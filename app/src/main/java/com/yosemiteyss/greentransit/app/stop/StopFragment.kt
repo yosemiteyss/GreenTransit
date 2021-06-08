@@ -6,9 +6,11 @@ package com.yosemiteyss.greentransit.app.stop
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
@@ -17,6 +19,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.google.maps.android.ktx.awaitMap
 import com.yosemiteyss.greentransit.app.R
 import com.yosemiteyss.greentransit.app.databinding.FragmentStopBinding
+import com.yosemiteyss.greentransit.app.main.MainViewModel
 import com.yosemiteyss.greentransit.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -31,11 +34,13 @@ class StopFragment : FullScreenDialogFragment(R.layout.fragment_stop) {
     private val binding: FragmentStopBinding by viewBinding(FragmentStopBinding::bind)
     private val navArgs: StopFragmentArgs by navArgs()
 
-    @Inject
-    lateinit var viewModelFactory: StopViewModel.StopViewModelFactory
+    private val mainViewModel: MainViewModel by activityViewModels()
 
-    private val viewModel: StopViewModel by viewModels {
-        StopViewModel.provideFactory(viewModelFactory, navArgs.stopId)
+    @Inject
+    lateinit var stopViewModelFactory: StopViewModel.StopViewModelFactory
+
+    private val stopViewModel: StopViewModel by viewModels {
+        StopViewModel.provideFactory(stopViewModelFactory, navArgs.stopId)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -58,7 +63,7 @@ class StopFragment : FullScreenDialogFragment(R.layout.fragment_stop) {
 
         // Setup view pager
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.stopPages.collect { pages ->
+            stopViewModel.stopPages.collect { pages ->
                 if (pages.isEmpty()) return@collect
 
                 val stopPagerAdapter = StopPagerAdapter(
@@ -79,7 +84,7 @@ class StopFragment : FullScreenDialogFragment(R.layout.fragment_stop) {
 
         // Setup stop info
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.stopUiState.collect { uiState ->
+            stopViewModel.stopUiState.collect { uiState ->
                 if (uiState == null) return@collect
 
                 when (uiState) {
@@ -110,12 +115,21 @@ class StopFragment : FullScreenDialogFragment(R.layout.fragment_stop) {
 
                     setMapStyle(nightStyle)
                 }
+
+                // Move to default location
+                moveCamera(
+                    CameraUpdateFactory.newLatLngZoom(
+                    LatLng(
+                        mainViewModel.defaultCoordinate.latitude,
+                        mainViewModel.defaultCoordinate.longitude
+                    ), 12f
+                ))
             }
         }
 
         // Navigate to Route
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.navigateToRoute.collect {
+            stopViewModel.navigateToRoute.collect {
                 findNavController(R.id.stopFragment)?.navigate(
                     StopFragmentDirections.actionStopFragmentToRouteFragment(it)
                 )
