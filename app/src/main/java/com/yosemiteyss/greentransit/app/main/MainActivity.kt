@@ -6,19 +6,21 @@ package com.yosemiteyss.greentransit.app.main
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.hardware.SensorManager
 import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.LiveData
-import androidx.navigation.NavController
+import androidx.core.view.isVisible
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.snackbar.Snackbar
 import com.yosemiteyss.greentransit.app.R
 import com.yosemiteyss.greentransit.app.databinding.ActivityMainBinding
-import com.yosemiteyss.greentransit.app.utils.*
+import com.yosemiteyss.greentransit.app.utils.isPermissionGranted
+import com.yosemiteyss.greentransit.app.utils.launchAppSettings
+import com.yosemiteyss.greentransit.app.utils.setLayoutFullscreen
+import com.yosemiteyss.greentransit.app.utils.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @SuppressLint("MissingPermission")
 @AndroidEntryPoint
@@ -26,10 +28,6 @@ class MainActivity : AppCompatActivity() {
 
     private val binding: ActivityMainBinding by viewBinding(ActivityMainBinding::inflate)
     private val viewModel: MainViewModel by viewModels()
-    private var currentNavController: LiveData<NavController>? = null
-
-    @Inject
-    lateinit var sensorManager: SensorManager
 
     private val requestLocation = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -65,18 +63,17 @@ class MainActivity : AppCompatActivity() {
         setupBottomNavigation()
     }
 
-    override fun onSupportNavigateUp(): Boolean {
-        return currentNavController?.value?.navigateUp() ?: false
-    }
-
     private fun setupBottomNavigation() {
-        val navGraphIds = listOf(R.navigation.navigation_home, R.navigation.navigation_news)
-        currentNavController = binding.bottomNavView.setupWithNavController(
-            navGraphIds = navGraphIds,
-            fragmentManager = supportFragmentManager,
-            containerId = R.id.nav_host_container,
-            intent = intent
-        )
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_container)
+            as NavHostFragment
+        val navController = navHostFragment.navController
+        val topDestinations = listOf(R.id.homeFragment, R.id.newsFragment)
+
+        navController.addOnDestinationChangedListener { controller, destination, arguments ->
+            binding.bottomNavView.isVisible = destination.id in topDestinations
+        }
+
+        binding.bottomNavView.setupWithNavController(navController)
     }
 
     private fun showLocationDeniedSnackbar() {

@@ -26,18 +26,20 @@ class HomeViewModelTest {
         val mainViewModel = createMainViewModel()
         val homeViewModel = createHomeViewModel()
 
-        homeViewModel.getHomeUiState(mainViewModel.nearbyStops).test {
+        homeViewModel.fetchNearbyRoutes(mainViewModel.nearbyStops.value)
+        homeViewModel.homeUiState.test {
             assert(expectItem() is HomeUiState.Success)
         }
     }
 
     @Test
-    fun  `test get nearby stops error, return loading ui state`() = coroutineRule.runBlockingTest {
+    fun `test get nearby stops error, return loading ui state`() = coroutineRule.runBlockingTest {
         val mainViewModel = createMainViewModel(throwNetworkError = true)
         val homeViewModel = createHomeViewModel()
 
-        homeViewModel.getHomeUiState(mainViewModel.nearbyStops).test {
-            assert(expectItem() is HomeUiState.Loading)
+        homeViewModel.fetchNearbyRoutes(mainViewModel.nearbyStops.value)
+        homeViewModel.homeUiState.test {
+            println(expectItem() is HomeUiState.Loading)
         }
     }
 
@@ -46,7 +48,8 @@ class HomeViewModelTest {
         val mainViewModel = createMainViewModel()
         val homeViewModel = createHomeViewModel(throwNetworkError = true)
 
-        homeViewModel.getHomeUiState(mainViewModel.nearbyStops).test {
+        homeViewModel.fetchNearbyRoutes(mainViewModel.nearbyStops.value)
+        homeViewModel.homeUiState.test {
             assert(expectItem() is HomeUiState.Error)
         }
     }
@@ -56,7 +59,8 @@ class HomeViewModelTest {
         val mainViewModel = createMainViewModel()
         val homeViewModel = createHomeViewModel()
 
-        homeViewModel.getHomeUiState(mainViewModel.nearbyStops).test {
+        homeViewModel.fetchNearbyRoutes(mainViewModel.nearbyStops.value)
+        homeViewModel.homeUiState.test {
             expectItem().let {
                 assert(it is HomeUiState.Success && it.data.isNotEmpty())
             }

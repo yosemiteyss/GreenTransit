@@ -54,7 +54,7 @@ class HomeFragment : Fragment(R.layout.fragment_home),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupMapFragment()
+        setupMapFragment(savedInstanceState)
         setupBottomSheet()
     }
 
@@ -85,7 +85,7 @@ class HomeFragment : Fragment(R.layout.fragment_home),
     }
 
     @SuppressLint("MissingPermission", "PotentialBehaviorOverride")
-    private fun setupMapFragment() {
+    private fun setupMapFragment(savedInstanceState: Bundle?) {
         // Map initialization
         viewLifecycleOwner.lifecycleScope.launch {
             getMapInstance().run {
@@ -231,7 +231,13 @@ class HomeFragment : Fragment(R.layout.fragment_home),
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            homeViewModel.getHomeUiState(nearbyStops = mainViewModel.nearbyStops).collect { uiState ->
+            mainViewModel.nearbyStops.collect { stops ->
+                homeViewModel.fetchNearbyRoutes(stops)
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            homeViewModel.homeUiState.collect { uiState ->
                 binding.loadingProgressBar.showIf(uiState is HomeUiState.Loading)
 
                 if (uiState is HomeUiState.Success) {

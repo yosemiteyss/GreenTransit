@@ -82,13 +82,14 @@ android {
         kotlinOptions {
             jvmTarget = "1.8"
             freeCompilerArgs = listOf(
-                "-Xuse-experimental=kotlinx.coroutines.ExperimentalCoroutinesApi",
-                "-Xuse-experimental=kotlinx.coroutines.FlowPreview",
-                "-Xuse-experimental=kotlin.ExperimentalStdlibApi",
+                "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
+                "-Xopt-in=kotlinx.coroutines.FlowPreview",
+                "-Xopt-in=kotlin.ExperimentalStdlibApi",
                 "-Xopt-in=kotlin.time.ExperimentalTime"
             )
         }
     }
+
 }
 
 dependencies {
@@ -151,7 +152,9 @@ dependencies {
     androidTestImplementation("com.github.AdevintaSpain:Barista:v3.9.0") {
         exclude("org.jetbrains.kotlin")
     }
+
     debugImplementation(Dependencies.FRAGMENT_TESTING)
+    debugImplementation(Dependencies.LEAK_CANARY)
 
     kaptAndroidTest(Annotation.HILT_ANDROID_COMPILER)
 }

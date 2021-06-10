@@ -6,7 +6,9 @@ package com.yosemiteyss.greentransit.app.route
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -31,7 +33,7 @@ import javax.inject.Inject
 private const val STOP_MARKER_ZOOM = 16f
 
 @AndroidEntryPoint
-class RouteFragment : FullScreenDialogFragment(R.layout.fragment_route) {
+class RouteFragment : Fragment(R.layout.fragment_route) {
 
     private val binding: FragmentRouteBinding by viewBinding(FragmentRouteBinding::bind)
     private val navArgs: RouteFragmentArgs by navArgs()
@@ -49,7 +51,10 @@ class RouteFragment : FullScreenDialogFragment(R.layout.fragment_route) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setLayoutFullscreen(aboveNavBar = true)
+        ViewCompat.setTranslationZ(requireView(),
+            resources.getDimensionPixelSize(R.dimen.elevation_large).toFloat())
+
+        binding.stopsRecyclerView.applySystemWindowInsetsMargin(applyBottom = true)
 
         // Nav back button
         with(binding.navBackButton) {

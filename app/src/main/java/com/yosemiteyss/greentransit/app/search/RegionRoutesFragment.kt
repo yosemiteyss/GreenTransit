@@ -6,6 +6,8 @@ package com.yosemiteyss.greentransit.app.search
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.ViewCompat
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
@@ -21,7 +23,7 @@ import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class RegionRoutesFragment : FullScreenDialogFragment(R.layout.fragment_region_routes) {
+class RegionRoutesFragment : Fragment(R.layout.fragment_region_routes) {
 
     private val binding: FragmentRegionRoutesBinding by viewBinding(FragmentRegionRoutesBinding::bind)
     private val navArgs: RegionRoutesFragmentArgs by navArgs()
@@ -35,6 +37,12 @@ class RegionRoutesFragment : FullScreenDialogFragment(R.layout.fragment_region_r
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        ViewCompat.setTranslationZ(requireView(),
+            resources.getDimensionPixelSize(R.dimen.elevation_large).toFloat())
+
+        binding.appBarLayout.applySystemWindowInsetsPadding(applyTop = true)
+        binding.routesRecyclerView.applySystemWindowInsetsMargin(applyBottom = true)
 
         // Setup toolbar
         binding.toolbar.setNavigationOnClickListener {

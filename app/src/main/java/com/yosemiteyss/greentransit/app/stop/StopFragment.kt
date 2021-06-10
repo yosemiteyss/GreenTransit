@@ -6,6 +6,8 @@ package com.yosemiteyss.greentransit.app.stop
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.ViewCompat
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -29,7 +31,7 @@ import javax.inject.Inject
 private const val MAP_DEFAULT_ZOOM = 18f
 
 @AndroidEntryPoint
-class StopFragment : FullScreenDialogFragment(R.layout.fragment_stop) {
+class StopFragment : Fragment(R.layout.fragment_stop) {
 
     private val binding: FragmentStopBinding by viewBinding(FragmentStopBinding::bind)
     private val navArgs: StopFragmentArgs by navArgs()
@@ -45,7 +47,10 @@ class StopFragment : FullScreenDialogFragment(R.layout.fragment_stop) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setLayoutFullscreen(aboveNavBar = true)
+        ViewCompat.setTranslationZ(requireView(),
+            resources.getDimensionPixelSize(R.dimen.elevation_large).toFloat())
+
+        binding.stopViewPager.applySystemWindowInsetsMargin(applyBottom = true)
 
         with(binding.navBackButton) {
             applySystemWindowInsetsMargin(applyTop = true)

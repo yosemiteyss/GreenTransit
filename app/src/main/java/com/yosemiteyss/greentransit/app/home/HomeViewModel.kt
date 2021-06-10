@@ -11,7 +11,11 @@ import com.yosemiteyss.greentransit.domain.models.NearbyStop
 import com.yosemiteyss.greentransit.domain.states.Resource
 import com.yosemiteyss.greentransit.domain.usecases.nearby.GetNearbyRoutesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -22,23 +26,20 @@ class HomeViewModel @Inject constructor(
     private val _nearbyRoutesCount = MutableStateFlow(0)
     val nearbyRoutesCount: StateFlow<Int> = _nearbyRoutesCount.asStateFlow()
 
-    fun getHomeUiState(nearbyStops: StateFlow<List<NearbyStop>>): StateFlow<HomeUiState> {
-        return nearbyStops.flatMapLatest { getNearbyRoutesUseCase(it) }
-            .map { res ->
-                when (res) {
-                    is Resource.Success -> {
-                        _nearbyRoutesCount.value = res.data.size
-                        HomeUiState.Success(buildNearbyRoutesListModels(res.data))
-                    }
-                    is Resource.Error -> HomeUiState.Error(res.message)
-                    is Resource.Loading -> HomeUiState.Loading
+    private val _homeUiState = MutableStateFlow<HomeUiState>(HomeUiState.Loading)
+    val homeUiState: StateFlow<HomeUiState> = _homeUiState.asStateFlow()
+
+    fun fetchNearbyRoutes(nearbyStops: List<NearbyStop>) = viewModelScope.launch {
+        getNearbyRoutesUseCase(nearbyStops).collect { res ->
+            _homeUiState.value = when (res) {
+                is Resource.Success -> {
+                    _nearbyRoutesCount.value = res.data.size
+                    HomeUiState.Success(buildNearbyRoutesListModels(res.data))
                 }
+                is Resource.Error -> HomeUiState.Error(res.message)
+                is Resource.Loading -> HomeUiState.Loading
             }
-            .stateIn(
-                scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(),
-                initialValue = HomeUiState.Loading
-            )
+        }
     }
 
     private fun buildNearbyRoutesListModels(

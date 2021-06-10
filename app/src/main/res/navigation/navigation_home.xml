@@ -11,43 +11,25 @@
         tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_homeFragment_to_searchFragment"
-            app:destination="@id/searchFragment" />
-        <action
-            android:id="@+id/action_homeFragment_to_regionRoutesFragment"
-            app:destination="@id/regionRoutesFragment" />
+            app:destination="@id/searchFragment"
+            app:enterAnim="@anim/dialog_slide_in"
+            app:exitAnim="@anim/stationary"
+            app:popExitAnim="@anim/dialog_slide_out" />
         <action
             android:id="@+id/action_homeFragment_to_stopFragment"
-            app:destination="@id/stopFragment" />
+            app:destination="@id/stopFragment"
+            app:enterAnim="@anim/dialog_slide_in"
+            app:exitAnim="@anim/stationary"
+            app:popExitAnim="@anim/dialog_slide_out"/>
         <action
             android:id="@+id/action_homeFragment_to_routeFragment"
-            app:destination="@id/routeFragment" />
+            app:destination="@id/routeFragment"
+            app:enterAnim="@anim/dialog_slide_in"
+            app:exitAnim="@anim/stationary"
+            app:popExitAnim="@anim/dialog_slide_out"/>
     </fragment>
 
-    <dialog
-        android:id="@+id/searchFragment"
-        android:name="com.yosemiteyss.greentransit.app.search.SearchFragment"
-        tools:layout="@layout/fragment_search">
-        <action
-            android:id="@+id/action_searchFragment_to_regionRoutesFragment"
-            app:destination="@id/regionRoutesFragment" />
-        <action
-            android:id="@+id/action_searchFragment_to_routeFragment"
-            app:destination="@id/routeFragment" />
-    </dialog>
-
-    <dialog
-        android:id="@+id/regionRoutesFragment"
-        android:name="com.yosemiteyss.greentransit.app.search.RegionRoutesFragment"
-        tools:layout="@layout/fragment_region_routes">
-        <argument
-            android:name="region"
-            app:argType="com.yosemiteyss.greentransit.domain.models.Region"/>
-        <action
-            android:id="@+id/action_regionRoutesFragment_to_routeFragment"
-            app:destination="@id/routeFragment" />
-    </dialog>
-
-    <dialog
+    <fragment
         android:id="@+id/stopFragment"
         android:name="com.yosemiteyss.greentransit.app.stop.StopFragment"
         tools:layout="@layout/fragment_stop">
@@ -62,16 +44,52 @@
             app:argType="float"/>
         <action
             android:id="@+id/action_stopFragment_to_routeFragment"
-            app:destination="@id/routeFragment" />
-    </dialog>
+            app:destination="@id/routeFragment"
+            app:enterAnim="@anim/dialog_slide_in"
+            app:exitAnim="@anim/stationary"
+            app:popExitAnim="@anim/dialog_slide_out"/>
+    </fragment>
 
-    <dialog
+    <fragment
         android:id="@+id/routeFragment"
         android:name="com.yosemiteyss.greentransit.app.route.RouteFragment"
         tools:layout="@layout/fragment_route">
         <argument
             android:name="routeOption"
             app:argType="com.yosemiteyss.greentransit.app.route.RouteOption"/>
-    </dialog>
+    </fragment>
+
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.yosemiteyss.greentransit.app.search.SearchFragment"
+        tools:layout="@layout/fragment_search">
+        <action
+            android:id="@+id/action_searchFragment_to_regionRoutesFragment"
+            app:destination="@id/regionRoutesFragment"
+            app:enterAnim="@anim/dialog_slide_in"
+            app:exitAnim="@anim/stationary"
+            app:popExitAnim="@anim/dialog_slide_out"/>
+        <action
+            android:id="@+id/action_searchFragment_to_routeFragment"
+            app:destination="@id/routeFragment"
+            app:enterAnim="@anim/dialog_slide_in"
+            app:exitAnim="@anim/stationary"
+            app:popExitAnim="@anim/dialog_slide_out"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/regionRoutesFragment"
+        android:name="com.yosemiteyss.greentransit.app.search.RegionRoutesFragment"
+        tools:layout="@layout/fragment_region_routes">
+        <argument
+            android:name="region"
+            app:argType="com.yosemiteyss.greentransit.domain.models.Region"/>
+        <action
+            android:id="@+id/action_regionRoutesFragment_to_routeFragment"
+            app:destination="@id/routeFragment"
+            app:enterAnim="@anim/dialog_slide_in"
+            app:exitAnim="@anim/stationary"
+            app:popExitAnim="@anim/dialog_slide_out"/>
+    </fragment>
 
 </navigation>

@@ -6,9 +6,12 @@ package com.yosemiteyss.greentransit.app.search
 
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.InputMethodManager
+import androidx.core.content.ContextCompat.getSystemService
+import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
-import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.yosemiteyss.greentransit.app.R
@@ -21,28 +24,24 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class SearchFragment : DialogFragment(R.layout.fragment_search) {
+class SearchFragment : Fragment(R.layout.fragment_search) {
 
     private val binding: FragmentSearchBinding by viewBinding(FragmentSearchBinding::bind)
     private val viewModel: SearchViewModel by viewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        if (savedInstanceState == null) {
-            setStyle(STYLE_NORMAL, R.style.ThemeOverlay_GreenTransit_Dialog_Fullscreen_DayNight_Search)
-        }
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setLayoutFullscreen(aboveNavBar = true)
+        //setLayoutFullscreen(aboveNavBar = true)
+        ViewCompat.setTranslationZ(requireView(),
+            resources.getDimensionPixelSize(R.dimen.elevation_large).toFloat())
+
+        binding.searchRecyclerView.applySystemWindowInsetsMargin(applyBottom = true)
 
         with(binding) {
             clearTextButton.applySystemWindowInsetsMargin(applyTop = true)
             loadingProgressBar.setVisibilityAfterHide(View.INVISIBLE)
             searchEditText.applySystemWindowInsetsMargin(applyTop = true)
-            searchEditText.requestFocus()
+            showSoftKeyboard(searchEditText)
         }
 
         // Set recycler view
@@ -90,7 +89,7 @@ class SearchFragment : DialogFragment(R.layout.fragment_search) {
         // Dismiss when clicking scrim region
         viewLifecycleOwner.lifecycleScope.launch {
             binding.searchRecyclerView.touchOutsideItemsFlow().collect {
-                findNavController(R.id.searchFragment)?.navigateUp()
+                hideSoftKeyboard()
             }
         }
 
@@ -106,6 +105,23 @@ class SearchFragment : DialogFragment(R.layout.fragment_search) {
         binding.regionNtChip.setOnClickListener {
             navigateToRegionRoutes(Region.NT)
         }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        hideSoftKeyboard()
+    }
+
+    private fun showSoftKeyboard(view: View) {
+        if (view.requestFocus()) {
+            val imm = getSystemService(requireContext(), InputMethodManager::class.java) as InputMethodManager
+            imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
+        }
+    }
+
+    private fun hideSoftKeyboard() {
+        val imm = getSystemService(requireContext(), InputMethodManager::class.java) as InputMethodManager
+        imm.hideSoftInputFromWindow(binding.searchEditText.windowToken, InputMethodManager.HIDE_IMPLICIT_ONLY)
     }
 
     private fun navigateToRegionRoutes(region: Region) {
