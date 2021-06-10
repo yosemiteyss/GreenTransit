@@ -4,10 +4,12 @@
 
 package com.yosemiteyss.greentransit.app.news
 
+import android.content.res.ColorStateList
 import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.TextViewCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -22,7 +24,9 @@ import com.yosemiteyss.greentransit.domain.models.TrafficNews
 import com.yosemiteyss.greentransit.domain.models.TrafficNewsStatus
 import java.util.*
 
-class NewsAdapter : ListAdapter<TrafficNewsListModel, TrafficNewsViewHolder>(TrafficNewsListModelDiff) {
+class NewsAdapter(
+    private val onNewsClicked: (trafficNews: TrafficNews) -> Unit
+) : ListAdapter<TrafficNewsListModel, TrafficNewsViewHolder>(TrafficNewsListModelDiff) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrafficNewsViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         return when (viewType) {
@@ -60,6 +64,7 @@ class NewsAdapter : ListAdapter<TrafficNewsListModel, TrafficNewsViewHolder>(Tra
         binding: NewsListItemBinding,
         trafficNewsListModel: TrafficNewsItem
     ) = binding.run {
+        // News status
         val statusColor = when (trafficNewsListModel.trafficNews.currentStatus) {
             TrafficNewsStatus.NEW -> root.context.getColorCompat(R.color.news_status_red)
             TrafficNewsStatus.UPDATED -> root.context.getColorCompat(R.color.news_status_green)
@@ -77,10 +82,15 @@ class NewsAdapter : ListAdapter<TrafficNewsListModel, TrafficNewsViewHolder>(Tra
 
         currentStatusTextView.text = statusTitle
         currentStatusTextView.setTextColor(statusColor)
-        currentStatusTextView.setCompoundDrawablesRelative(
+        currentStatusTextView.setCompoundDrawablesWithIntrinsicBounds(
             statusDrawable, null, null, null
         )
+        TextViewCompat.setCompoundDrawableTintList(
+            currentStatusTextView,
+            ColorStateList.valueOf(statusColor)
+        )
 
+        // News date
         dateTextView.text = DateUtils.getRelativeTimeSpanString(
             trafficNewsListModel.trafficNews.referenceDate.time,
             Date().time,
@@ -88,7 +98,12 @@ class NewsAdapter : ListAdapter<TrafficNewsListModel, TrafficNewsViewHolder>(Tra
             DateUtils.FORMAT_ABBREV_RELATIVE
         ).toString()
 
+        // News content
         contentTextView.text = trafficNewsListModel.trafficNews.engShort
+
+        newsCardView.setOnClickListener {
+            onNewsClicked(trafficNewsListModel.trafficNews)
+        }
     }
 
     companion object {

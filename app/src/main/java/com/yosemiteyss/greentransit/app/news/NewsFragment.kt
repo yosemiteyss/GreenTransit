@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.yosemiteyss.greentransit.app.R
 import com.yosemiteyss.greentransit.app.databinding.FragmentNewsBinding
 import com.yosemiteyss.greentransit.app.utils.applySystemWindowInsetsMargin
@@ -29,7 +30,13 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         binding.loadingProgressBar.setVisibilityAfterHide(View.GONE)
 
         // Setup news recycler view
-        val newsAdapter = NewsAdapter()
+        val newsAdapter = NewsAdapter {
+            findNavController().navigate(
+                NewsFragmentDirections.actionNewsFragmentToNewsDetailFragment(
+                    NewsDetailProperty(it)
+                )
+            )
+        }
 
         binding.newsRecyclerView.run {
             adapter = newsAdapter

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?android:attr/colorBackground">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorSurface"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            style="@style/Widget.MaterialComponents.Toolbar.Surface"
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:title="@string/news_detail_toolbar_title"
+            app:titleTextAppearance="?attr/textAppearanceHeadline6"
+            app:navigationIcon="@drawable/ic_arrow_back"
+            app:navigationIconTint="?attr/colorOnSurface"/>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/news_content_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/spacing_large">
+
+            <TextView
+                android:id="@+id/current_status_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?attr/textAppearanceCaption"
+                android:textColor="@color/news_status_green"
+                android:gravity="center_vertical"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:backgroundTint="@color/news_status_green"
+                tools:text="UPDATED" />
+
+            <TextView
+                android:id="@+id/date_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_large"
+                android:textColor="@color/material_on_surface_emphasis_medium"
+                android:textAppearance="?attr/textAppearanceCaption"
+                app:layout_constraintStart_toEndOf="@id/current_status_text_view"
+                app:layout_constraintTop_toTopOf="@id/current_status_text_view"
+                app:layout_constraintBottom_toBottomOf="@id/current_status_text_view"
+                tools:text="2021/5/17 09:32:21" />
+
+            <TextView
+                android:id="@+id/detail_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="@dimen/spacing_large"
+                android:textAppearance="?attr/textAppearanceBody2"
+                android:lineSpacingMultiplier="1.25"
+                app:layout_constraintTop_toBottomOf="@id/current_status_text_view"
+                app:layout_constraintBottom_toBottomOf="parent"
+                tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. In lacinia tortor vitae ultrices facilisis. Donec malesuada posuere nibh, eu porta nulla. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Sed eget velit erat. Cras ipsum elit, egestas vitae ante id, porta blandit quam. In nec est at odio vehicula congue."/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

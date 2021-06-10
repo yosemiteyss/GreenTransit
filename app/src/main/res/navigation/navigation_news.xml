@@ -8,6 +8,22 @@
     <fragment
         android:id="@+id/newsFragment"
         android:name="com.yosemiteyss.greentransit.app.news.NewsFragment"
-        tools:layout="@layout/fragment_news"/>
+        tools:layout="@layout/fragment_news">
+        <action
+            android:id="@+id/action_newsFragment_to_newsDetailFragment"
+            app:destination="@id/newsDetailFragment"
+            app:enterAnim="@anim/dialog_slide_in"
+            app:exitAnim="@anim/stationary"
+            app:popExitAnim="@anim/dialog_slide_out"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/newsDetailFragment"
+        android:name="com.yosemiteyss.greentransit.app.news.NewsDetailFragment"
+        tools:layout="@layout/fragment_news_detail">
+        <argument
+            android:name="property"
+            app:argType="com.yosemiteyss.greentransit.app.news.NewsDetailProperty"/>
+    </fragment>
 
 </navigation>

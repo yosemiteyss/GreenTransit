@@ -3,7 +3,8 @@
      COMP4521    LAI CHEUK HEI   20464044        chlaiak@connect.ust.hk
      COMP4521    CHAN HOK HIM    20435392        hhchanal@connect.ust.hk
 -->
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
