@@ -6,11 +6,15 @@
     <style name="ThemeOverlay.GreenTransit.Dialog.Fullscreen.DayNight" parent="ThemeOverlay.GreenTransit.Dialog.Fullscreen.Dark"/>
     <style name="ThemeOverlay.GreenTransit.Dialog.Fullscreen.Dark" parent="@style/ThemeOverlay.GreenTransit.Dialog.Fullscreen">
         <item name="android:colorBackground">@color/background_dark</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">false</item>
     </style>
 
     <style name="Theme.GreenTransit.Splash.DayNight" parent="Theme.GreenTransit.Splash.Dark"/>
     <style name="Theme.GreenTransit.Splash.Dark" parent="Theme.GreenTransit.Dark">
         <item name="android:windowBackground">@drawable/splash_background</item>
+        <item name="android:statusBarColor">?attr/colorPrimarySurface</item>
+        <item name="android:windowLightStatusBar">false</item>
     </style>
 
     <style name="Theme.GreenTransit.DayNight" parent="Theme.GreenTransit.Dark"/>
@@ -32,6 +36,9 @@
 
         <item name="searchBarColor">@color/background_dark</item>
         <item name="newsItemColor">@color/news_card_dark</item>
+
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">false</item>
     </style>
     
 </resources>

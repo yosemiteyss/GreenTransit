@@ -22,23 +22,40 @@ class SearchViewModel @Inject constructor(
 
     private val _searchQuery = MutableStateFlow<String?>(null)
 
-    private val _searchUiState = MutableStateFlow<SearchUiState?>(null)
-    val searchUiState: StateFlow<SearchUiState?> = _searchUiState.asStateFlow()
+    private val _searchUiState = MutableStateFlow<SearchUiState>(
+        SearchUiState.Idle(buildSearchListModels())
+    )
+    val searchUiState: StateFlow<SearchUiState> = _searchUiState.asStateFlow()
 
     init {
+        // Show regions
+        viewModelScope.launch {
+            _searchQuery.collect { query ->
+                if (query.isNullOrBlank()) {
+                    _searchUiState.value = SearchUiState.Idle(buildSearchListModels())
+                }
+            }
+        }
+
         viewModelScope.launch {
            _searchQuery.debounce(SEARCH_RATE_LIMIT)
-                .flatMapLatest { query ->
+               .filterNot { it.isNullOrBlank() }
+               .flatMapLatest { query ->
                     val params = SearchRoutesParameter(
                         query = query,
                         numOfRoutes = NUM_OF_RESULTS
                     )
-
                     searchRoutesUseCase(params)
                 }
                 .map { res ->
                     when (res) {
-                        is Resource.Success -> SearchUiState.Success(buildSearchListModels(res.data))
+                        is Resource.Success -> {
+                            if (res.data.isEmpty()) {
+                                SearchUiState.Idle(buildSearchListModels())
+                            } else {
+                                SearchUiState.Success(buildSearchListModels(res.data))
+                            }
+                        }
                         is Resource.Error -> SearchUiState.Error(res.message)
                         is Resource.Loading -> SearchUiState.Loading
                     }
@@ -53,10 +70,11 @@ class SearchViewModel @Inject constructor(
         _searchQuery.value = query
     }
 
-    private fun buildSearchListModels(routeCodes: List<RouteCode>): List<SearchListModel> {
-        return routeCodes.map {
+    private fun buildSearchListModels(routeCodes: List<RouteCode>? = null): List<SearchListModel> {
+        return routeCodes?.map {
             SearchListModel.SearchResultListModel(it)
         }
+            ?: listOf(SearchListModel.SearchRegionsListModel)
     }
 
     companion object {
@@ -68,5 +86,6 @@ class SearchViewModel @Inject constructor(
 sealed class SearchUiState {
     data class Success(val data: List<SearchListModel>) : SearchUiState()
     data class Error(val message: String?) : SearchUiState()
+    data class Idle(val data: List<SearchListModel>) : SearchUiState()
     object Loading : SearchUiState()
 }

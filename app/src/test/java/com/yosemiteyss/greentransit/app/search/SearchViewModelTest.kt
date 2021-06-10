@@ -5,7 +5,6 @@ import com.yosemiteyss.greentransit.domain.usecases.search.SearchRoutesUseCase
 import com.yosemiteyss.greentransit.testshared.repositories.FakeTransitRepositoryImpl
 import com.yosemiteyss.greentransit.testshared.utils.TestCoroutineRule
 import com.yosemiteyss.greentransit.testshared.utils.runBlockingTest
-import org.junit.Assert.assertNull
 import org.junit.Rule
 import org.junit.Test
 
@@ -23,17 +22,17 @@ class SearchViewModelTest {
         val viewModel = createSearchViewModel()
 
         viewModel.searchUiState.test {
-            viewModel.onUpdateQuery("hello")
+            assert(expectItem() is SearchUiState.Idle)
 
-            assertNull(expectItem())
+            viewModel.onUpdateQuery("hello")
             assert(expectItem() is SearchUiState.Loading)
 
-            val result = expectItem()
-
-            assert(
-                result is SearchUiState.Success &&
-                result.data.size == SearchViewModel.NUM_OF_RESULTS
-            )
+            expectItem().let {
+                assert(
+                    it is SearchUiState.Success &&
+                    it.data.size == SearchViewModel.NUM_OF_RESULTS
+                )
+            }
         }
     }
 
@@ -42,14 +41,34 @@ class SearchViewModelTest {
         val viewModel = createSearchViewModel(networkError = true)
 
         viewModel.searchUiState.test {
-            viewModel.onUpdateQuery("hello")
+            assert(expectItem() is SearchUiState.Idle)
 
-            assertNull(expectItem())
+            viewModel.onUpdateQuery("hello")
             assert(expectItem() is SearchUiState.Loading)
 
-            val result = expectItem()
+            assert(expectItem() is SearchUiState.Error)
+        }
+    }
 
-            assert(result is SearchUiState.Error)
+    @Test
+    fun `test clear query, return idle state`() = coroutineRule.runBlockingTest {
+        val viewModel = createSearchViewModel()
+
+        viewModel.searchUiState.test {
+            assert(expectItem() is SearchUiState.Idle)
+
+            viewModel.onUpdateQuery("hello")
+            assert(expectItem() is SearchUiState.Loading)
+
+            expectItem().let {
+                assert(
+                    it is SearchUiState.Success &&
+                    it.data.size == SearchViewModel.NUM_OF_RESULTS
+                )
+            }
+
+            viewModel.onUpdateQuery("")
+            assert(expectItem() is SearchUiState.Idle)
         }
     }
 

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HorizontalScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/regions_scroll_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:scrollbars="none"
+    app:layout_constraintTop_toTopOf="@id/search_recycler_view">
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/regions_chip_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingVertical="@dimen/spacing_medium"
+        android:paddingHorizontal="@dimen/spacing_xmedium">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/region_kln_chip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/region_kln"
+            android:textColor="?attr/colorPrimary"
+            app:chipBackgroundColor="?attr/searchBarColor"/>
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/region_hki_chip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/region_hki"
+            android:textColor="?attr/colorPrimary"
+            app:chipBackgroundColor="?attr/searchBarColor"/>
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/region_nt_chip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/region_nt"
+            android:textColor="?attr/colorPrimary"
+            app:chipBackgroundColor="?attr/searchBarColor"/>
+
+    </com.google.android.material.chip.ChipGroup>
+
+</HorizontalScrollView>

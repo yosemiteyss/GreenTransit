@@ -5,11 +5,11 @@
 package com.yosemiteyss.greentransit.app.search
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.view.ViewCompat
-import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -31,7 +31,6 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //setLayoutFullscreen(aboveNavBar = true)
         ViewCompat.setTranslationZ(requireView(),
             resources.getDimensionPixelSize(R.dimen.elevation_large).toFloat())
 
@@ -45,13 +44,18 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         }
 
         // Set recycler view
-        val searchAdapter = SearchAdapter { routeRegionCode ->
-            findNavController(R.id.searchFragment)?.navigate(
-                SearchFragmentDirections.actionSearchFragmentToRouteFragment(
-                    RouteOption(routeRegionCode = routeRegionCode)
+        val searchAdapter = SearchAdapter(
+            onRouteClicked = {
+                findNavController(R.id.searchFragment)?.navigate(
+                    SearchFragmentDirections.actionSearchFragmentToRouteFragment(
+                        RouteOption(it)
+                    )
                 )
-            )
-        }
+            },
+            onRegionSelected = {
+                navigateToRegionRoutes(it)
+            }
+        )
 
         with(binding.searchRecyclerView) {
             adapter = searchAdapter
@@ -60,12 +64,16 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.searchUiState.collect { uiState ->
-                binding.loadingProgressBar.showIf(uiState is SearchUiState.Loading)
+                Log.d("SearchFragment", "$uiState")
+                binding.loadingProgressBar.showIf(
+                    uiState is SearchUiState.Loading
+                )
 
-                if (uiState is SearchUiState.Success) {
-                    searchAdapter.submitList(uiState.data)
-                } else if (uiState is SearchUiState.Error) {
-                    showShortToast(uiState.message)
+                when (uiState) {
+                    is SearchUiState.Success -> searchAdapter.submitList(uiState.data)
+                    is SearchUiState.Idle -> searchAdapter.submitList(uiState.data)
+                    is SearchUiState.Error -> showShortToast(uiState.message)
+                    else -> Unit
                 }
             }
         }
@@ -81,8 +89,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
 
         // Observer search input
         binding.searchEditText.doOnTextChanged { text, _, _, _ ->
-            // Hide chip group when the user is inputting
-            binding.regionsScrollView.isVisible = text.toString().isBlank()
+
             viewModel.onUpdateQuery(text.toString())
         }
 
@@ -91,19 +98,6 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
             binding.searchRecyclerView.touchOutsideItemsFlow().collect {
                 hideSoftKeyboard()
             }
-        }
-
-        // Region chips
-        binding.regionKlnChip.setOnClickListener {
-            navigateToRegionRoutes(Region.KLN)
-        }
-
-        binding.regionHkiChip.setOnClickListener {
-            navigateToRegionRoutes(Region.HKI)
-        }
-
-        binding.regionNtChip.setOnClickListener {
-            navigateToRegionRoutes(Region.NT)
         }
     }
 

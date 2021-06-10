@@ -37,12 +37,10 @@ class RouteFragment : Fragment(R.layout.fragment_route) {
 
     private val binding: FragmentRouteBinding by viewBinding(FragmentRouteBinding::bind)
     private val navArgs: RouteFragmentArgs by navArgs()
-
     private val mainViewModel: MainViewModel by activityViewModels()
 
     @Inject
     lateinit var routeViewModelFactory: RouteViewModel.RouteViewModelFactory
-
     private val routeViewModel: RouteViewModel by viewModels {
         RouteViewModel.provideFactory(routeViewModelFactory, navArgs.routeOption)
     }
