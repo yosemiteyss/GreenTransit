@@ -33,13 +33,6 @@ class RouteStopsAdapter(
 
     private val differ = AsyncListDiffer(this, RouteStopsListModel.Diff)
 
-    var routeStopsListModels: List<RouteStopsListModel> = emptyList()
-        set(value) {
-            field = value
-            selectedPosition = RecyclerView.NO_POSITION
-            differ.submitList(value)
-        }
-
     private var selectedPosition: Int = RecyclerView.NO_POSITION
         set(value) {
             if (value != field) {
@@ -101,6 +94,10 @@ class RouteStopsAdapter(
     }
 
     override fun getItemCount(): Int = differ.currentList.size
+
+    fun submitList(routeStopsListModels: List<RouteStopsListModel>) {
+        differ.submitList(routeStopsListModels)
+    }
 
     private fun bindRouteStopItem(
         binding: RouteStopListItemBinding,

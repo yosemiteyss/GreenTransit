@@ -124,9 +124,9 @@ class RouteFragment : Fragment(R.layout.fragment_route) {
                 binding.loadingProgressBar.isVisible = res is Resource.Loading
 
                 when (res) {
-                    is Resource.Success -> routeStopsAdapter.routeStopsListModels = res.data
+                    is Resource.Success -> routeStopsAdapter.submitList(res.data)
                     is Resource.Error -> showShortToast(res.message)
-                    is Resource.Loading -> routeStopsAdapter.routeStopsListModels = emptyList()
+                    is Resource.Loading -> Unit
                 }
             }
         }
