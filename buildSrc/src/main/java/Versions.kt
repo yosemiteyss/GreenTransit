@@ -3,6 +3,7 @@ object Versions {
     const val ACTIVITY = "1.2.2"
     const val ARCH = "2.1.0"
     const val BANNER_VIEW_PAGER = "3.2.0"
+    const val BARISTA = "3.9.0"
     const val BROWSER = "1.3.0"
     const val CHECK_DEPENDENCY_UPDATES = "1.3.0"
     const val COROUTINE = "1.5.0"

@@ -47,9 +47,9 @@ class HomeFragment : Fragment(R.layout.fragment_home),
     private val binding: FragmentHomeBinding by viewBinding(FragmentHomeBinding::bind)
     private val mainViewModel: MainViewModel by activityViewModels()
     private val homeViewModel: HomeViewModel by viewModels()
-    private var onLocationChangedListener: OnLocationChangedListener? = null
 
-    private var hasLoadedDefaultCoordinate: Boolean = false
+    private var onLocationChangedListener: OnLocationChangedListener? = null
+    private var hasLoadedInitialCoordinate: Boolean = false
     private val nearbyStopsMarkers: MutableList<Marker> = mutableListOf()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -106,14 +106,14 @@ class HomeFragment : Fragment(R.layout.fragment_home),
                 }
 
                 // Move to default location
-                if (!hasLoadedDefaultCoordinate) {
+                if (!hasLoadedInitialCoordinate) {
                     moveCamera(CameraUpdateFactory.newLatLngZoom(
                         LatLng(
-                            mainViewModel.defaultCoordinate.latitude,
-                            mainViewModel.defaultCoordinate.longitude
+                            mainViewModel.initialCoordinate.latitude,
+                            mainViewModel.initialCoordinate.longitude
                         ), 12f
                     ))
-                    hasLoadedDefaultCoordinate = true
+                    hasLoadedInitialCoordinate = true
                 }
 
                 setOnMarkerClickListener(this@HomeFragment)

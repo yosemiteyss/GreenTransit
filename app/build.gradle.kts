@@ -89,7 +89,6 @@ android {
             )
         }
     }
-
 }
 
 dependencies {
@@ -149,12 +148,12 @@ dependencies {
     androidTestImplementation(Dependencies.TEST_EXT_JUNIT_KTX)
     androidTestImplementation(Dependencies.NAVIGATION_TESTING)
     androidTestImplementation(Dependencies.ARCH_CORE_TESTING)
-    androidTestImplementation("com.github.AdevintaSpain:Barista:v3.9.0") {
+    androidTestImplementation(Dependencies.BARISTA) {
         exclude("org.jetbrains.kotlin")
     }
 
     debugImplementation(Dependencies.FRAGMENT_TESTING)
-    debugImplementation(Dependencies.LEAK_CANARY)
+    //debugImplementation(Dependencies.LEAK_CANARY)
 
     kaptAndroidTest(Annotation.HILT_ANDROID_COMPILER)
 }

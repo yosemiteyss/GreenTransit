@@ -4,7 +4,6 @@
 
 package com.yosemiteyss.greentransit.app.news
 
-import android.content.res.ColorStateList
 import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.View
@@ -18,6 +17,7 @@ import com.yosemiteyss.greentransit.app.databinding.NewsHeaderItemBinding
 import com.yosemiteyss.greentransit.app.databinding.NewsListItemBinding
 import com.yosemiteyss.greentransit.app.news.TrafficNewsListModel.*
 import com.yosemiteyss.greentransit.app.utils.getColorCompat
+import com.yosemiteyss.greentransit.app.utils.getDrawableOrNull
 import com.yosemiteyss.greentransit.domain.models.TrafficNews
 import com.yosemiteyss.greentransit.domain.models.TrafficNewsStatus
 import java.util.*
@@ -60,17 +60,26 @@ class NewsAdapter : ListAdapter<TrafficNewsListModel, TrafficNewsViewHolder>(Tra
         binding: NewsListItemBinding,
         trafficNewsListModel: TrafficNewsItem
     ) = binding.run {
-        currentStatusTextView.text = when (trafficNewsListModel.trafficNews.currentStatus) {
-            TrafficNewsStatus.NEW -> root.context.getString(R.string.news_status_new)
-            TrafficNewsStatus.UPDATED -> root.context.getString(R.string.news_status_updated)
-        }.uppercase()
-
         val statusColor = when (trafficNewsListModel.trafficNews.currentStatus) {
             TrafficNewsStatus.NEW -> root.context.getColorCompat(R.color.news_status_red)
             TrafficNewsStatus.UPDATED -> root.context.getColorCompat(R.color.news_status_green)
         }
 
-        currentStatusTextView.backgroundTintList = ColorStateList.valueOf(statusColor)
+        val statusDrawable = when (trafficNewsListModel.trafficNews.currentStatus) {
+            TrafficNewsStatus.NEW -> root.context.getDrawableOrNull(R.drawable.ic_error)
+            TrafficNewsStatus.UPDATED -> root.context.getDrawableOrNull(R.drawable.ic_update)
+        }
+
+        val statusTitle =  when (trafficNewsListModel.trafficNews.currentStatus) {
+            TrafficNewsStatus.NEW -> root.context.getString(R.string.news_status_new)
+            TrafficNewsStatus.UPDATED -> root.context.getString(R.string.news_status_updated)
+        }.uppercase()
+
+        currentStatusTextView.text = statusTitle
+        currentStatusTextView.setTextColor(statusColor)
+        currentStatusTextView.setCompoundDrawablesRelative(
+            statusDrawable, null, null, null
+        )
 
         dateTextView.text = DateUtils.getRelativeTimeSpanString(
             trafficNewsListModel.trafficNews.referenceDate.time,
@@ -79,16 +88,7 @@ class NewsAdapter : ListAdapter<TrafficNewsListModel, TrafficNewsViewHolder>(Tra
             DateUtils.FORMAT_ABBREV_RELATIVE
         ).toString()
 
-        with(contentTextView) {
-            text = trafficNewsListModel.trafficNews.engShort
-            maxLines = NEWS_COLLAPSED_LINES
-        }
-
-        // Collapse or expand
-        root.setOnClickListener {
-            contentTextView.maxLines = if (contentTextView.maxLines == NEWS_COLLAPSED_LINES)
-                NEWS_EXPANDED_LINES else NEWS_COLLAPSED_LINES
-        }
+        contentTextView.text = trafficNewsListModel.trafficNews.engShort
     }
 
     companion object {

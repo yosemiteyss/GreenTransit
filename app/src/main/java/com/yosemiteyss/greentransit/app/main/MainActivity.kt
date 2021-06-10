@@ -67,10 +67,9 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_container)
             as NavHostFragment
         val navController = navHostFragment.navController
-        val topDestinations = listOf(R.id.homeFragment, R.id.newsFragment)
 
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
-            binding.bottomNavView.isVisible = destination.id in topDestinations
+            binding.bottomNavView.isVisible = destination.id in viewModel.topDestinations
         }
 
         binding.bottomNavView.setupWithNavController(navController)

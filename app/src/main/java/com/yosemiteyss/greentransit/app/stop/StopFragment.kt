@@ -125,8 +125,8 @@ class StopFragment : Fragment(R.layout.fragment_stop) {
                 moveCamera(
                     CameraUpdateFactory.newLatLngZoom(
                     LatLng(
-                        mainViewModel.defaultCoordinate.latitude,
-                        mainViewModel.defaultCoordinate.longitude
+                        mainViewModel.initialCoordinate.latitude,
+                        mainViewModel.initialCoordinate.longitude
                     ), 12f
                 ))
             }

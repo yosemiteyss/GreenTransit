@@ -155,8 +155,8 @@ class RouteFragment : Fragment(R.layout.fragment_route) {
                 moveCamera(
                     CameraUpdateFactory.newLatLngZoom(
                         LatLng(
-                            mainViewModel.defaultCoordinate.latitude,
-                            mainViewModel.defaultCoordinate.longitude
+                            mainViewModel.initialCoordinate.latitude,
+                            mainViewModel.initialCoordinate.longitude
                         ), 12f
                     )
                 )

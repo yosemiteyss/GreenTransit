@@ -72,6 +72,7 @@ object Dependencies {
     const val ZXING_EMBEDDED = "com.journeyapps:zxing-android-embedded:${Versions.ZXING_EMBEDDED}"
     const val LICENSE = "com.jaredsburrows:gradle-license-plugin:0.8.90"
     const val THREETENABP = "com.jakewharton.threetenabp:threetenabp:${Versions.THREETENABP}"
+    const val BARISTA = "com.github.AdevintaSpain:Barista:v${Versions.BARISTA}"
 
     // Test
     const val ARCH_CORE_TESTING = "androidx.arch.core:core-testing:${Versions.ARCH}"

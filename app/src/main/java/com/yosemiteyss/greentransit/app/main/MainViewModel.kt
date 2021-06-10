@@ -7,6 +7,7 @@ package com.yosemiteyss.greentransit.app.main
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.model.LatLng
+import com.yosemiteyss.greentransit.app.R
 import com.yosemiteyss.greentransit.app.utils.geohashQueryBounds
 import com.yosemiteyss.greentransit.domain.models.Coordinate
 import com.yosemiteyss.greentransit.domain.models.Location
@@ -51,10 +52,9 @@ class MainViewModel @Inject constructor(
             replay = 1
         )
 
-    val defaultCoordinate = Coordinate(
-        latitude = 22.302711,
-        longitude = 114.177216
-    )
+    val initialCoordinate: Coordinate = Coordinate(latitude = 22.302711, longitude = 114.177216)
+
+    val topDestinations: List<Int> = listOf(R.id.homeFragment, R.id.newsFragment)
 
     init {
         // Build nearby stops
