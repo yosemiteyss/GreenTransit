@@ -54,7 +54,10 @@ class StopEtasFragment : Fragment(R.layout.fragment_stop_etas) {
                 binding.loadingProgressBar.showIf(uiState is StopEtasUiState.Loading)
 
                 when (uiState) {
-                    is StopEtasUiState.Success -> etasAdapter.submitList(uiState.data)
+                    is StopEtasUiState.Success -> {
+                        etasAdapter.submitList(uiState.data)
+                        showShortToast("Updated.")
+                    }
                     is StopEtasUiState.Error -> {
                         etasAdapter.submitList(uiState.data)
                         showShortToast(uiState.message)

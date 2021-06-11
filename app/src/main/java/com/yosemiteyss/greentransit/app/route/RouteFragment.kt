@@ -50,6 +50,7 @@ class RouteFragment : Fragment(R.layout.fragment_route) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         ViewCompat.setTranslationZ(requireView(),
             resources.getDimensionPixelSize(R.dimen.elevation_large).toFloat())
 
@@ -104,13 +105,12 @@ class RouteFragment : Fragment(R.layout.fragment_route) {
     }
 
     private fun setupRouteStopsList() {
-        // Route stops
         val routeStopsAdapter = RouteStopsAdapter { stopId ->
-            // Zoom to stop marker
+            // Zoom to selected stop marker
             viewLifecycleOwner.lifecycleScope.launch {
                 val stopLatLng = directionStopMarkers.firstOrNull { it.tag == stopId }?.position
                 stopLatLng?.let {
-                    getMapInstance().zoomTo(it, STOP_MARKER_ZOOM)
+                    getMapInstance().zoomAnimateTo(it, STOP_MARKER_ZOOM)
                 }
             }
         }
@@ -125,7 +125,10 @@ class RouteFragment : Fragment(R.layout.fragment_route) {
                 binding.loadingProgressBar.showIf(res is Resource.Loading)
 
                 when (res) {
-                    is Resource.Success -> routeStopsAdapter.submitList(res.data)
+                    is Resource.Success -> {
+                        routeStopsAdapter.submitList(res.data)
+                        showShortToast("Updated.")
+                    }
                     is Resource.Error -> showShortToast(res.message)
                     is Resource.Loading -> Unit
                 }
@@ -192,7 +195,7 @@ class RouteFragment : Fragment(R.layout.fragment_route) {
 
                 directionStopMarkers.addAll(markers)
 
-                zoomToBoundMarkers(markers)
+                zoomToBoundMarkers(markers, true)
             }
         }
     }

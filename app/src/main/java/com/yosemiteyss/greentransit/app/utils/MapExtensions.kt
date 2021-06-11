@@ -35,12 +35,17 @@ fun GoogleMap.zoomAnimateTo(center: LatLng, level: Float) {
     animateCamera(CameraUpdateFactory.newLatLngZoom(center, level))
 }
 
-fun GoogleMap.zoomToBoundMarkers(markers: List<Marker>) {
+fun GoogleMap.zoomToBoundMarkers(markers: List<Marker>, animate: Boolean = false) {
     val bounds = LatLngBounds.Builder()
         .apply { markers.forEach { include(it.position) } }
         .build()
+    val factory = CameraUpdateFactory.newLatLngBounds(bounds, 10)
 
-    moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 10))
+    if (animate) {
+        animateCamera(factory)
+    } else {
+        moveCamera(factory)
+    }
 }
 
 fun LatLng.geohashQueryBounds(radiusInMeters: Double): List<GeoQueryBounds> {

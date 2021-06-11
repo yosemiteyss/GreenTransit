@@ -96,7 +96,16 @@ class RouteStopsAdapter(
     override fun getItemCount(): Int = differ.currentList.size
 
     fun submitList(routeStopsListModels: List<RouteStopsListModel>) {
-        differ.submitList(routeStopsListModels)
+        if (selectedPosition != RecyclerView.NO_POSITION) {
+            val mutableListModels = routeStopsListModels.toMutableList()
+            val selectedItem = mutableListModels[selectedPosition]
+            if (selectedItem is RouteStopItemModel) {
+                mutableListModels[selectedPosition] = selectedItem.copy(isSelected = true)
+            }
+            differ.submitList(mutableListModels)
+        } else {
+            differ.submitList(routeStopsListModels)
+        }
     }
 
     private fun bindRouteStopItem(

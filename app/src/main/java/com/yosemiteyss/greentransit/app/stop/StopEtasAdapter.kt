@@ -83,8 +83,7 @@ class StopEtasAdapter(
             shiftEtaMinSuffixTextView.isVisible = true
 
         } else {
-            shiftEtaMinTextView.text = etasShiftModel.routeShiftEtaResult.etaDate
-                .format("HH:mm")
+            shiftEtaMinTextView.text = etasShiftModel.routeShiftEtaResult.etaDate.format("HH:mm")
             shiftEtaMinSuffixTextView.isVisible = false
         }
 

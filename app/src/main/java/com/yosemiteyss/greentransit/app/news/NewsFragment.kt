@@ -45,8 +45,8 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
 
         viewModel.newsUiState.observe(viewLifecycleOwner) { uiState ->
             binding.loadingProgressBar.showIf(
-                uiState is NewsUiState.Loading &&
-                    !uiState.isSwipeRefresh
+            uiState is NewsUiState.Loading &&
+                !uiState.isSwipeRefresh
             )
 
             if (uiState is NewsUiState.Success) {
