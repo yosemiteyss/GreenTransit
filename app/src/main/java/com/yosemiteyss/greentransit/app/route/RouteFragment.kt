@@ -24,6 +24,7 @@ import com.yosemiteyss.greentransit.app.R
 import com.yosemiteyss.greentransit.app.databinding.FragmentRouteBinding
 import com.yosemiteyss.greentransit.app.main.MainViewModel
 import com.yosemiteyss.greentransit.app.utils.*
+import com.yosemiteyss.greentransit.domain.models.StopInfo
 import com.yosemiteyss.greentransit.domain.states.Resource
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -121,7 +122,7 @@ class RouteFragment : Fragment(R.layout.fragment_route) {
 
         viewLifecycleOwner.lifecycleScope.launch {
             routeViewModel.stopsListModels.collect { res ->
-                binding.loadingProgressBar.isVisible = res is Resource.Loading
+                binding.loadingProgressBar.showIf(res is Resource.Loading)
 
                 when (res) {
                     is Resource.Success -> routeStopsAdapter.submitList(res.data)
@@ -133,7 +134,6 @@ class RouteFragment : Fragment(R.layout.fragment_route) {
     }
 
     private fun setupMapFragment() {
-        // Initialize map
         viewLifecycleOwner.lifecycleScope.launch {
             getMapInstance().run {
                 with(uiSettings) {
@@ -165,28 +165,34 @@ class RouteFragment : Fragment(R.layout.fragment_route) {
 
         // Add stop markers for a direction
         viewLifecycleOwner.lifecycleScope.launch {
-            routeViewModel.directionStops.collect { stops ->
-                if (stops.isEmpty()) return@collect
-
-                getMapInstance().run {
-                    directionStopMarkers.clear()
-                    clear()
-
-                    val markers = stops.map { stop ->
-                        addMarker(
-                            context = requireContext(),
-                            position = LatLng(
-                                stop.location.latitude, stop.location.longitude
-                            ),
-                            drawableRes = R.drawable.ic_stop,
-                            tag = stop.stopId
-                        )
-                    }
-
-                    directionStopMarkers.addAll(markers)
-
-                    zoomToBoundMarkers(markers)
+            routeViewModel.directionStopsInfos.collect { res ->
+                when (res) {
+                    is Resource.Success -> insertStopsMarkers(res.data)
+                    is Resource.Error -> showShortToast(res.message)
+                    is Resource.Loading -> Unit
                 }
+            }
+        }
+    }
+
+    private suspend fun insertStopsMarkers(stopsInfos: List<StopInfo>) {
+        if (stopsInfos.isNotEmpty()) {
+            getMapInstance().run {
+                directionStopMarkers.clear()
+                clear()
+
+                val markers = stopsInfos.map { info ->
+                    addMarker(
+                        context = requireContext(),
+                        position = LatLng(info.location.latitude, info.location.longitude),
+                        drawableRes = R.drawable.ic_stop,
+                        tag = info.stopId
+                    )
+                }
+
+                directionStopMarkers.addAll(markers)
+
+                zoomToBoundMarkers(markers)
             }
         }
     }

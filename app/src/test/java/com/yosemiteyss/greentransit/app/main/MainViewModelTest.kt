@@ -24,9 +24,9 @@ class MainViewModelTest {
     fun `test enable map`() = coroutineRule.runBlockingTest {
         val mainViewModel = createMainViewModel()
 
-        mainViewModel.mapEnabled.test {
+        mainViewModel.permissionGranted.test {
             assertFalse(expectItem())   // Default
-            mainViewModel.onEnableMap(true)
+            mainViewModel.onPermissionGranted(true)
             assertTrue(expectItem())
         }
     }
@@ -35,9 +35,9 @@ class MainViewModelTest {
     fun `test disable map`() = coroutineRule.runBlockingTest {
         val mainViewModel = createMainViewModel()
 
-        mainViewModel.mapEnabled.test {
+        mainViewModel.permissionGranted.test {
             assertFalse(expectItem())   // Default
-            mainViewModel.onEnableMap(false)
+            mainViewModel.onPermissionGranted(false)
             expectNoEvents()            // No change due to stateflow
         }
     }

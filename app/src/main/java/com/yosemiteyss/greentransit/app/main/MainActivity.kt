@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         ActivityResultContracts.RequestPermission()
     ) { isGranted ->
         if (isGranted) {
-            viewModel.onEnableMap(true)
+            viewModel.onPermissionGranted(true)
         } else {
             showLocationDeniedSnackbar()
         }
@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
 
         // Get fused location
         if (isPermissionGranted(Manifest.permission.ACCESS_FINE_LOCATION)) {
-            viewModel.onEnableMap(true)
+            viewModel.onPermissionGranted(true)
         } else {
             requestLocation.launch(Manifest.permission.ACCESS_FINE_LOCATION)
         }

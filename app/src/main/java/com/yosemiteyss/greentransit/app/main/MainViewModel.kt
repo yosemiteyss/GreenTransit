@@ -36,8 +36,8 @@ class MainViewModel @Inject constructor(
     private val getNearbyStopsUseCase: GetNearbyStopsUseCase
 ) : ViewModel() {
 
-    private val _mapEnabled = MutableStateFlow(false)
-    val mapEnabled: StateFlow<Boolean> = _mapEnabled.asStateFlow()
+    private val _permissionGranted = MutableStateFlow(false)
+    val permissionGranted: StateFlow<Boolean> = _permissionGranted.asStateFlow()
 
     private val _nearbyStops = MutableStateFlow<List<NearbyStop>>(emptyList())
     val nearbyStops: StateFlow<List<NearbyStop>> = _nearbyStops.asStateFlow()
@@ -45,7 +45,10 @@ class MainViewModel @Inject constructor(
     private val _toastMessage = Channel<String>()
     val toastMessage: Flow<String> = _toastMessage.receiveAsFlow()
 
-    val userLocation: SharedFlow<Location> = getDeviceLocationUseCase()
+    val userLocation: SharedFlow<Location> = _permissionGranted
+        .flatMapLatest { isGranted ->
+            if (isGranted) getDeviceLocationUseCase() else emptyFlow()
+        }
         .shareIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(),
@@ -84,8 +87,8 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun onEnableMap(isEnabled: Boolean) {
-        _mapEnabled.value = isEnabled
+    fun onPermissionGranted(isGranted: Boolean) {
+        _permissionGranted.value = isGranted
     }
 
     fun onShowToastMessage(message: String?) {

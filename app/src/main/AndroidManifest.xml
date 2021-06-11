@@ -15,7 +15,8 @@
         android:theme="@style/Theme.GreenTransit.DayNight">
         <activity
             android:name=".main.MainActivity"
-            android:theme="@style/Theme.GreenTransit.Splash.DayNight">
+            android:theme="@style/Theme.GreenTransit.Splash.DayNight"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

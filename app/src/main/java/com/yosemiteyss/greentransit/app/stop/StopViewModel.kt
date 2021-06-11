@@ -16,13 +16,14 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 
 class StopViewModel @AssistedInject constructor(
     getStopInfoUseCase: GetStopInfoUseCase,
     @Assisted val stopId: Long
 ) : ViewModel() {
 
-    val stopPages: StateFlow<List<StopPage>> = flowOf(listOf(
+    val stopPages: StateFlow<List<StopPage>> = MutableStateFlow(listOf(
         StopPage(
             titleRes = R.string.stop_tab_eta,
             fragment = { StopEtasFragment() }
@@ -30,29 +31,29 @@ class StopViewModel @AssistedInject constructor(
         StopPage(
             titleRes = R.string.stop_tab_routes,
             fragment = { StopRoutesFragment() }
-        ),
-    )).stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(),
-        initialValue = emptyList()
-    )
-
-    val stopUiState: StateFlow<StopUiState?> = getStopInfoUseCase(stopId)
-        .map { res ->
-            when (res) {
-                is Resource.Success -> StopUiState.Success(res.data)
-                is Resource.Error -> StopUiState.Error(res.message)
-                is Resource.Loading -> StopUiState.Loading
-            }
-        }
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(),
-            initialValue = null
         )
+    )).asStateFlow()
+
+    private val _stopUiState = MutableStateFlow<StopUiState?>(null)
+    val stopUiState: StateFlow<StopUiState?> = _stopUiState.asStateFlow()
 
     private val _navigateToRoute = Channel<RouteOption>()
     val navigateToRoute: Flow<RouteOption> = _navigateToRoute.receiveAsFlow()
+
+    init {
+        viewModelScope.launch {
+            getStopInfoUseCase(stopId).map { res ->
+                    when (res) {
+                        is Resource.Success -> StopUiState.Success(res.data)
+                        is Resource.Error -> StopUiState.Error(res.message)
+                        is Resource.Loading -> StopUiState.Loading
+                    }
+                }
+                .collect {
+                    _stopUiState.value = it
+                }
+        }
+    }
 
     fun onNavigateToRoute(routeId: Long, routeCode: String) {
         _navigateToRoute.trySend(

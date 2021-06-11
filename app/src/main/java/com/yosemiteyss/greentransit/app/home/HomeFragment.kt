@@ -54,7 +54,7 @@ class HomeFragment : Fragment(R.layout.fragment_home),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupMapFragment(savedInstanceState)
+        setupMapFragment()
         setupBottomSheet()
     }
 
@@ -122,8 +122,8 @@ class HomeFragment : Fragment(R.layout.fragment_home),
 
         // Attach location source if permission is granted
         viewLifecycleOwner.lifecycleScope.launch {
-            mainViewModel.mapEnabled.collect { enabled ->
-                if (enabled) {
+            mainViewModel.permissionGranted.collect { isGranted ->
+                if (isGranted) {
                     getMapInstance().run {
                         isMyLocationEnabled = true
                         setLocationSource(this@HomeFragment)

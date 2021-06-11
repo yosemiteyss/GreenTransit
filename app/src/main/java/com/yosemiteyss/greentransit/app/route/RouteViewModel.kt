@@ -12,7 +12,6 @@ import com.yosemiteyss.greentransit.app.route.RouteStopsListModel.RouteStopEmpty
 import com.yosemiteyss.greentransit.app.route.RouteStopsListModel.RouteStopItemModel
 import com.yosemiteyss.greentransit.domain.models.*
 import com.yosemiteyss.greentransit.domain.states.Resource
-import com.yosemiteyss.greentransit.domain.states.getSuccessDataOr
 import com.yosemiteyss.greentransit.domain.usecases.route.*
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
@@ -38,43 +37,15 @@ class RouteViewModel @AssistedInject constructor(
     private val _currentDirection = MutableStateFlow<RouteDirection?>(null)
     val currentDirection: StateFlow<RouteDirection?> = _currentDirection.asStateFlow()
 
-    private val _stopShiftEtaResults: StateFlow<Resource<List<RouteStopShiftEtaResult>>> = _currentRouteId
-        .filterNotNull()
-        .combine(_currentDirection.filterNotNull()) { routeId, direction ->
-            GetRouteStopShiftEtasParameters(
-                routeId = routeId,
-                routeSeq = direction.routeSeq,
-                interval = FETCH_ETAS_INTERVAL
-            )
-        }
-        .flatMapLatest { getRouteStopShiftEtasUseCase(it) }
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(),
-            initialValue = Resource.Loading()
-        )
+    private val _stopShiftEtaResults = MutableStateFlow<Resource<List<RouteStopShiftEtaResult>>>(
+        Resource.Loading()
+    )
 
-    val stopsListModels: Flow<Resource<List<RouteStopsListModel>>> = _stopShiftEtaResults
-        .map { res ->
-            when (res) {
-                is Resource.Success -> Resource.Success(
-                    buildRouteStopsListModels(results = res.data)
-                )
-                is Resource.Error -> Resource.Error(res.message)
-                is Resource.Loading -> Resource.Loading()
-            }
-        }
+    private val _stopsListModels = MutableStateFlow<Resource<List<RouteStopsListModel>>>(Resource.Loading())
+    val stopsListModels: StateFlow<Resource<List<RouteStopsListModel>>> = _stopsListModels.asStateFlow()
 
-    val directionStops: Flow<List<StopInfo>> = _stopShiftEtaResults
-        .map { res ->
-            when (res) {
-                is Resource.Success -> res.data.map { it.routeStop.stopId }
-                else -> emptyList()
-            }
-        }
-        .distinctUntilChanged()
-        .flatMapLatest { getRouteStopInfosUseCase(it) }
-        .map { it.getSuccessDataOr(emptyList()) }
+    private val _directionStopsInfos = MutableStateFlow<Resource<List<StopInfo>>>(Resource.Loading())
+    val directionStopsInfos: StateFlow<Resource<List<StopInfo>>> = _directionStopsInfos.asStateFlow()
 
     init {
         // Get route info
@@ -97,6 +68,51 @@ class RouteViewModel @AssistedInject constructor(
                     is Resource.Loading -> Resource.Loading()
                 }
             }
+        }
+
+        // Get stop etas
+        viewModelScope.launch {
+            _currentRouteId.filterNotNull()
+                .combine(_currentDirection.filterNotNull()) { routeId, direction ->
+                    GetRouteStopShiftEtasParameters(
+                        routeId = routeId,
+                        routeSeq = direction.routeSeq,
+                        interval = FETCH_ETAS_INTERVAL
+                    )
+                }
+                .flatMapLatest { getRouteStopShiftEtasUseCase(it) }
+                .collect {
+                    _stopShiftEtaResults.value = it
+                }
+        }
+
+        // Build stops list models
+        viewModelScope.launch {
+            _stopShiftEtaResults.map { res ->
+                    when (res) {
+                        is Resource.Success -> Resource.Success(buildRouteStopsListModels(results = res.data))
+                        is Resource.Error -> Resource.Error(res.message)
+                        is Resource.Loading -> Resource.Loading()
+                    }
+                }
+                .collect {
+                    _stopsListModels.value = it
+                }
+        }
+
+        // Get direction's stops
+        viewModelScope.launch {
+            _stopShiftEtaResults.map { res ->
+                    when (res) {
+                        is Resource.Success -> res.data.map { it.routeStop.stopId }
+                        else -> emptyList()
+                    }
+                }
+                .distinctUntilChanged()
+                .flatMapLatest { getRouteStopInfosUseCase(it) }
+                .collect {
+                    _directionStopsInfos.value = it
+                }
         }
     }
 
