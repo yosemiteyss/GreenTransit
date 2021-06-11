@@ -23,6 +23,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.Marker
+import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.shape.MaterialShapeDrawable
 import com.google.android.material.shape.ShapeAppearanceModel
 import com.google.maps.android.ktx.awaitMap
@@ -213,6 +214,14 @@ class HomeFragment : Fragment(R.layout.fragment_home),
 
         // Bottom sheet top margin
         binding.bottomSheetCoordinatorLayout.applySystemWindowInsetsMargin(applyTop = true)
+
+        // TODO: Failed to display progress bar using xml animation attributes
+        // https://github.com/material-components/material-components-android/issues/1972
+        with(binding.loadingProgressBar) {
+            setVisibilityAfterHide(View.INVISIBLE)
+            showAnimationBehavior = LinearProgressIndicator.SHOW_INWARD
+            hideAnimationBehavior = LinearProgressIndicator.SHOW_OUTWARD
+        }
 
         // Get nearby routes
         val nearbyRoutesAdapter = NearbyRoutesAdapter(

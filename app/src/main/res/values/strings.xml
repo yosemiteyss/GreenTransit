@@ -54,7 +54,7 @@
     <!-- News -->
     <string name="news_header_title">Traffic Information at your fingertips</string>
     <string name="news_header_subtitle">Data provided by Transport Department</string>
-    <string name="news_status_new">New</string>
+    <string name="news_status_new">Recent</string>
     <string name="news_status_updated">Updated</string>
     
     <!-- News Detail -->

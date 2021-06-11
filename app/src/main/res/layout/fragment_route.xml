@@ -9,8 +9,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/colorSurface"
-    android:animateLayoutChanges="true">
+    android:background="?attr/colorSurface">
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/map_container_view"
@@ -111,24 +110,21 @@
         tools:text="Remarks will be shown here."
         tools:visibility="visible"/>
 
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/loading_progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_large"
+        android:indeterminate="true"
+        app:layout_constraintTop_toBottomOf="@id/remarks_text_view" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/stops_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/spacing_large"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintTop_toBottomOf="@id/remarks_text_view"
+        app:layout_constraintTop_toBottomOf="@id/loading_progress_bar"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:listitem="@layout/route_stop_list_item"/>
-
-    <com.google.android.material.progressindicator.CircularProgressIndicator
-        android:id="@+id/loading_progress_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:indeterminate="true"
-        app:layout_constraintTop_toTopOf="@id/stops_recycler_view"
-        app:layout_constraintBottom_toBottomOf="@id/stops_recycler_view"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
