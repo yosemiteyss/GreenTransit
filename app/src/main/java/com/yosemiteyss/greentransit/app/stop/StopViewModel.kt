@@ -55,7 +55,7 @@ class StopViewModel @AssistedInject constructor(
     val navigateToRoute: Flow<RouteOption> = _navigateToRoute.receiveAsFlow()
 
     fun onNavigateToRoute(routeId: Long, routeCode: String) {
-        _navigateToRoute.offer(
+        _navigateToRoute.trySend(
             RouteOption(routeId = routeId, routeCode = routeCode)
         )
     }

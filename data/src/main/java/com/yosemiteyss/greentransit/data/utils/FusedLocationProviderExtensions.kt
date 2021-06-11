@@ -23,7 +23,7 @@ fun FusedLocationProviderClient.locationFlow(
     val callback = object : LocationCallback() {
         override fun onLocationResult(result: LocationResult?) {
             result?.let {
-                channel.offer(it.lastLocation)
+                channel.trySend(it.lastLocation)
             }
         }
     }

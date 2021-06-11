@@ -85,7 +85,7 @@ class HomeFragment : Fragment(R.layout.fragment_home),
     }
 
     @SuppressLint("MissingPermission", "PotentialBehaviorOverride")
-    private fun setupMapFragment(savedInstanceState: Bundle?) {
+    private fun setupMapFragment() {
         // Map initialization
         viewLifecycleOwner.lifecycleScope.launch {
             getMapInstance().run {

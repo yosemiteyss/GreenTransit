@@ -90,7 +90,7 @@ class MainViewModel @Inject constructor(
 
     fun onShowToastMessage(message: String?) {
         message?.let {
-            _toastMessage.offer(it)
+            _toastMessage.trySend(it)
         }
     }
 }

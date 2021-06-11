@@ -21,7 +21,7 @@ fun RecyclerView.touchOutsideItemsFlow(): Flow<Unit> = callbackFlow {
             return if (child != null) {
                 false
             } else {
-                channel.offer(Unit)
+                channel.trySend(Unit)
                 true
             }
         }

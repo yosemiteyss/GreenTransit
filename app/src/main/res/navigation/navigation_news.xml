@@ -12,9 +12,9 @@
         <action
             android:id="@+id/action_newsFragment_to_newsDetailFragment"
             app:destination="@id/newsDetailFragment"
-            app:enterAnim="@anim/dialog_slide_in"
+            app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/stationary"
-            app:popExitAnim="@anim/dialog_slide_out"/>
+            app:popExitAnim="@anim/slide_out_right"/>
     </fragment>
 
     <fragment

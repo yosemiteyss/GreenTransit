@@ -16,12 +16,12 @@ inline fun <T> networkCacheResource(
     crossinline networkSource: suspend () -> T,
     noinline updateCache: suspend (T) -> Unit
 ): Flow<Resource<T>> = channelFlow {
-    channel.offer(Resource.Loading())
+    channel.trySend(Resource.Loading())
 
     try {
         // Update cache when network request is successful.
         val result = networkSource()
-        channel.offer(Resource.Success(result))
+        channel.trySend(Resource.Loading())
         startUpdateCache(updateCache, result)
     } catch (e: Exception) {
         // Use local cache if network request is failed.
@@ -34,9 +34,9 @@ inline fun <T> networkCacheResource(
 ): Job = launch {
     try {
         val result = cacheSource()
-        channel.offer(Resource.Success(result))
+        channel.trySend(Resource.Success(result))
     } catch (e: Exception) {
-        channel.offer(Resource.Error(e.message))
+        channel.trySend(Resource.Error(e.message))
     }
 
     // Close channel when finished

@@ -39,7 +39,7 @@ fun SensorManager.orientationFlow(
                 if (SensorManager.getRotationMatrix(r, i, gravity, geomagnetic)) {
                     val orientation = FloatArray(3)
                     SensorManager.getOrientation(r, orientation)
-                    channel.offer(
+                    channel.trySend(
                         OrientationResult(
                         azimuth = toDegree(orientation[0]),
                         pitch = toDegree(orientation[1]),

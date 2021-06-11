@@ -12,21 +12,21 @@
         <action
             android:id="@+id/action_homeFragment_to_searchFragment"
             app:destination="@id/searchFragment"
-            app:enterAnim="@anim/dialog_slide_in"
+            app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/stationary"
-            app:popExitAnim="@anim/dialog_slide_out" />
+            app:popExitAnim="@anim/slide_out_right" />
         <action
             android:id="@+id/action_homeFragment_to_stopFragment"
             app:destination="@id/stopFragment"
-            app:enterAnim="@anim/dialog_slide_in"
+            app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/stationary"
-            app:popExitAnim="@anim/dialog_slide_out"/>
+            app:popExitAnim="@anim/slide_out_right"/>
         <action
             android:id="@+id/action_homeFragment_to_routeFragment"
             app:destination="@id/routeFragment"
-            app:enterAnim="@anim/dialog_slide_in"
+            app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/stationary"
-            app:popExitAnim="@anim/dialog_slide_out"/>
+            app:popExitAnim="@anim/slide_out_right"/>
     </fragment>
 
     <fragment
@@ -45,9 +45,9 @@
         <action
             android:id="@+id/action_stopFragment_to_routeFragment"
             app:destination="@id/routeFragment"
-            app:enterAnim="@anim/dialog_slide_in"
+            app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/stationary"
-            app:popExitAnim="@anim/dialog_slide_out"/>
+            app:popExitAnim="@anim/slide_out_right"/>
     </fragment>
 
     <fragment
@@ -66,15 +66,15 @@
         <action
             android:id="@+id/action_searchFragment_to_regionRoutesFragment"
             app:destination="@id/regionRoutesFragment"
-            app:enterAnim="@anim/dialog_slide_in"
+            app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/stationary"
-            app:popExitAnim="@anim/dialog_slide_out"/>
+            app:popExitAnim="@anim/slide_out_right"/>
         <action
             android:id="@+id/action_searchFragment_to_routeFragment"
             app:destination="@id/routeFragment"
-            app:enterAnim="@anim/dialog_slide_in"
+            app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/stationary"
-            app:popExitAnim="@anim/dialog_slide_out"/>
+            app:popExitAnim="@anim/slide_out_right"/>
     </fragment>
 
     <fragment
@@ -87,9 +87,9 @@
         <action
             android:id="@+id/action_regionRoutesFragment_to_routeFragment"
             app:destination="@id/routeFragment"
-            app:enterAnim="@anim/dialog_slide_in"
+            app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/stationary"
-            app:popExitAnim="@anim/dialog_slide_out"/>
+            app:popExitAnim="@anim/slide_out_right"/>
     </fragment>
 
 </navigation>
