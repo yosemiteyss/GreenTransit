@@ -9,11 +9,11 @@ import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.core.content.ContextCompat.getSystemService
-import androidx.core.view.ViewCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.yosemiteyss.greentransit.app.R
 import com.yosemiteyss.greentransit.app.databinding.FragmentSearchBinding
 import com.yosemiteyss.greentransit.app.route.RouteOption
@@ -31,8 +31,6 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        ViewCompat.setTranslationZ(requireView(),
-            resources.getDimensionPixelSize(R.dimen.elevation_large).toFloat())
 
         binding.searchRecyclerView.applySystemWindowInsetsMargin(applyBottom = true)
 
@@ -46,7 +44,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         // Set recycler view
         val searchAdapter = SearchAdapter(
             onRouteClicked = {
-                findNavController(R.id.searchFragment)?.navigate(
+                findNavController().navigate(
                     SearchFragmentDirections.actionSearchFragmentToRouteFragment(
                         RouteOption(it)
                     )
@@ -81,7 +79,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         // Clear text
         binding.clearTextButton.setOnClickListener {
             if (binding.searchEditText.text.isEmpty()) {
-                findNavController(R.id.searchFragment)?.navigateUp()
+                findNavController().navigateUp()
             } else {
                 binding.searchEditText.text.clear()
             }
@@ -119,7 +117,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
     }
 
     private fun navigateToRegionRoutes(region: Region) {
-        findNavController(R.id.searchFragment)?.navigate(
+        findNavController().navigate(
             SearchFragmentDirections.actionSearchFragmentToRegionRoutesFragment(region)
         )
     }

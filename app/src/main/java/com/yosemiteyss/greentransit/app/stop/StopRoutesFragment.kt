@@ -12,7 +12,6 @@ import androidx.lifecycle.lifecycleScope
 import com.yosemiteyss.greentransit.app.R
 import com.yosemiteyss.greentransit.app.databinding.FragmentStopRoutesBinding
 import com.yosemiteyss.greentransit.app.utils.parentViewModels
-import com.yosemiteyss.greentransit.app.utils.showIf
 import com.yosemiteyss.greentransit.app.utils.showShortToast
 import com.yosemiteyss.greentransit.app.utils.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -36,10 +35,6 @@ class StopRoutesFragment : Fragment(R.layout.fragment_stop_routes) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        with(binding) {
-            loadingProgressBar.setVisibilityAfterHide(View.GONE)
-        }
-
         val routesAdapter = StopRoutesAdapter { routeId, routeCode ->
             stopViewModel.onNavigateToRoute(routeId, routeCode)
         }
@@ -51,7 +46,7 @@ class StopRoutesFragment : Fragment(R.layout.fragment_stop_routes) {
 
         viewLifecycleOwner.lifecycleScope.launch {
             stopRoutesViewModel.stopRoutesUiState.collect { uiState ->
-                binding.loadingProgressBar.showIf(uiState is StopRoutesUiState.Loading)
+                stopViewModel.onShowLoading(uiState is StopRoutesUiState.Loading)
 
                 when (uiState) {
                     is StopRoutesUiState.Success -> routesAdapter.submitList(uiState.data)

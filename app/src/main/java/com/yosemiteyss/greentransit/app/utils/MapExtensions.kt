@@ -39,7 +39,7 @@ fun GoogleMap.zoomToBoundMarkers(markers: List<Marker>, animate: Boolean = false
     val bounds = LatLngBounds.Builder()
         .apply { markers.forEach { include(it.position) } }
         .build()
-    val factory = CameraUpdateFactory.newLatLngBounds(bounds, 10)
+    val factory = CameraUpdateFactory.newLatLngBounds(bounds, 30)
 
     if (animate) {
         animateCamera(factory)
@@ -62,12 +62,13 @@ fun GoogleMap.addMarker(
     position: LatLng,
     @DrawableRes drawableRes: Int,
     tag: Any? = null,
-    hasBorder: Boolean = false
+    hasBorder: Boolean = false,
+    size: Float = 40f
 ): Marker {
     val drawable = context.getDrawableOrNull(drawableRes) ?:
         throw IllegalStateException("Drawable not found.")
 
-    val pixels = computeMarkerPixels(context.resources.displayMetrics.density)
+    val pixels = computeMarkerPixels(context.resources.displayMetrics.density, size)
     var bitmap = Bitmap.createScaledBitmap(drawable.toBitmap(), pixels, pixels, true)
 
     if (hasBorder) {
@@ -90,7 +91,8 @@ suspend fun GoogleMap.loadMarker(
     position: LatLng,
     imageUrl: String?,
     @DrawableRes placeholder: Int,
-    hasBorder: Boolean = false
+    hasBorder: Boolean = false,
+    size: Float = 40f
 ): Marker = suspendCancellableCoroutine { continuation ->
     val request = Glide.with(context)
         .asBitmap()
@@ -100,7 +102,7 @@ suspend fun GoogleMap.loadMarker(
 
     val customTarget = object : CustomTarget<Bitmap>() {
         override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-            val pixels = computeMarkerPixels(context.resources.displayMetrics.density)
+            val pixels = computeMarkerPixels(context.resources.displayMetrics.density, size)
             var bitmap = Bitmap.createScaledBitmap(resource, pixels, pixels, true)
 
             if (hasBorder) {
@@ -128,8 +130,8 @@ suspend fun GoogleMap.loadMarker(
     }
 }
 
-private fun computeMarkerPixels(density: Float): Int {
-    return (50f * density + 0.5f).toInt()
+private fun computeMarkerPixels(density: Float, size: Float): Int {
+    return (size * density + 0.5f).toInt()
 }
 
 private fun Bitmap.createBitmapWithBorder(borderSize: Float, borderColor: Int): Bitmap {

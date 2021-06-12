@@ -19,7 +19,7 @@ import com.yosemiteyss.greentransit.app.home.NearbyRoutesViewHolder.NearbyRoutes
 import com.yosemiteyss.greentransit.app.home.NearbyRoutesViewHolder.NearbyRoutesItemViewHolder
 
 class NearbyRoutesAdapter(
-    private val onRouteClicked: (routeId: Long, routeCode: String) -> Unit
+    private val onRouteClicked: (view: View, routeId: Long, routeCode: String) -> Unit
 ) : ListAdapter<NearbyRoutesListModel, NearbyRoutesViewHolder>(
     NearbyRoutesListModel.Diff
 ) {
@@ -64,7 +64,7 @@ class NearbyRoutesAdapter(
         )
 
         root.setOnClickListener {
-            onRouteClicked(itemModel.routeId, itemModel.routeCode)
+            onRouteClicked(it, itemModel.routeId, itemModel.routeCode)
         }
     }
 }

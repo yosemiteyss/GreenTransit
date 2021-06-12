@@ -6,17 +6,18 @@ package com.yosemiteyss.greentransit.app.stop
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
+import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.maps.android.ktx.awaitMap
 import com.yosemiteyss.greentransit.app.R
@@ -47,15 +48,21 @@ class StopFragment : Fragment(R.layout.fragment_stop) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        ViewCompat.setTranslationZ(requireView(),
-            resources.getDimensionPixelSize(R.dimen.elevation_large).toFloat())
 
         binding.stopViewPager.applySystemWindowInsetsMargin(applyBottom = true)
+
+        // TODO: Failed to display progress bar using xml animation attributes
+        // https://github.com/material-components/material-components-android/issues/1972
+        with(binding.loadingProgressBar) {
+            setVisibilityAfterHide(View.INVISIBLE)
+            showAnimationBehavior = LinearProgressIndicator.SHOW_INWARD
+            hideAnimationBehavior = LinearProgressIndicator.SHOW_OUTWARD
+        }
 
         with(binding.navBackButton) {
             applySystemWindowInsetsMargin(applyTop = true)
             setOnClickListener {
-                findNavController(R.id.stopFragment)?.navigateUp()
+                findNavController().navigateUp()
             }
         }
 
@@ -65,6 +72,13 @@ class StopFragment : Fragment(R.layout.fragment_stop) {
             navArgs.latitude,
             navArgs.longitude
         )
+
+        // Control progress bar
+        viewLifecycleOwner.lifecycleScope.launch {
+            stopViewModel.showLoading.collect {
+                binding.loadingProgressBar.showIf(it)
+            }
+        }
 
         // Setup view pager
         viewLifecycleOwner.lifecycleScope.launch {
@@ -135,7 +149,7 @@ class StopFragment : Fragment(R.layout.fragment_stop) {
         // Navigate to Route
         viewLifecycleOwner.lifecycleScope.launch {
             stopViewModel.navigateToRoute.collect {
-                findNavController(R.id.stopFragment)?.navigate(
+                findNavController().navigate(
                     StopFragmentDirections.actionStopFragmentToRouteFragment(it)
                 )
             }

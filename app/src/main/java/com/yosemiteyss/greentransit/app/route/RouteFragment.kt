@@ -6,12 +6,13 @@ package com.yosemiteyss.greentransit.app.route
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.view.ViewCompat
+import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -52,9 +53,6 @@ class RouteFragment : Fragment(R.layout.fragment_route) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        ViewCompat.setTranslationZ(requireView(),
-            resources.getDimensionPixelSize(R.dimen.elevation_large).toFloat())
-
         binding.stopsRecyclerView.applySystemWindowInsetsMargin(applyBottom = true)
 
         // TODO: Failed to display progress bar using xml animation attributes
@@ -71,7 +69,7 @@ class RouteFragment : Fragment(R.layout.fragment_route) {
             text = navArgs.routeOption.routeCode ?: navArgs.routeOption.routeRegionCode?.code
 
             setOnClickListener {
-                findNavController(R.id.routeFragment)?.navigateUp()
+                findNavController().navigateUp()
             }
         }
 
@@ -92,7 +90,7 @@ class RouteFragment : Fragment(R.layout.fragment_route) {
         // Current direction
         viewLifecycleOwner.lifecycleScope.launch {
             routeViewModel.currentDirection.collect { direction ->
-                binding.switchDirectionButton.isVisible = direction != null
+                binding.titlePrefixGroup.isInvisible = direction == null
 
                 direction?.let {
                     binding.originTextView.text = it.origin
@@ -198,7 +196,8 @@ class RouteFragment : Fragment(R.layout.fragment_route) {
                         context = requireContext(),
                         position = LatLng(info.location.latitude, info.location.longitude),
                         drawableRes = R.drawable.ic_stop,
-                        tag = info.stopId
+                        tag = info.stopId,
+                        size = 28f
                     )
                 }
 

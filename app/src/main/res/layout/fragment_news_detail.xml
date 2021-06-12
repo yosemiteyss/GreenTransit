@@ -14,15 +14,26 @@
         android:background="?attr/colorSurface"
         app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.appbar.MaterialToolbar
-            style="@style/Widget.MaterialComponents.Toolbar.Surface"
-            android:id="@+id/toolbar"
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar_layout"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:title="@string/news_detail_toolbar_title"
-            app:titleTextAppearance="?attr/textAppearanceHeadline6"
-            app:navigationIcon="@drawable/ic_arrow_back"
-            app:navigationIconTint="?attr/colorOnSurface"/>
+            android:layout_height="160dp"
+            app:titleCollapseMode="fade"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:collapsedTitleTextAppearance="?attr/textAppearanceSubtitle1"
+            app:expandedTitleTextAppearance="?attr/textAppearanceHeadline5"
+            tools:title="@string/news_detail_status_new_title">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                style="@style/Widget.MaterialComponents.Toolbar.Surface"
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin"
+                app:navigationIcon="@drawable/ic_arrow_back"
+                app:navigationIconTint="?attr/colorOnSurface"/>
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -35,43 +46,32 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/news_content_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="@dimen/spacing_large">
-
-            <TextView
-                android:id="@+id/current_status_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?attr/textAppearanceCaption"
-                android:textColor="@color/news_status_green"
-                android:gravity="center_vertical"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:backgroundTint="@color/news_status_green"
-                tools:text="UPDATED" />
+            android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/date_text_view"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/spacing_large"
+                android:layout_marginTop="@dimen/spacing_large"
+                android:layout_marginHorizontal="@dimen/spacing_mlarge"
                 android:textColor="@color/material_on_surface_emphasis_medium"
                 android:textAppearance="?attr/textAppearanceCaption"
-                app:layout_constraintStart_toEndOf="@id/current_status_text_view"
-                app:layout_constraintTop_toTopOf="@id/current_status_text_view"
-                app:layout_constraintBottom_toBottomOf="@id/current_status_text_view"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 tools:text="2021/5/17 09:32:21" />
 
             <TextView
                 android:id="@+id/detail_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_marginTop="@dimen/spacing_large"
+                android:layout_marginVertical="@dimen/spacing_large"
+                android:layout_marginHorizontal="@dimen/spacing_mlarge"
                 android:textAppearance="?attr/textAppearanceBody2"
-                android:lineSpacingMultiplier="1.25"
-                app:layout_constraintTop_toBottomOf="@id/current_status_text_view"
+                android:lineSpacingMultiplier="1.4"
+                app:layout_constraintTop_toBottomOf="@id/date_text_view"
                 app:layout_constraintBottom_toBottomOf="parent"
-                tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. In lacinia tortor vitae ultrices facilisis. Donec malesuada posuere nibh, eu porta nulla. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Sed eget velit erat. Cras ipsum elit, egestas vitae ante id, porta blandit quam. In nec est at odio vehicula congue."/>
+                tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. In lacinia tortor vitae ultrices facilisis. Donec malesuada posuere nibh, eu porta nulla. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Sed eget velit erat. Cras ipsum elit, egestas vitae ante id, porta blandit quam. In nec est at odio vehicula congue. Lorem ipsum dolor sit amet, consectetur adipiscing elit. In lacinia tortor vitae ultrices facilisis. Donec malesuada posuere nibh, eu porta nulla. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Sed eget velit erat. Cras ipsum elit, egestas vitae ante id, porta blandit quam. In nec est at odio vehicula congue.Lorem ipsum dolor sit amet, consectetur adipiscing elit. In lacinia tortor vitae ultrices facilisis. Donec malesuada posuere nibh, eu porta nulla. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Sed eget velit erat. Cras ipsum elit, egestas vitae ante id, porta blandit quam. In nec est at odio vehicula congue. Lorem ipsum dolor sit amet, consectetur adipiscing elit. In lacinia tortor vitae ultrices facilisis. Donec malesuada posuere nibh, eu porta nulla. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Sed eget velit erat. Cras ipsum elit, egestas vitae ante id, porta blandit quam. In nec est at odio vehicula congue."/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

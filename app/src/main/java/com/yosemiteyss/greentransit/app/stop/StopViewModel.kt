@@ -40,6 +40,9 @@ class StopViewModel @AssistedInject constructor(
     private val _navigateToRoute = Channel<RouteOption>()
     val navigateToRoute: Flow<RouteOption> = _navigateToRoute.receiveAsFlow()
 
+    private val _showLoading = MutableStateFlow(false)
+    val showLoading: StateFlow<Boolean> = _showLoading
+
     init {
         viewModelScope.launch {
             getStopInfoUseCase(stopId).map { res ->
@@ -59,6 +62,10 @@ class StopViewModel @AssistedInject constructor(
         _navigateToRoute.trySend(
             RouteOption(routeId = routeId, routeCode = routeCode)
         )
+    }
+
+    fun onShowLoading(isShow: Boolean) {
+        _showLoading.value = isShow
     }
 
     @dagger.assisted.AssistedFactory

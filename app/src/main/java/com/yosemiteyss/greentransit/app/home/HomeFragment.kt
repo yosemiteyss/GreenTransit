@@ -15,6 +15,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.LocationSource
@@ -90,7 +91,6 @@ class HomeFragment : Fragment(R.layout.fragment_home),
         // Map initialization
         viewLifecycleOwner.lifecycleScope.launch {
             getMapInstance().run {
-                // Ui settings
                 with(uiSettings) {
                     isCompassEnabled = false
                     isMyLocationButtonEnabled = false
@@ -207,7 +207,7 @@ class HomeFragment : Fragment(R.layout.fragment_home),
 
         // Navigate to SearchFragment
         binding.homeSearchBarLayout.root.setOnClickListener {
-            findNavController(R.id.homeFragment)?.navigate(
+            findNavController().navigate(
                 HomeFragmentDirections.actionHomeFragmentToSearchFragment()
             )
         }
@@ -224,15 +224,13 @@ class HomeFragment : Fragment(R.layout.fragment_home),
         }
 
         // Get nearby routes
-        val nearbyRoutesAdapter = NearbyRoutesAdapter(
-            onRouteClicked = { routeId, routeCode ->
-                findNavController(R.id.homeFragment)?.navigate(
-                    HomeFragmentDirections.actionHomeFragmentToRouteFragment(
-                        RouteOption(routeId = routeId, routeCode = routeCode)
-                    )
+        val nearbyRoutesAdapter = NearbyRoutesAdapter { _, routeId, routeCode ->
+            findNavController().navigate(
+                HomeFragmentDirections.actionHomeFragmentToRouteFragment(
+                    RouteOption(routeId = routeId, routeCode = routeCode)
                 )
-            }
-        )
+            )
+        }
 
         with(binding.nearbyRoutesRecyclerView) {
             adapter = nearbyRoutesAdapter
@@ -257,6 +255,7 @@ class HomeFragment : Fragment(R.layout.fragment_home),
             }
         }
 
+        // Routes title
         viewLifecycleOwner.lifecycleScope.launch {
             homeViewModel.nearbyRoutesCount.collect {
                 binding.nearbyRoutesCountTextView.text = getString(R.string.nearby_routes_count, it)
@@ -275,7 +274,7 @@ class HomeFragment : Fragment(R.layout.fragment_home),
     private fun navigateToStop(stopId: Long) {
         val selectedStop = mainViewModel.nearbyStops.value.first { it.id == stopId }
 
-        findNavController(R.id.homeFragment)?.navigate(
+        findNavController().navigate(
             HomeFragmentDirections.actionHomeFragmentToStopFragment(
                 stopId = stopId,
                 latitude = selectedStop.location.latitude.toFloat(),

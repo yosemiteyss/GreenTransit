@@ -26,6 +26,7 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.elevation.ElevationOverlayProvider
@@ -34,6 +35,22 @@ import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.snackbar.Snackbar
 import com.yosemiteyss.greentransit.app.R
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
+
+fun BottomSheetBehavior<*>.slideOffsetFlow(): Flow<Float> = callbackFlow {
+    val listener = object : BottomSheetBehavior.BottomSheetCallback() {
+        override fun onStateChanged(bottomSheet: View, newState: Int) = Unit
+        override fun onSlide(bottomSheet: View, slideOffset: Float) {
+            channel.trySend(slideOffset)
+        }
+    }
+
+    addBottomSheetCallback(listener)
+
+    awaitClose { removeBottomSheetCallback(listener) }
+}
 
 /**
  * Add multiple [Chip] to a [ChipGroup]

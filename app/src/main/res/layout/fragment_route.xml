@@ -19,6 +19,13 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         app:layout_constraintTop_toTopOf="parent"/>
 
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/loading_progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        app:layout_constraintTop_toBottomOf="@id/map_container_view" />
+
     <com.google.android.material.button.MaterialButton
         style="@style/Widget.GreenTransit.Button.Navigate.Text"
         android:id="@+id/nav_back_button"
@@ -29,6 +36,12 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:text="69X"/>
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/title_prefix_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="origin_title_text_view,dest_title_text_view,switch_direction_button" />
 
     <TextView
         android:id="@+id/origin_title_text_view"
@@ -51,7 +64,7 @@
         android:layout_marginTop="@dimen/spacing_large"
         android:textColor="?attr/colorPrimary"
         android:textAppearance="?attr/textAppearanceBody2"
-        app:layout_constraintTop_toBottomOf="@id/map_container_view"
+        app:layout_constraintTop_toBottomOf="@id/loading_progress_bar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/origin_title_text_view"
         app:layout_constraintEnd_toStartOf="@id/switch_direction_button"
@@ -76,7 +89,6 @@
         android:textColor="?attr/colorPrimary"
         android:textAppearance="?attr/textAppearanceBody2"
         app:layout_constraintTop_toBottomOf="@id/origin_text_view"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/origin_text_view"
         app:layout_constraintEnd_toStartOf="@id/switch_direction_button"
         tools:text="Quarry Bay (Shipyard Lane) (Circular)"/>
@@ -110,20 +122,13 @@
         tools:text="Remarks will be shown here."
         tools:visibility="visible"/>
 
-    <com.google.android.material.progressindicator.LinearProgressIndicator
-        android:id="@+id/loading_progress_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spacing_large"
-        android:indeterminate="true"
-        app:layout_constraintTop_toBottomOf="@id/remarks_text_view" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/stops_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="@dimen/spacing_xmedium"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintTop_toBottomOf="@id/loading_progress_bar"
+        app:layout_constraintTop_toBottomOf="@id/remarks_text_view"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:listitem="@layout/route_stop_list_item"/>
 

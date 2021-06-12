@@ -6,10 +6,10 @@ package com.yosemiteyss.greentransit.app.search
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.yosemiteyss.greentransit.app.R
 import com.yosemiteyss.greentransit.app.databinding.FragmentRegionRoutesBinding
@@ -38,15 +38,12 @@ class RegionRoutesFragment : Fragment(R.layout.fragment_region_routes) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        ViewCompat.setTranslationZ(requireView(),
-            resources.getDimensionPixelSize(R.dimen.elevation_large).toFloat())
-
         binding.appBarLayout.applySystemWindowInsetsPadding(applyTop = true)
         binding.routesRecyclerView.applySystemWindowInsetsMargin(applyBottom = true)
 
         // Setup toolbar
         binding.toolbar.setNavigationOnClickListener {
-            findNavController(R.id.regionRoutesFragment)?.navigateUp()
+            findNavController().navigateUp()
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -57,7 +54,7 @@ class RegionRoutesFragment : Fragment(R.layout.fragment_region_routes) {
 
         // Setup recycler view
         val regionRoutesAdapter = RegionRoutesAdapter { routeRegionCode ->
-            findNavController(R.id.regionRoutesFragment)?.navigate(
+            findNavController().navigate(
                 RegionRoutesFragmentDirections.actionRegionRoutesFragmentToRouteFragment(
                     RouteOption(routeRegionCode)
                 )

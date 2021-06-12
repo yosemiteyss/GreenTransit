@@ -58,6 +58,8 @@
     <string name="news_status_updated">Updated</string>
     
     <!-- News Detail -->
-    <string name="news_detail_toolbar_title">News Detail</string>
+    <string name="news_detail_status_new_title">Recent News</string>
+    <string name="news_detail_status_updated_title">Updated News</string>
+    <string name="news_detail_date">Transport Department • %s</string>
 
 </resources>

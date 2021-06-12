@@ -12,7 +12,6 @@ import androidx.lifecycle.lifecycleScope
 import com.yosemiteyss.greentransit.app.R
 import com.yosemiteyss.greentransit.app.databinding.FragmentStopEtasBinding
 import com.yosemiteyss.greentransit.app.utils.parentViewModels
-import com.yosemiteyss.greentransit.app.utils.showIf
 import com.yosemiteyss.greentransit.app.utils.showShortToast
 import com.yosemiteyss.greentransit.app.utils.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -36,10 +35,6 @@ class StopEtasFragment : Fragment(R.layout.fragment_stop_etas) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        with(binding) {
-            loadingProgressBar.setVisibilityAfterHide(View.GONE)
-        }
-
         val etasAdapter = StopEtasAdapter { routeId, routeCode ->
             stopViewModel.onNavigateToRoute(routeId, routeCode)
         }
@@ -51,7 +46,7 @@ class StopEtasFragment : Fragment(R.layout.fragment_stop_etas) {
 
         viewLifecycleOwner.lifecycleScope.launch {
             stopEtasViewModel.stopEtasUiState.collect { uiState ->
-                binding.loadingProgressBar.showIf(uiState is StopEtasUiState.Loading)
+                stopViewModel.onShowLoading(uiState is StopEtasUiState.Loading)
 
                 when (uiState) {
                     is StopEtasUiState.Success -> {
