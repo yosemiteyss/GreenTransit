@@ -105,11 +105,6 @@ class NewsAdapter(
             onNewsClicked(trafficNewsListModel.trafficNews)
         }
     }
-
-    companion object {
-        const val NEWS_COLLAPSED_LINES = 3
-        const val NEWS_EXPANDED_LINES = Int.MAX_VALUE
-    }
 }
 
 sealed class TrafficNewsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

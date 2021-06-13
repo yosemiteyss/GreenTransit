@@ -30,11 +30,12 @@ class NewsViewModel @Inject constructor(
 
     fun loadTrafficNews(isSwipeRefresh: Boolean = false) = viewModelScope.launch {
         getTrafficNewsUseCase(Unit).collect { res ->
-            _newsUiState.value = when (res) {
+            val uiState = when (res) {
                 is Resource.Success -> NewsUiState.Success(buildTrafficNewsListModels(res.data))
                 is Resource.Error -> NewsUiState.Error(buildTrafficNewsListModels(), res.message)
                 is Resource.Loading -> NewsUiState.Loading(isSwipeRefresh)
             }
+            _newsUiState.postValue(uiState)
         }
     }
 

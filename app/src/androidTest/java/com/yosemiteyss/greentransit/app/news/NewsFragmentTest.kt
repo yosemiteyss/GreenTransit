@@ -7,13 +7,12 @@ package com.yosemiteyss.greentransit.app.news
 import android.widget.TextView
 import androidx.test.espresso.ViewAssertion
 import androidx.test.espresso.matcher.ViewMatchers.assertThat
-import androidx.test.filters.MediumTest
+import androidx.test.filters.SmallTest
 import androidx.test.platform.app.InstrumentationRegistry
 import com.schibsted.spain.barista.assertion.BaristaListAssertions.assertCustomAssertionAtPosition
 import com.schibsted.spain.barista.assertion.BaristaListAssertions.assertDisplayedAtPosition
 import com.schibsted.spain.barista.assertion.BaristaVisibilityAssertions.assertDisplayed
-import com.schibsted.spain.barista.interaction.BaristaListInteractions.clickListItem
-import com.yosemiteyss.greentransit.R
+import com.yosemiteyss.greentransit.app.R
 import com.yosemiteyss.greentransit.app.launchFragmentInHiltContainer
 import com.yosemiteyss.greentransit.data.di.TrafficNewsModule
 import com.yosemiteyss.greentransit.data.mappers.TrafficNewsMapper
@@ -33,7 +32,7 @@ import org.junit.Rule
 import org.junit.Test
 import javax.inject.Singleton
 
-@MediumTest
+@SmallTest
 @HiltAndroidTest
 @UninstallModules(TrafficNewsModule::class)
 class NewsFragmentTest {
@@ -81,28 +80,14 @@ class NewsFragmentTest {
     }
 
     @Test
-    fun test_news_card_expand_and_collapse() {
+    fun test_news_card_max_lines() {
         launchFragmentInHiltContainer<NewsFragment>()
 
-        // Default
         assertDisplayed(R.id.news_recycler_view)
-        assertCustomAssertionAtPosition(
-            R.id.news_recycler_view, 1,
-            R.id.content_text_view, hasMaxLines(NewsAdapter.NEWS_COLLAPSED_LINES)
-        )
 
-        // Expand card
-        clickListItem(R.id.news_recycler_view, 1)
         assertCustomAssertionAtPosition(
             R.id.news_recycler_view, 1,
-            R.id.content_text_view, hasMaxLines(NewsAdapter.NEWS_EXPANDED_LINES)
-        )
-
-        // Collapse card
-        clickListItem(R.id.news_recycler_view, 1)
-        assertCustomAssertionAtPosition(
-            R.id.news_recycler_view, 1,
-            R.id.content_text_view, hasMaxLines(NewsAdapter.NEWS_COLLAPSED_LINES)
+            R.id.content_text_view, hasMaxLines(3)
         )
     }
 }

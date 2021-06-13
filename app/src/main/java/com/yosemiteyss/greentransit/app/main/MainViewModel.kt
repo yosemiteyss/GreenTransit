@@ -57,7 +57,7 @@ class MainViewModel @Inject constructor(
 
     val initialCoordinate: Coordinate = Coordinate(latitude = 22.302711, longitude = 114.177216)
 
-    val topDestinations: List<Int> = listOf(R.id.homeFragment, R.id.newsFragment)
+    val topDestinations: List<Int> = listOf(R.id.homeFragment, R.id.newsFragment, R.id.searchFragment)
 
     init {
         // Build nearby stops
