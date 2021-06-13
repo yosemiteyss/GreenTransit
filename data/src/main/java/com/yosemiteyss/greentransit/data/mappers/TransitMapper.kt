@@ -41,24 +41,10 @@ class TransitMapper @Inject constructor() {
         )
     }
 
-    fun fromNetworkToRouteCode(region: Region, dto: RouteCodesNetworkDto): List<RouteCode> {
+    fun toRouteCodes(region: Region, dto: RouteCodesDto): List<RouteCode> {
         return dto.routeCodes.map {
             RouteCode(code = it, region = region)
         }
-    }
-
-    fun fromLocalToRouteCode(localDto: RouteCodeLocalDto): RouteCode {
-        return RouteCode(
-            code = localDto.code,
-            region = toRouteRegion(localDto.region)
-        )
-    }
-
-    fun toRouteCodeLocalDto(routeCode: RouteCode): RouteCodeLocalDto {
-        return RouteCodeLocalDto(
-            code = routeCode.code,
-            region = toRouteRegion(routeCode.region)
-        )
     }
 
     fun toStopInfo(stopId: Long, dto: StopInfoDto): StopInfo {

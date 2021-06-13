@@ -11,7 +11,7 @@ import retrofit2.http.Path
 interface GMBService {
 
     @GET("/route/{region}")
-    suspend fun getRegionRoutes(@Path("region") region: String): RouteCodesNetworkDto
+    suspend fun getRegionRoutes(@Path("region") region: String): RouteCodesDto
 
     @GET("/stop/{stopId}")
     suspend fun getStopInfo(@Path("stopId") stopId: Long): StopInfoDto

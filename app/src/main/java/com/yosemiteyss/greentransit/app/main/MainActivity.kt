@@ -11,6 +11,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.snackbar.Snackbar
@@ -21,6 +22,7 @@ import com.yosemiteyss.greentransit.app.utils.launchAppSettings
 import com.yosemiteyss.greentransit.app.utils.setLayoutFullscreen
 import com.yosemiteyss.greentransit.app.utils.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 
 @SuppressLint("MissingPermission")
 @AndroidEntryPoint
@@ -68,8 +70,10 @@ class MainActivity : AppCompatActivity() {
             as NavHostFragment
         val navController = navHostFragment.navController
 
-        navController.addOnDestinationChangedListener { controller, destination, arguments ->
-            binding.bottomNavView.isVisible = destination.id in viewModel.topDestinations
+        lifecycleScope.launchWhenStarted {
+            navController.currentBackStackEntryFlow.collect { entry ->
+                binding.bottomNavView.isVisible = entry.destination.id in viewModel.topDestinations
+            }
         }
 
         binding.bottomNavView.setupWithNavController(navController)

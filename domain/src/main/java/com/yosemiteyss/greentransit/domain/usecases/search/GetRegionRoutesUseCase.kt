@@ -12,7 +12,7 @@ import com.yosemiteyss.greentransit.domain.states.Resource
 import com.yosemiteyss.greentransit.domain.usecases.FlowUseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class GetRegionRoutesUseCase @Inject constructor(
@@ -20,14 +20,9 @@ class GetRegionRoutesUseCase @Inject constructor(
     @IoDispatcher coroutineDispatcher: CoroutineDispatcher
 ) : FlowUseCase<Region, List<RouteCode>>(coroutineDispatcher) {
 
-    override fun execute(parameters: Region): Flow<Resource<List<RouteCode>>> {
-        return transitRepository.getRegionRoutes(region = parameters)
-            .map { res ->
-                when (res) {
-                    is Resource.Success -> Resource.Success(res.data.sortedBy { it.code })
-                    is Resource.Error -> Resource.Error(res.message)
-                    is Resource.Loading -> Resource.Loading()
-                }
-            }
+    override fun execute(parameters: Region): Flow<Resource<List<RouteCode>>> = flow {
+        val routes = transitRepository.getRegionRoutes(region = parameters)
+            .sortedBy { it.code }
+        emit(Resource.Success(routes))
     }
 }

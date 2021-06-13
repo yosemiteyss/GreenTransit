@@ -5,8 +5,6 @@
 package com.yosemiteyss.greentransit.domain.repositories
 
 import com.yosemiteyss.greentransit.domain.models.*
-import com.yosemiteyss.greentransit.domain.states.Resource
-import kotlinx.coroutines.flow.Flow
 
 interface TransitRepository {
 
@@ -14,7 +12,7 @@ interface TransitRepository {
 
     suspend fun getNearbyRoutes(routeIds: List<Long>): List<NearbyRoute>
 
-    fun getRegionRoutes(region: Region): Flow<Resource<List<RouteCode>>>
+    suspend fun getRegionRoutes(region: Region): List<RouteCode>
 
     suspend fun getStopInfo(stopId: Long): StopInfo
 

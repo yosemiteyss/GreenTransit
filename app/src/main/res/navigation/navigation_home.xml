@@ -63,7 +63,7 @@
             app:argType="com.yosemiteyss.greentransit.app.route.RouteOption"/>
     </fragment>
 
-    <fragment
+    <dialog
         android:id="@+id/searchFragment"
         android:name="com.yosemiteyss.greentransit.app.search.SearchFragment"
         tools:layout="@layout/fragment_search">
@@ -73,15 +73,19 @@
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popExitAnim="@anim/slide_out_right"
-            app:popEnterAnim="@anim/slide_in_left"/>
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popUpTo="@id/regionRoutesFragment"
+            app:popUpToInclusive="true"/>
         <action
             android:id="@+id/action_searchFragment_to_routeFragment"
             app:destination="@id/routeFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popExitAnim="@anim/slide_out_right"
-            app:popEnterAnim="@anim/slide_in_left"/>
-    </fragment>
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popUpTo="@id/routeFragment"
+            app:popUpToInclusive="true"/>
+    </dialog>
 
     <fragment
         android:id="@+id/regionRoutesFragment"

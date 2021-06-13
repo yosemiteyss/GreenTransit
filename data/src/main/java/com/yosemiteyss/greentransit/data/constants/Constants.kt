@@ -19,11 +19,7 @@ object Constants {
     const val ROUTE_REGION_HKI = "HKI"
     const val ROUTE_REGION_NT = "NT"
 
-    const val ROUTE_CODES_LOCAL_TABLE = "route_codes"
-    const val ROUTE_CODES_LOCAL_DTO_CODE = "code"
-    const val ROUTE_CODES_LOCAL_DTO_REGION = "region"
-
-    const val ROUTE_CODES_NETWORK_DTO_ROUTES = "routes"
+    const val ROUTE_CODES_DTO_ROUTES = "routes"
 
     const val ROUTE_SEARCH_COLLECTION = "route_codes"
     const val ROUTE_SEARCH_DTO_CODE = "code"

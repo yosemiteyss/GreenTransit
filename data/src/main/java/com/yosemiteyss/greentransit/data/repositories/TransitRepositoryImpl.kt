@@ -13,14 +13,10 @@ import com.yosemiteyss.greentransit.data.constants.Constants.NEARBY_STOP_DTO_GEO
 import com.yosemiteyss.greentransit.data.constants.Constants.ROUTE_SEARCH_COLLECTION
 import com.yosemiteyss.greentransit.data.constants.Constants.ROUTE_SEARCH_DTO_CODE
 import com.yosemiteyss.greentransit.data.constants.Constants.ROUTE_SEARCH_DTO_ROUTE_IDS
-import com.yosemiteyss.greentransit.data.db.AppDatabase
 import com.yosemiteyss.greentransit.data.mappers.TransitMapper
 import com.yosemiteyss.greentransit.data.utils.getAwaitResult
 import com.yosemiteyss.greentransit.domain.models.*
 import com.yosemiteyss.greentransit.domain.repositories.TransitRepository
-import com.yosemiteyss.greentransit.domain.states.Resource
-import com.yosemiteyss.greentransit.domain.utils.networkCacheResource
-import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 private const val ARRAY_CONTAINS_MAX = 10
@@ -28,7 +24,6 @@ private const val ARRAY_CONTAINS_MAX = 10
 class TransitRepositoryImpl @Inject constructor(
     private val firestore: FirebaseFirestore,
     private val gmbService: GMBService,
-    private val appDatabase: AppDatabase,
     private val transitMapper: TransitMapper
 ) : TransitRepository {
 
@@ -46,22 +41,9 @@ class TransitRepositoryImpl @Inject constructor(
             .getAwaitResult(transitMapper::toNearbyRoute)
     }
 
-    override fun getRegionRoutes(region: Region): Flow<Resource<List<RouteCode>>> {
-        return networkCacheResource(
-            cacheSource = {
-                appDatabase.regionRoutesDao().getRegionRoutes(transitMapper.toRouteRegion(region))
-                    .map { transitMapper.fromLocalToRouteCode(it) }
-            },
-            networkSource = {
-                gmbService.getRegionRoutes(transitMapper.toRouteRegion(region))
-                    .let { transitMapper.fromNetworkToRouteCode(region, it) }
-            },
-            updateCache = { routeCodes ->
-                appDatabase.regionRoutesDao().insertRoute(routeCodes.map {
-                    transitMapper.toRouteCodeLocalDto(it)
-                })
-            }
-        )
+    override suspend fun getRegionRoutes(region: Region): List<RouteCode> {
+        return gmbService.getRegionRoutes(transitMapper.toRouteRegion(region))
+            .let { transitMapper.toRouteCodes(region, it) }
     }
 
     override suspend fun getStopInfo(stopId: Long): StopInfo {

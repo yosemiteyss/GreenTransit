@@ -6,9 +6,6 @@ package com.yosemiteyss.greentransit.testshared.repositories
 
 import com.yosemiteyss.greentransit.domain.models.*
 import com.yosemiteyss.greentransit.domain.repositories.TransitRepository
-import com.yosemiteyss.greentransit.domain.states.Resource
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import java.util.*
 import kotlin.random.Random
 
@@ -42,13 +39,9 @@ class FakeTransitRepositoryImpl : TransitRepository {
         return MutableList(10) { createFakeNearbyRoute() }
     }
 
-    override fun getRegionRoutes(region: Region): Flow<Resource<List<RouteCode>>> = flow {
-        emit(Resource.Loading())
-        if (throwNetworkError) {
-            emit(Resource.Error("Network error."))
-        } else {
-            emit(Resource.Success(MutableList(10) { createFakeRouteCode() }))
-        }
+    override suspend fun getRegionRoutes(region: Region): List<RouteCode> {
+        if (throwNetworkError) throw Exception("Network error.")
+        return MutableList(10) { createFakeRouteCode() }
     }
 
     override suspend fun getStopInfo(stopId: Long): StopInfo {

@@ -21,7 +21,7 @@ inline fun <T> networkCacheResource(
     try {
         // Update cache when network request is successful.
         val result = networkSource()
-        channel.trySend(Resource.Loading())
+        channel.trySend(Resource.Success(result))
         startUpdateCache(updateCache, result)
     } catch (e: Exception) {
         // Use local cache if network request is failed.

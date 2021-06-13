@@ -5,9 +5,9 @@
 package com.yosemiteyss.greentransit.data.dtos
 
 import com.google.gson.annotations.SerializedName
-import com.yosemiteyss.greentransit.data.constants.Constants.ROUTE_CODES_NETWORK_DTO_ROUTES
+import com.yosemiteyss.greentransit.data.constants.Constants.ROUTE_CODES_DTO_ROUTES
 
-data class RouteCodesNetworkDto(
-    @SerializedName(ROUTE_CODES_NETWORK_DTO_ROUTES)
+data class RouteCodesDto(
+    @SerializedName(ROUTE_CODES_DTO_ROUTES)
     val routeCodes: List<String>,
 )

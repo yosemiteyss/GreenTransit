@@ -41,6 +41,7 @@ class NetworkCacheResourceTest {
         ncr.test {
             assert(expectItem() is Resource.Loading)
             val result = expectItem()
+            println(result.toString())
             assert(result is Resource.Success && result.data == NETWORK_DATA)
             expectComplete()
         }

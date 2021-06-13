@@ -11,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.yosemiteyss.greentransit.app.R
 import com.yosemiteyss.greentransit.app.databinding.FragmentRegionRoutesBinding
 import com.yosemiteyss.greentransit.app.route.RouteOption
@@ -40,6 +41,12 @@ class RegionRoutesFragment : Fragment(R.layout.fragment_region_routes) {
 
         binding.appBarLayout.applySystemWindowInsetsPadding(applyTop = true)
         binding.routesRecyclerView.applySystemWindowInsetsMargin(applyBottom = true)
+
+        with(binding.loadingProgressBar) {
+            setVisibilityAfterHide(View.INVISIBLE)
+            showAnimationBehavior = LinearProgressIndicator.SHOW_INWARD
+            hideAnimationBehavior = LinearProgressIndicator.SHOW_OUTWARD
+        }
 
         // Setup toolbar
         binding.toolbar.setNavigationOnClickListener {
